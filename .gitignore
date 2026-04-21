@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*~
+
+# Python (used by PrintReady/build_prototype.py)
+__pycache__/
+*.pyc
+*.pyo
+
+# OS / temp
+Thumbs.db
+*.tmp
