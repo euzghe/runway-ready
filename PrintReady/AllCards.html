@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Runway Ready — All Cards (Print Ready)</title>
+<style>
+@page { size: A4; margin: 5mm; }
+* { box-sizing: border-box; }
+body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; color: #222; }
+.page {
+    display: grid;
+    grid-template-columns: repeat(3, 63mm);
+    grid-template-rows: repeat(3, 88mm);
+    gap: 2mm;
+    page-break-after: always;
+    justify-content: center;
+    align-content: start;
+}
+.card {
+    width: 63mm; height: 88mm;
+    border: 0.4mm solid #333;
+    border-radius: 2mm;
+    padding: 0;
+    overflow: hidden;
+    position: relative;
+    background: white;
+    display: flex; flex-direction: column;
+}
+.card .header {
+    color: white;
+    font-weight: 700;
+    font-size: 6.5pt;
+    padding: 1.4mm 2.5mm;
+    letter-spacing: 0.3pt;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.card .body {
+    padding: 2mm 2.5mm 2mm 2.5mm;
+    font-size: 6.8pt;
+    line-height: 1.25;
+    flex: 1;
+    overflow: hidden;
+}
+.card .title {
+    font-size: 9pt;
+    font-weight: 700;
+    margin-bottom: 1.5mm;
+    color: #111;
+}
+.card .field {
+    margin-bottom: 0.8mm;
+}
+.card .field .name {
+    font-style: italic;
+    color: #555;
+}
+.card .rule {
+    margin-top: 1mm;
+    padding: 1mm 1.5mm;
+    background: #fff5d6;
+    border-left: 1mm solid #e0a823;
+    font-size: 6.5pt;
+}
+.card .rule .name { font-weight: 700; }
+.card .prose { font-size: 7pt; }
+.card .footer {
+    border-top: 0.2mm solid #ccc;
+    padding: 1mm 2.5mm;
+    font-size: 5.5pt;
+    color: #666;
+    text-align: center;
+}
+
+/* Color theming via deck class on .card */
+.deck-bi  .header { background: #D81E5B; }
+.deck-rr  .header { background: #3B3F8F; }
+.deck-ct  .header { background: #6FAE6E; }
+.deck-od  .header { background: #9D8BD9; }
+.deck-ri  .header { background: #5F6B7A; }
+.deck-wm  .header { background: #C0392B; }
+.deck-ev  .header { background: #E0A823; }
+
+/* Print only — hide the on-screen instructions */
+@media print {
+    .screen-only { display: none; }
+}
+.screen-only {
+    background: #f4f4f4;
+    padding: 12pt;
+    font-size: 10pt;
+    margin: 8pt;
+    border-left: 4pt solid #3B3F8F;
+}
+</style>
+</head>
+<body>
+<div class="screen-only">
+  <strong>Runway Ready — printable card deck.</strong><br>
+  Total: 96 cards. Use your browser's Print (Cmd-P) → A4, no scaling, no headers/footers.<br>
+  Each page is 9 cards (3×3). Cut along card edges. Sleeve in poker-size sleeves (63 × 88 mm).<br>
+  Decks: BRAND IDENTITY (8), RUNWAY ROADMAP (12), COLLECTION THEME (10), OUTFIT DETAIL (30), RUNWAY INSTRUCTIONS (8), WARDROBE MALFUNCTION (16), EVENT / ACTION (12).
+</div>
+<div class="page">
+    <div class="card deck-bi">
+      <div class="header"><span>BRAND IDENTITY</span><span>BI-01</span></div>
+      <div class="body">
+        <div class="title">Maison Solère</div>
+        <div class="field"><span class="name">Test policy reference:</span> Sustainability Charter §1</div><div class="field"><span class="name">Scope of applicability:</span> All collections, all seasons</div><div class="field"><span class="name">Generic risks:</span> Greenwashing accusations, supply-chain delays</div>
+        <div class="rule"><span class="name">Global rule:</span> Every Outfit must use only sustainable materials. An Outfit listing leather or synthetic fur is invalid.</div>
+        
+      </div>
+      <div class="footer">Maps to: Organizational Test Strategy</div>
+    </div>
+    
+    <div class="card deck-bi">
+      <div class="header"><span>BRAND IDENTITY</span><span>BI-02</span></div>
+      <div class="body">
+        <div class="title">Atelier Nox</div>
+        <div class="field"><span class="name">Test policy reference:</span> Couture-only Mandate</div><div class="field"><span class="name">Scope of applicability:</span> Exclusively haute couture lines</div><div class="field"><span class="name">Generic risks:</span> Cost overruns, fitter fatigue</div>
+        <div class="rule"><span class="name">Global rule:</span> No more than 6 Outfits per Roadmap. Each Outfit must list at least 2 hand-finished elements.</div>
+        
+      </div>
+      <div class="footer">Maps to: Organizational Test Strategy</div>
+    </div>
+    
+    <div class="card deck-bi">
+      <div class="header"><span>BRAND IDENTITY</span><span>BI-03</span></div>
+      <div class="body">
+        <div class="title">Studio Heliograph</div>
+        <div class="field"><span class="name">Test policy reference:</span> Minimalism Manifesto v3</div><div class="field"><span class="name">Scope of applicability:</span> Ready-to-wear, Spring/Summer</div><div class="field"><span class="name">Generic risks:</span> Visual monotony, low retail appeal</div>
+        <div class="rule"><span class="name">Global rule:</span> No Outfit may declare more than one accessory.</div>
+        
+      </div>
+      <div class="footer">Maps to: Organizational Test Strategy</div>
+    </div>
+    
+    <div class="card deck-bi">
+      <div class="header"><span>BRAND IDENTITY</span><span>BI-04</span></div>
+      <div class="body">
+        <div class="title">House of Vermeil</div>
+        <div class="field"><span class="name">Test policy reference:</span> Heritage Preservation Code</div><div class="field"><span class="name">Scope of applicability:</span> Bridal and ceremonial only</div><div class="field"><span class="name">Generic risks:</span> Tradition vs. modernity tension</div>
+        <div class="rule"><span class="name">Global rule:</span> Every Outfit must include at least one element marked "heritage" in its description.</div>
+        
+      </div>
+      <div class="footer">Maps to: Organizational Test Strategy</div>
+    </div>
+    
+    <div class="card deck-bi">
+      <div class="header"><span>BRAND IDENTITY</span><span>BI-05</span></div>
+      <div class="body">
+        <div class="title">Kuro & Co.</div>
+        <div class="field"><span class="name">Test policy reference:</span> Avant-Garde Doctrine</div><div class="field"><span class="name">Scope of applicability:</span> Concept shows, Fashion Week only</div><div class="field"><span class="name">Generic risks:</span> Public misunderstanding, press backlash</div>
+        <div class="rule"><span class="name">Global rule:</span> At least one Outfit per round must intentionally violate one Roadmap constraint (artistic statement). That Outfit must declare which constraint it violates in its Pre-conditions field.</div>
+        
+      </div>
+      <div class="footer">Maps to: Organizational Test Strategy</div>
+    </div>
+    
+    <div class="card deck-bi">
+      <div class="header"><span>BRAND IDENTITY</span><span>BI-06</span></div>
+      <div class="body">
+        <div class="title">Linea Pura</div>
+        <div class="field"><span class="name">Test policy reference:</span> Functional Wear Charter</div><div class="field"><span class="name">Scope of applicability:</span> Performance-wear, all seasons</div><div class="field"><span class="name">Generic risks:</span> Aesthetic dismissal, sizing complaints</div>
+        <div class="rule"><span class="name">Global rule:</span> Every Outfit's Expected Result must include a movement constraint (e.g., "must permit full arm extension").</div>
+        
+      </div>
+      <div class="footer">Maps to: Organizational Test Strategy</div>
+    </div>
+    
+    <div class="card deck-bi">
+      <div class="header"><span>BRAND IDENTITY</span><span>BI-07</span></div>
+      <div class="body">
+        <div class="title">Maison Aurore</div>
+        <div class="field"><span class="name">Test policy reference:</span> Inclusivity Standard 2026</div><div class="field"><span class="name">Scope of applicability:</span> All collections</div><div class="field"><span class="name">Generic risks:</span> Tokenism criticism, sizing inconsistency</div>
+        <div class="rule"><span class="name">Global rule:</span> Every Roadmap must declare at least 3 distinct model sizes. Every Outfit must list a size compatible with the Roadmap's declared sizes.</div>
+        
+      </div>
+      <div class="footer">Maps to: Organizational Test Strategy</div>
+    </div>
+    
+    <div class="card deck-bi">
+      <div class="header"><span>BRAND IDENTITY</span><span>BI-08</span></div>
+      <div class="body">
+        <div class="title">Atelier Bruté</div>
+        <div class="field"><span class="name">Test policy reference:</span> Brutalist Aesthetic Code</div><div class="field"><span class="name">Scope of applicability:</span> Conceptual menswear</div><div class="field"><span class="name">Generic risks:</span> Wearability, retail viability</div>
+        <div class="rule"><span class="name">Global rule:</span> Every Outfit must use a single dominant material (e.g., wool, denim, canvas). Mixed-material Outfits are invalid.</div>
+        
+      </div>
+      <div class="footer">Maps to: Organizational Test Strategy</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-01</span></div>
+      <div class="body">
+        <div class="title">SS26 Capsule Drop</div>
+        <div class="field"><span class="name">Scope:</span> Up to 4 Outfits, day-wear only</div><div class="field"><span class="name">References:</span> Active Brand Identity</div><div class="field"><span class="name">Schedule:</span> 1 round (10 min)</div><div class="field"><span class="name">Resources:</span> 1 accessory cap per Outfit</div><div class="field"><span class="name">Risks:</span> Tight schedule, weather-sensitive fabrics</div><div class="field"><span class="name">Approach:</span> Fast-iteration, single rehearsal</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-02</span></div>
+      <div class="body">
+        <div class="title">Couture Gala</div>
+        <div class="field"><span class="name">Scope:</span> Exactly 6 Outfits, evening-wear</div><div class="field"><span class="name">References:</span> Brand Identity + Heritage clause if applicable</div><div class="field"><span class="name">Schedule:</span> 2 rounds</div><div class="field"><span class="name">Resources:</span> Unlimited accessories; max 2 hand-finished elements per Outfit</div><div class="field"><span class="name">Risks:</span> Cost overruns, fitter fatigue</div><div class="field"><span class="name">Approach:</span> Heavy specification, dual rehearsal</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-03</span></div>
+      <div class="body">
+        <div class="title">Resort Pop-Up</div>
+        <div class="field"><span class="name">Scope:</span> 3–5 Outfits, beach/resort</div><div class="field"><span class="name">References:</span> Active Brand Identity</div><div class="field"><span class="name">Schedule:</span> 1 round</div><div class="field"><span class="name">Resources:</span> No fragile materials</div><div class="field"><span class="name">Risks:</span> Sand, sun, salt-water exposure</div><div class="field"><span class="name">Approach:</span> Lightweight, durable fabrics</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-04</span></div>
+      <div class="body">
+        <div class="title">Industry Press Show</div>
+        <div class="field"><span class="name">Scope:</span> 4 Outfits, press-friendly</div><div class="field"><span class="name">References:</span> Brand Identity + press-kit reference</div><div class="field"><span class="name">Schedule:</span> 1 round, +30 sec inspection</div><div class="field"><span class="name">Resources:</span> 2 accessory cap</div><div class="field"><span class="name">Risks:</span> Live photography, journalists' scrutiny</div><div class="field"><span class="name">Approach:</span> Each Outfit must have a unique selling point</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-05</span></div>
+      <div class="body">
+        <div class="title">Student Showcase</div>
+        <div class="field"><span class="name">Scope:</span> 3 Outfits, mixed casual / formal</div><div class="field"><span class="name">References:</span> Brand Identity</div><div class="field"><span class="name">Schedule:</span> 1 round</div><div class="field"><span class="name">Resources:</span> Tight budget — max 1 hand-finished element across all Outfits</div><div class="field"><span class="name">Risks:</span> Inexperienced models</div><div class="field"><span class="name">Approach:</span> Forgiving silhouettes</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-06</span></div>
+      <div class="body">
+        <div class="title">Fashion Week Finale</div>
+        <div class="field"><span class="name">Scope:</span> 5 Outfits, high-impact</div><div class="field"><span class="name">References:</span> Brand Identity + signature piece reference</div><div class="field"><span class="name">Schedule:</span> 2 rounds</div><div class="field"><span class="name">Resources:</span> Unlimited</div><div class="field"><span class="name">Risks:</span> Press backlash, wardrobe fatigue</div><div class="field"><span class="name">Approach:</span> Crescendo — final Outfit must be the standout</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-07</span></div>
+      <div class="body">
+        <div class="title">Sustainability Showcase</div>
+        <div class="field"><span class="name">Scope:</span> 4 Outfits, certified materials only</div><div class="field"><span class="name">References:</span> Brand Identity (must be sustainability-aligned)</div><div class="field"><span class="name">Schedule:</span> 1 round</div><div class="field"><span class="name">Resources:</span> No leather, no synthetic fur</div><div class="field"><span class="name">Risks:</span> Material sourcing failures</div><div class="field"><span class="name">Approach:</span> Auditor visit possible</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-08</span></div>
+      <div class="body">
+        <div class="title">Bridal Collection</div>
+        <div class="field"><span class="name">Scope:</span> 4 Outfits, bridal only</div><div class="field"><span class="name">References:</span> Brand Identity + heritage code if applicable</div><div class="field"><span class="name">Schedule:</span> 2 rounds</div><div class="field"><span class="name">Resources:</span> 3 hand-finished elements minimum per Outfit</div><div class="field"><span class="name">Risks:</span> Symbolic detail mismatches</div><div class="field"><span class="name">Approach:</span> Slow, traceable revisions</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-09</span></div>
+      <div class="body">
+        <div class="title">Streetwear Drop</div>
+        <div class="field"><span class="name">Scope:</span> 5 Outfits, casual urban</div><div class="field"><span class="name">References:</span> Brand Identity</div><div class="field"><span class="name">Schedule:</span> 1 round</div><div class="field"><span class="name">Resources:</span> No couture techniques</div><div class="field"><span class="name">Risks:</span> Trend-cycle mismatch</div><div class="field"><span class="name">Approach:</span> Fast turnaround</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-10</span></div>
+      <div class="body">
+        <div class="title">Pre-Fall Lookbook</div>
+        <div class="field"><span class="name">Scope:</span> 4 Outfits, layered</div><div class="field"><span class="name">References:</span> Brand Identity</div><div class="field"><span class="name">Schedule:</span> 1 round</div><div class="field"><span class="name">Resources:</span> Outerwear required on every Outfit</div><div class="field"><span class="name">Risks:</span> Studio overheating</div><div class="field"><span class="name">Approach:</span> Static photography rehearsal</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-11</span></div>
+      <div class="body">
+        <div class="title">Avant-Garde Concept Show</div>
+        <div class="field"><span class="name">Scope:</span> 3 Outfits, conceptual</div><div class="field"><span class="name">References:</span> Brand Identity (Kuro & Co. recommended)</div><div class="field"><span class="name">Schedule:</span> 1 round</div><div class="field"><span class="name">Resources:</span> Unlimited; one Outfit *must* break a rule (artist's statement)</div><div class="field"><span class="name">Risks:</span> Press misunderstanding</div><div class="field"><span class="name">Approach:</span> High-risk, high-reward</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    
+    <div class="card deck-rr">
+      <div class="header"><span>RUNWAY ROADMAP</span><span>RR-12</span></div>
+      <div class="body">
+        <div class="title">Inclusive Sizing Showcase</div>
+        <div class="field"><span class="name">Scope:</span> 4 Outfits across ≥3 distinct sizes</div><div class="field"><span class="name">References:</span> Brand Identity (Maison Aurore aligned)</div><div class="field"><span class="name">Schedule:</span> 1 round</div><div class="field"><span class="name">Resources:</span> Tailoring time prioritised</div><div class="field"><span class="name">Risks:</span> Sizing mismatches</div><div class="field"><span class="name">Approach:</span> Each Outfit must declare its size in Pre-conditions</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Project Test Plan</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-01</span></div>
+      <div class="body">
+        <div class="title">Mediterranean Breeze</div>
+        <div class="field"><span class="name">Feature set ID:</span> MB-SS26</div><div class="field"><span class="name">Test conditions:</span> Light fabrics; sand / coral / off-white palette; flowing silhouettes</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-MB-01..03</div><div class="field"><span class="name">Coverage:</span> Day, transitional, evening — at least one per Outfit set</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-02</span></div>
+      <div class="body">
+        <div class="title">Concrete Geometry</div>
+        <div class="field"><span class="name">Feature set ID:</span> CG-AW26</div><div class="field"><span class="name">Test conditions:</span> Structured tailoring; grey/black palette; sharp angles</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-CG-01..03</div><div class="field"><span class="name">Coverage:</span> Architectural silhouettes</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-03</span></div>
+      <div class="body">
+        <div class="title">Soft Rebellion</div>
+        <div class="field"><span class="name">Feature set ID:</span> SR-PF26</div><div class="field"><span class="name">Test conditions:</span> Punk references in pastel palette; contrast textures (lace + leather alternatives)</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-SR-01..03</div><div class="field"><span class="name">Coverage:</span> At least one Outfit must contradict its own palette intentionally</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-04</span></div>
+      <div class="body">
+        <div class="title">Heritage Reframed</div>
+        <div class="field"><span class="name">Feature set ID:</span> HR-CR26</div><div class="field"><span class="name">Test conditions:</span> Traditional silhouettes with modern detailing</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-HR-01..03</div><div class="field"><span class="name">Coverage:</span> Each Outfit declares which heritage element it modernises</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-05</span></div>
+      <div class="body">
+        <div class="title">Atmospheric Layers</div>
+        <div class="field"><span class="name">Feature set ID:</span> AL-PF26</div><div class="field"><span class="name">Test conditions:</span> Layered outerwear; muted greens, browns, slate</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-AL-01..03</div><div class="field"><span class="name">Coverage:</span> Every Outfit ≥ 3 visible layers</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-06</span></div>
+      <div class="body">
+        <div class="title">Liquid Light</div>
+        <div class="field"><span class="name">Feature set ID:</span> LL-SS26</div><div class="field"><span class="name">Test conditions:</span> Reflective fabrics; metallic palette; fluid drape</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-LL-01..03</div><div class="field"><span class="name">Coverage:</span> Each Outfit must reflect light visibly under spotlight</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-07</span></div>
+      <div class="body">
+        <div class="title">Off-Grid</div>
+        <div class="field"><span class="name">Feature set ID:</span> OG-AW26</div><div class="field"><span class="name">Test conditions:</span> Utility wear; earth tones; reinforced seams</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-OG-01..03</div><div class="field"><span class="name">Coverage:</span> Every Outfit must declare a functional pocket count</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-08</span></div>
+      <div class="body">
+        <div class="title">Theatre of Memory</div>
+        <div class="field"><span class="name">Feature set ID:</span> TM-CR26</div><div class="field"><span class="name">Test conditions:</span> Costume-inspired; period silhouettes; rich palette</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-TM-01..03</div><div class="field"><span class="name">Coverage:</span> Each Outfit references a specific historical era</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-09</span></div>
+      <div class="body">
+        <div class="title">Negative Space</div>
+        <div class="field"><span class="name">Feature set ID:</span> NS-SS26</div><div class="field"><span class="name">Test conditions:</span> Cut-outs and asymmetry; monochrome</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-NS-01..03</div><div class="field"><span class="name">Coverage:</span> Each Outfit must specify a deliberate cut-out location</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-ct">
+      <div class="header"><span>COLLECTION THEME</span><span>CT-10</span></div>
+      <div class="body">
+        <div class="title">Soft Architecture</div>
+        <div class="field"><span class="name">Feature set ID:</span> SA-PF26</div><div class="field"><span class="name">Test conditions:</span> Sculptural silhouettes in soft fabrics</div><div class="field"><span class="name">Traceability:</span> REQ-FASHION-SA-01..03</div><div class="field"><span class="name">Coverage:</span> Each Outfit balances volume against drape</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Design Specification</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>AW26-001</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> AW26-001</div><div class="field"><span class="name">Objective:</span> Demonstrate the geometric drape technique.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; closed-toe shoes; minimal jewellery.</div><div class="field"><span class="name">Inputs:</span> Black asymmetric coat; grey turtleneck; tapered trousers.</div><div class="field"><span class="name">Expected Result:</span> Asymmetric hem swings cleanly; turtleneck does not bunch.</div><div class="field"><span class="name">Post-conditions:</span> Coat hangs without creases.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-CG-02</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>AW26-002</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> AW26-002</div><div class="field"><span class="name">Objective:</span> Showcase Off-Grid utility silhouette as evening-wear opener.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 42; hiking boots.</div><div class="field"><span class="name">Inputs:</span> Canvas jumpsuit; leather belt.</div><div class="field"><span class="name">Expected Result:</span> Pockets remain accessible.</div><div class="field"><span class="name">Post-conditions:</span> Returned intact.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-OG-02</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>AW26-003</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> AW26-003</div><div class="field"><span class="name">Objective:</span> Demonstrate Off-Grid utility silhouette.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 42; hiking boots; bare make-up.</div><div class="field"><span class="name">Inputs:</span> Reinforced canvas jumpsuit (six functional pockets); leather (vegan) belt.</div><div class="field"><span class="name">Expected Result:</span> All six pockets visibly accessible; belt does not interfere with stride.</div><div class="field"><span class="name">Post-conditions:</span> Jumpsuit returned with reinforcements intact.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-OG-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>AW26-004</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> AW26-004</div><div class="field"><span class="name">Objective:</span> Demonstrate the Off-Grid jumpsuit.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 42; hiking boots.</div><div class="field"><span class="name">Inputs:</span> Canvas jumpsuit (six pockets); vegan-leather belt.</div><div class="field"><span class="name">Expected Result:</span> All six pockets are visibly accessible.</div><div class="field"><span class="name">Post-conditions:</span> Jumpsuit returned with three pockets sealed shut.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-OG-03</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>AW26-005</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> AW26-005</div><div class="field"><span class="name">Objective:</span> Anchor Concrete Geometry's evening look.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 36; ankle boots; sleek hair.</div><div class="field"><span class="name">Inputs:</span> Charcoal wool blazer in size 40; matching trousers in size 40.</div><div class="field"><span class="name">Expected Result:</span> Shoulders maintain structured line.</div><div class="field"><span class="name">Post-conditions:</span> Blazer returned undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-CG-04</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>AW26-006</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> AW26-006</div><div class="field"><span class="name">Objective:</span> Concrete Geometry silhouette study.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; closed-toe shoes.</div><div class="field"><span class="name">Inputs:</span> Asymmetric coat; turtleneck; tapered trousers.</div><div class="field"><span class="name">Expected Result:</span> "The expected result is whatever happens during the rehearsal".</div><div class="field"><span class="name">Post-conditions:</span> Coat hangs without creases.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-CG-05</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>AW26-007</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> AW26-007</div><div class="field"><span class="name">Objective:</span> Anchor the Concrete Geometry collection with a structured opener.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 40; ankle boots; slicked-back hair.</div><div class="field"><span class="name">Inputs:</span> Charcoal wool blazer; matching tailored trousers; white tee.</div><div class="field"><span class="name">Expected Result:</span> Shoulders maintain structured line; trouser break sits at ankle.</div><div class="field"><span class="name">Post-conditions:</span> Blazer returned without creasing.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-CG-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>AW26-008</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> AW26-008</div><div class="field"><span class="name">Objective:</span> Concrete Geometry — closing menswear-inspired silhouette.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 40; chunky loafers; centre-parted hair.</div><div class="field"><span class="name">Inputs:</span> Oversized grey blazer; pleated trousers; knit tie.</div><div class="field"><span class="name">Expected Result:</span> Blazer shoulders sit square; tie remains centred.</div><div class="field"><span class="name">Post-conditions:</span> Suit unwrinkled.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-CG-03</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>CR26-001</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> CR26-001</div><div class="field"><span class="name">Objective:</span> Heritage Reframed closing look.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; oxfords; updo.</div><div class="field"><span class="name">Inputs:</span> Tweed jacket (heritage); cropped trousers; silk blouse.</div><div class="field"><span class="name">Expected Result:</span> Jacket buttons remain closed; trouser hem grazes ankle.</div><div class="field"><span class="name">Post-conditions:</span> Heritage jacket undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-OG-04</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>CR26-002</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> CR26-002</div><div class="field"><span class="name">Objective:</span> Bridal Heritage Reframed — closing look.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; ivory satin pumps; veil pinned.</div><div class="field"><span class="name">Inputs:</span> Ivory silk gown with heritage lace overlay; pearl drop earrings.</div><div class="field"><span class="name">Expected Result:</span> Gown train follows model without dragging on side panels; veil remains pinned.</div><div class="field"><span class="name">Post-conditions:</span> Lace overlay returned undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-HR-03</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>CR26-003</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> CR26-003</div><div class="field"><span class="name">Objective:</span> Show heritage tailoring reframed for modern silhouette.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; oxfords; updo.</div><div class="field"><span class="name">Inputs:</span> Tweed jacket (heritage); contemporary cropped trousers; silk blouse.</div><div class="field"><span class="name">Expected Result:</span> Jacket buttons remain closed throughout walk; trouser hem grazes ankle.</div><div class="field"><span class="name">Post-conditions:</span> Heritage jacket undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-HR-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>CR26-004</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> CR26-004</div><div class="field"><span class="name">Objective:</span> Bridal heritage reframed look.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; satin pumps.</div><div class="field"><span class="name">Inputs:</span> Ivory silk gown with lace overlay (heritage); pearl earrings.</div><div class="field"><span class="name">Expected Result:</span> Train follows model without dragging.</div><div class="field"><span class="name">Post-conditions:</span> Lace returned undamaged.</div><div class="field"><span class="name">Traceability ID:</span> *(blank)*</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>CR26-005</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> CR26-005</div><div class="field"><span class="name">Objective:</span> Stage Theatre of Memory's Edwardian-era reference.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; period boots; updo.</div><div class="field"><span class="name">Inputs:</span> High-collar lace blouse (heritage); long velvet skirt; cameo brooch.</div><div class="field"><span class="name">Expected Result:</span> Skirt sweeps without catching boots; collar remains upright.</div><div class="field"><span class="name">Post-conditions:</span> Heritage lace undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-TM-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>PF26-001</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> PF26-001</div><div class="field"><span class="name">Objective:</span> Open Soft Rebellion's evening segment.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 36; lace-up boots.</div><div class="field"><span class="name">Inputs:</span> Pink slip dress; vegan-leather jacket; chain belt.</div><div class="field"><span class="name">Expected Result:</span> "Looks good".</div><div class="field"><span class="name">Post-conditions:</span> Returned undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-SR-02</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>PF26-002</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> PF26-002</div><div class="field"><span class="name">Objective:</span> Layered Atmospheric Layers look.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 40; chunky boots.</div><div class="field"><span class="name">Inputs:</span> Olive parka.</div><div class="field"><span class="name">Expected Result:</span> All three layers visible from front and side.</div><div class="field"><span class="name">Post-conditions:</span> Layers separable without snags.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-AL-02</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>PF26-003</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> PF26-003</div><div class="field"><span class="name">Objective:</span> Demonstrate three-layer outerwear styling.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 40; chunky boots; loose plaited hair.</div><div class="field"><span class="name">Inputs:</span> Olive parka; brown wool cardigan; cream knit base layer.</div><div class="field"><span class="name">Expected Result:</span> All three layers visible from front and side; parka zip closes fully.</div><div class="field"><span class="name">Post-conditions:</span> Layers separable without snags.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-AL-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>PF26-004</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> PF26-004</div><div class="field"><span class="name">Objective:</span> Showcase Soft Architecture's sculptural silhouette.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; flat slip-ons; sculpted bun.</div><div class="field"><span class="name">Inputs:</span> Sculpted ivory dress (volume at hip); minimal jewellery.</div><div class="field"><span class="name">Expected Result:</span> Hip volume holds shape under spotlight; model navigates corner without volume collapse.</div><div class="field"><span class="name">Post-conditions:</span> Internal structure intact.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-SA-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>PF26-005</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> PF26-005</div><div class="field"><span class="name">Objective:</span> Open the Soft Rebellion narrative with pastel-punk contrast.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 36; lace-up boots; smudged eyeliner.</div><div class="field"><span class="name">Inputs:</span> Pastel-pink slip dress; faux-leather (vegan) jacket; chain belt.</div><div class="field"><span class="name">Expected Result:</span> Jacket and dress visible together; chain belt does not snag dress.</div><div class="field"><span class="name">Post-conditions:</span> Jacket returned without scuffs.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-SR-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>PF26-006</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> PF26-006</div><div class="field"><span class="name">Objective:</span> Soft Architecture sculptural silhouette.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; flat slip-ons.</div><div class="field"><span class="name">Inputs:</span> "See backstage."</div><div class="field"><span class="name">Expected Result:</span> Hip volume holds shape under spotlight.</div><div class="field"><span class="name">Post-conditions:</span> Internal structure intact.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-SA-02</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-001</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-001</div><div class="field"><span class="name">Objective:</span> Closing look of Mediterranean Breeze; signature piece.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; gold sandals; loose waves.</div><div class="field"><span class="name">Inputs:</span> Floor-length linen kaftan; raffia clutch.</div><div class="field"><span class="name">Expected Result:</span> Kaftan flows behind model in spotlight finale pose.</div><div class="field"><span class="name">Post-conditions:</span> Kaftan returned uncreased.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-MB-03</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-002</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-002</div><div class="field"><span class="name">Objective:</span> Mediterranean Breeze coverage of "transitional" garments.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; sandals.</div><div class="field"><span class="name">Inputs:</span> Linen slip dress; raffia belt; gold hoops.</div><div class="field"><span class="name">Expected Result:</span> Dress drapes evenly at hip.</div><div class="field"><span class="name">Post-conditions:</span> Dress undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-MB-05</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-003</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-003</div><div class="field"><span class="name">Objective:</span> Demonstrate the Theme's signature flowing silhouette.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 36; flat sandals; natural make-up.</div><div class="field"><span class="name">Inputs:</span> Coral-toned wide-leg trousers; cream silk camisole; matching scarf.</div><div class="field"><span class="name">Expected Result:</span> Trousers do not bunch at ankle; scarf remains draped on shoulder.</div><div class="field"><span class="name">Post-conditions:</span> Camisole shows no perspiration marks.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-MB-02</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-004</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-004</div><div class="field"><span class="name">Objective:</span> Showcase the opening look of the Mediterranean Breeze theme.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; sandals fitted; hair in low chignon.</div><div class="field"><span class="name">Inputs:</span> Linen slip dress, off-white; raffia belt; gold hoop earrings.</div><div class="field"><span class="name">Expected Result:</span> Model walks 12 steps without tripping; dress drapes evenly at hip.</div><div class="field"><span class="name">Post-conditions:</span> Dress returns to wardrobe undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-MB-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-005</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-005</div><div class="field"><span class="name">Objective:</span> Headline the Liquid Light show.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 36; metallic heels (block, 5 cm); side-parted hair.</div><div class="field"><span class="name">Inputs:</span> Silver foil-finish gown; minimal jewellery (single bracelet).</div><div class="field"><span class="name">Expected Result:</span> Gown reflects spotlight visibly at three points (shoulder, waist, hem).</div><div class="field"><span class="name">Post-conditions:</span> Foil finish unscratched.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-LL-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-006</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-006</div><div class="field"><span class="name">Objective:</span> Open Negative Space with deliberate cut-out.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 36; barefoot sandals; sleek hair.</div><div class="field"><span class="name">Inputs:</span> White wool dress with side cut-out (left waist); silver cuff.</div><div class="field"><span class="name">Expected Result:</span> Cut-out remains aligned with waist throughout walk; cuff does not catch fabric.</div><div class="field"><span class="name">Post-conditions:</span> Cut-out edge unfrayed.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-NS-01</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-007</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-007</div><div class="field"><span class="name">Objective:</span> Open the Mediterranean Breeze evening segment.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; gold sandals; loose waves.</div><div class="field"><span class="name">Inputs:</span> Coral linen gown; gold cuff bracelet.</div><div class="field"><span class="name">Expected Result:</span> &nbsp;</div><div class="field"><span class="name">Post-conditions:</span> Gown returned to wardrobe.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-MB-04</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-008</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-008</div><div class="field"><span class="name">Objective:</span> Demonstrate the Liquid Light reflective look.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; metallic heels; sleek hair.</div><div class="field"><span class="name">Inputs:</span> Polyester foil gown; plastic cuff.</div><div class="field"><span class="name">Expected Result:</span> Gown reflects spotlight at shoulder, waist, hem.</div><div class="field"><span class="name">Post-conditions:</span> Returned undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-LL-02</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-009</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-009</div><div class="field"><span class="name">Objective:</span> Mediterranean Breeze opener (variant).</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; sandals; chignon.</div><div class="field"><span class="name">Inputs:</span> Off-white linen slip dress; raffia belt; silver hoop earrings.</div><div class="field"><span class="name">Expected Result:</span> Dress drapes evenly at hip.</div><div class="field"><span class="name">Post-conditions:</span> Dress undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-MB-06</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-010</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-010</div><div class="field"><span class="name">Objective:</span> Liquid Light opener — evening segment.</div><div class="field"><span class="name">Pre-conditions:</span> Model size 38; metallic heels; spotlight rig at 4 kW.</div><div class="field"><span class="name">Inputs:</span> Silver foil gown; bracelet.</div><div class="field"><span class="name">Expected Result:</span> Gown reflects spotlight at three points.</div><div class="field"><span class="name">Post-conditions:</span> Gown returned undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-LL-04</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    
+    <div class="card deck-od">
+      <div class="header"><span>OUTFIT DETAIL</span><span>SS26-011</span></div>
+      <div class="body">
+        
+        <div class="field"><span class="name">Identifier:</span> SS26-011</div><div class="field"><span class="name">Objective:</span> Open the Liquid Light segment.</div><div class="field"><span class="name">Pre-conditions:</span> "Model is in a good mood".</div><div class="field"><span class="name">Inputs:</span> Silver foil dress; bracelet.</div><div class="field"><span class="name">Expected Result:</span> Dress reflects spotlight at three points.</div><div class="field"><span class="name">Post-conditions:</span> Returned undamaged.</div><div class="field"><span class="name">Traceability ID:</span> REQ-FASHION-LL-03</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Case Specification</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-ri">
+      <div class="header"><span>RUNWAY INSTRUCTIONS</span><span>RI-01</span></div>
+      <div class="body">
+        <div class="title">Linear Walk</div>
+        <div class="field"><span class="name">Procedure ID:</span> RI-01</div><div class="field"><span class="name">Ordered steps:</span> Outfit 1 → Outfit 2 → Outfit 3, single file, 8 sec gap.</div><div class="field"><span class="name">Dependencies:</span> None.</div><div class="field"><span class="name">Resumption requirements:</span> Restart from Outfit 1 if interrupted.</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Procedure Specification</div>
+    </div>
+    
+    <div class="card deck-ri">
+      <div class="header"><span>RUNWAY INSTRUCTIONS</span><span>RI-02</span></div>
+      <div class="body">
+        <div class="title">Crescendo</div>
+        <div class="field"><span class="name">Procedure ID:</span> RI-02</div><div class="field"><span class="name">Ordered steps:</span> Lowest-impact Outfit → mid → signature piece last.</div><div class="field"><span class="name">Dependencies:</span> The signature piece may only walk after at least 2 prior Outfits walked cleanly.</div><div class="field"><span class="name">Resumption requirements:</span> If signature piece fails, do not retry — discard.</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Procedure Specification</div>
+    </div>
+    
+    <div class="card deck-ri">
+      <div class="header"><span>RUNWAY INSTRUCTIONS</span><span>RI-03</span></div>
+      <div class="body">
+        <div class="title">Paired Walk</div>
+        <div class="field"><span class="name">Procedure ID:</span> RI-03</div><div class="field"><span class="name">Ordered steps:</span> Outfits 1+2 walk together, then Outfit 3 solo, then Outfits 4+5 together.</div><div class="field"><span class="name">Dependencies:</span> Paired Outfits must share the same active Theme.</div><div class="field"><span class="name">Resumption requirements:</span> If a pair fails, both fail.</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Procedure Specification</div>
+    </div>
+    
+    <div class="card deck-ri">
+      <div class="header"><span>RUNWAY INSTRUCTIONS</span><span>RI-04</span></div>
+      <div class="body">
+        <div class="title">Mirror Sequence</div>
+        <div class="field"><span class="name">Procedure ID:</span> RI-04</div><div class="field"><span class="name">Ordered steps:</span> Outfit 1 walks, returns, then Outfit 2 walks the reverse path.</div><div class="field"><span class="name">Dependencies:</span> Outfit 2's Pre-conditions must mirror Outfit 1's (same model size).</div><div class="field"><span class="name">Resumption requirements:</span> If mirror condition broken, restart from Outfit 1.</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Procedure Specification</div>
+    </div>
+    
+    <div class="card deck-ri">
+      <div class="header"><span>RUNWAY INSTRUCTIONS</span><span>RI-05</span></div>
+      <div class="body">
+        <div class="title">Static Pose</div>
+        <div class="field"><span class="name">Procedure ID:</span> RI-05</div><div class="field"><span class="name">Ordered steps:</span> Each Outfit holds a 5-sec pose at the runway midpoint before continuing.</div><div class="field"><span class="name">Dependencies:</span> Pose duration depends on Outfit's structure — sculptural Outfits hold 8 sec.</div><div class="field"><span class="name">Resumption requirements:</span> Pose failure → restart that Outfit only.</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Procedure Specification</div>
+    </div>
+    
+    <div class="card deck-ri">
+      <div class="header"><span>RUNWAY INSTRUCTIONS</span><span>RI-06</span></div>
+      <div class="body">
+        <div class="title">Press-Friendly Loop</div>
+        <div class="field"><span class="name">Procedure ID:</span> RI-06</div><div class="field"><span class="name">Ordered steps:</span> Each Outfit walks, pauses 3 sec at photographer pit, then continues.</div><div class="field"><span class="name">Dependencies:</span> Each Outfit must have a unique selling point declared.</div><div class="field"><span class="name">Resumption requirements:</span> No restart — press already photographed.</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Procedure Specification</div>
+    </div>
+    
+    <div class="card deck-ri">
+      <div class="header"><span>RUNWAY INSTRUCTIONS</span><span>RI-07</span></div>
+      <div class="body">
+        <div class="title">Interleaved Themes</div>
+        <div class="field"><span class="name">Procedure ID:</span> RI-07</div><div class="field"><span class="name">Ordered steps:</span> Alternate between Themes (A, B, A, B, A).</div><div class="field"><span class="name">Dependencies:</span> Requires at least 2 active Themes on the mat.</div><div class="field"><span class="name">Resumption requirements:</span> Restart from the start of the failed Theme's segment.</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Procedure Specification</div>
+    </div>
+    
+    <div class="card deck-ri">
+      <div class="header"><span>RUNWAY INSTRUCTIONS</span><span>RI-08</span></div>
+      <div class="body">
+        <div class="title">Finale Burst</div>
+        <div class="field"><span class="name">Procedure ID:</span> RI-08</div><div class="field"><span class="name">Ordered steps:</span> All Outfits walk simultaneously for the closing tableau.</div><div class="field"><span class="name">Dependencies:</span> All Outfits must have non-overlapping spatial Pre-conditions.</div><div class="field"><span class="name">Resumption requirements:</span> No retry — tableau only happens once.</div>
+        
+        
+      </div>
+      <div class="footer">Maps to: Test Procedure Specification</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-01</span></div>
+      <div class="body">
+        <div class="title">Heel snapped on the runway</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-01</div><div class="field"><span class="name">Severity:</span> High</div><div class="field"><span class="name">Description:</span> Model's heel detached at second step.</div><div class="field"><span class="name">Status:</span> Open until Revised</div><div class="field"><span class="name">Impact:</span> Outfit fails; rehearsal halted.</div>
+        <div class="rule"><span class="name">Originating field to locate:</span> *Pre-conditions* on the Outfit Detail card. (e.g., wrong shoe size or unsuitable shoe declared.)</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-02</span></div>
+      <div class="body">
+        <div class="title">Zipper failure mid-walk</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-02</div><div class="field"><span class="name">Severity:</span> Critical</div><div class="field"><span class="name">Description:</span> Garment opened at side seam.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Outfit fails; possible spectator concern.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Inputs* — garment specified did not match the body measurements declared in Pre-conditions.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-03</span></div>
+      <div class="body">
+        <div class="title">Train caught on lighting rig</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-03</div><div class="field"><span class="name">Severity:</span> Medium</div><div class="field"><span class="name">Description:</span> Train length exceeded runway clearance.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Outfit walk cut short.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Post-conditions* / *Expected Result* — train length not specified or exceeds Roadmap resource constraints.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-04</span></div>
+      <div class="body">
+        <div class="title">Material visibly polyester under spotlight</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-04</div><div class="field"><span class="name">Severity:</span> Critical (Brand Identity violation)</div><div class="field"><span class="name">Description:</span> Garment material recognised as non-sustainable on camera.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Brand integrity damaged; full Outfit set at risk.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Inputs* — violates Brand Identity *Global rule*.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-05</span></div>
+      <div class="body">
+        <div class="title">Two outfits walked at the same slot</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-05</div><div class="field"><span class="name">Severity:</span> High</div><div class="field"><span class="name">Description:</span> Procedure error; two Outfits in same step.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Visual collision on runway.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Ordered steps* on the Runway Instructions card.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-06</span></div>
+      <div class="body">
+        <div class="title">Model could not perform required pose</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-06</div><div class="field"><span class="name">Severity:</span> Medium</div><div class="field"><span class="name">Description:</span> Pose required movement not anticipated by Pre-conditions.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Outfit fails the Static Pose procedure.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Pre-conditions* — physical capability constraint missing.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-07</span></div>
+      <div class="body">
+        <div class="title">Expected look not achieved (jury cannot agree)</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-07</div><div class="field"><span class="name">Severity:</span> High</div><div class="field"><span class="name">Description:</span> Expected Result was non-measurable; jury split.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Outfit cannot be scored.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Expected Result* — ambiguous, non-falsifiable.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-08</span></div>
+      <div class="body">
+        <div class="title">Outfit not traceable to Theme requirement</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-08</div><div class="field"><span class="name">Severity:</span> Medium</div><div class="field"><span class="name">Description:</span> No requirement ID matched in audit.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Coverage gap recorded in Rehearsal Summary.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Traceability ID* — missing or mismatched.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-09</span></div>
+      <div class="body">
+        <div class="title">Two Outfits share an identifier</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-09</div><div class="field"><span class="name">Severity:</span> High</div><div class="field"><span class="name">Description:</span> Identifier collision found at audit.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Backstage confusion; wrong Outfit dressed.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Identifier* — duplicate.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-10</span></div>
+      <div class="body">
+        <div class="title">Outfit is out of season scope</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-10</div><div class="field"><span class="name">Severity:</span> Medium</div><div class="field"><span class="name">Description:</span> Outfit is winter wear in a Resort Pop-Up roadmap.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Roadmap scope violated.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Objective* (or any field that places the Outfit out of the Roadmap's *Scope*).</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-11</span></div>
+      <div class="body">
+        <div class="title">Inputs incomplete — stylist improvised</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-11</div><div class="field"><span class="name">Severity:</span> High</div><div class="field"><span class="name">Description:</span> Outfit inputs underspecified; stylist filled in gaps off-card.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Outcome no longer attributable to specified case.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Inputs* — insufficient or non-specific.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-12</span></div>
+      <div class="body">
+        <div class="title">Post-show audit found contradiction</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-12</div><div class="field"><span class="name">Severity:</span> Medium</div><div class="field"><span class="name">Description:</span> Post-conditions contradict Expected Result.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Rehearsal Summary cannot be closed.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Post-conditions* — internally inconsistent with Expected Result.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-13</span></div>
+      <div class="body">
+        <div class="title">Resource cap exceeded</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-13</div><div class="field"><span class="name">Severity:</span> High</div><div class="field"><span class="name">Description:</span> Outfit used 3 accessories under a 1-accessory Roadmap.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Plan violated; reprimand from house director.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Resources* on the Runway Roadmap card; the Outfit's Inputs field is the proximate violator.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-14</span></div>
+      <div class="body">
+        <div class="title">Theme coverage gap detected at audit</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-14</div><div class="field"><span class="name">Severity:</span> Medium</div><div class="field"><span class="name">Description:</span> Theme required 3 distinct silhouettes; only 2 were exercised.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Coverage criteria not met.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Coverage criteria* on the Collection Theme card.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-15</span></div>
+      <div class="body">
+        <div class="title">Procedure dependency violated</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-15</div><div class="field"><span class="name">Severity:</span> High</div><div class="field"><span class="name">Description:</span> Signature Outfit walked before any predecessor cleared.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> Procedure invalidated.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Dependencies* on the Runway Instructions card.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    
+    <div class="card deck-wm">
+      <div class="header"><span>WARDROBE MALFUNCTION</span><span>WM-16</span></div>
+      <div class="body">
+        <div class="title">Brand Identity violation — public outcry</div>
+        <div class="field"><span class="name">Defect ID:</span> WM-16</div><div class="field"><span class="name">Severity:</span> Critical</div><div class="field"><span class="name">Description:</span> Outfit set photographed wearing material the brand publicly forbids.</div><div class="field"><span class="name">Status:</span> Open</div><div class="field"><span class="name">Impact:</span> All Outfits this round lose 2 points each.</div>
+        <div class="rule"><span class="name">Originating field:</span> *Global rule* on the Brand Identity card. Cascading defect.</div>
+        
+      </div>
+      <div class="footer">Maps to: Defect Report</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-01</span></div>
+      <div class="body">
+        <div class="title">Budget Cut</div>
+        
+        
+        <div class="prose">Discard 1 accessory from your active Roadmap's Resources field. Any Outfit that depended on it must be Revised or fail.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-02</span></div>
+      <div class="body">
+        <div class="title">Auditor Visit</div>
+        
+        
+        <div class="prose">All players must read their active Brand Identity card aloud. Any Outfit currently on a mat that violates it is immediately marked for Inspection.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-03</span></div>
+      <div class="body">
+        <div class="title">Press Embargo Lifted</div>
+        
+        
+        <div class="prose">Reveal one opponent's hand of Outfit Detail cards. They have 30 sec to swap one out before play resumes.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-04</span></div>
+      <div class="body">
+        <div class="title">Schedule Crunch</div>
+        
+        
+        <div class="prose">Your turn is shortened to 90 sec total. If you fail to complete all 5 phases, any unstarted phase is treated as a hierarchy violation.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-05</span></div>
+      <div class="body">
+        <div class="title">Model No-Show</div>
+        
+        
+        <div class="prose">Discard one Outfit from your mat. You may replace it with one from your hand at no penalty if it satisfies the active Theme.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-06</span></div>
+      <div class="body">
+        <div class="title">Last-Minute Sponsor</div>
+        
+        
+        <div class="prose">Add 1 accessory allowance to your Roadmap. You may use it on a single Outfit this turn.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-07</span></div>
+      <div class="body">
+        <div class="title">Critic in the Front Row</div>
+        
+        
+        <div class="prose">During Inspection this turn, opponents have 90 sec instead of 60 sec, and Inspection Points are doubled.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-08</span></div>
+      <div class="body">
+        <div class="title">Wardrobe Mix-Up</div>
+        
+        
+        <div class="prose">Swap one Outfit Detail card with the player on your left, hand-to-hand, before Specify phase begins.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-09</span></div>
+      <div class="body">
+        <div class="title">Power Failure on Lighting Rig</div>
+        
+        
+        <div class="prose">Any Outfit whose Expected Result depends on lighting (e.g., Liquid Light theme) automatically fails this turn unless explicitly Revised.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    </div><div class="page">
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-10</span></div>
+      <div class="body">
+        <div class="title">Fitter on Strike</div>
+        
+        
+        <div class="prose">You may not Revise this turn. Any flaw caught during Inspection becomes an automatic Wardrobe Malfunction.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-11</span></div>
+      <div class="body">
+        <div class="title">Surprise Theme Pivot</div>
+        
+        
+        <div class="prose">Discard your active Collection Theme and draw a new one. All Outfits already on your mat must be re-checked against the new Theme.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    
+    <div class="card deck-ev">
+      <div class="header"><span>EVENT / ACTION</span><span>EV-12</span></div>
+      <div class="body">
+        <div class="title">Regulatory Audit</div>
+        
+        
+        <div class="prose">For one round, any Outfit missing a Traceability ID is automatically marked as a defect, regardless of execution roll.</div>
+      </div>
+      <div class="footer">Maps to: Risk / Environment Factor</div>
+    </div>
+    </div>
+</body>
+</html>

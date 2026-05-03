@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Runway Ready — Studio Mat</title>
+<style>
+@page { size: A4 landscape; margin: 8mm; }
+body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; margin: 0; color: #222; }
+.mat {
+  width: 281mm; height: 197mm;
+  border: 0.6mm solid #333;
+  border-radius: 4mm;
+  padding: 5mm 7mm;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto auto auto auto auto auto;
+  gap: 3mm;
+  background: #fafafa;
+}
+.title { font-size: 18pt; font-weight: 700; margin: 0; }
+.sub { font-size: 9pt; color: #666; margin: 0 0 2mm 0; }
+.zone {
+  border: 0.3mm dashed #888;
+  border-radius: 2mm;
+  padding: 3mm 4mm;
+  background: white;
+  position: relative;
+}
+.zone .label {
+  position: absolute; top: 2mm; right: 4mm;
+  font-size: 7pt; color: #888; font-style: italic;
+}
+.zone .name { font-size: 11pt; font-weight: 700; }
+.zone .iso { font-size: 8pt; color: #555; }
+.zone.outfits { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; padding: 6mm 4mm; }
+.zone.outfits .slot { border: 0.3mm dashed #aaa; border-radius: 2mm; min-height: 16mm; padding: 2mm; font-size: 7pt; color: #888; text-align: center; }
+.summary {
+  border: 0.3mm solid #888;
+  padding: 3mm 4mm;
+}
+.summary table { width: 100%; border-collapse: collapse; font-size: 8pt; }
+.summary th, .summary td { border-bottom: 0.2mm solid #ccc; padding: 1.5mm 2mm; text-align: left; }
+.summary th { background: #f0f0f0; }
+.zone-bi { border-left: 2mm solid #D81E5B; }
+.zone-rr { border-left: 2mm solid #3B3F8F; }
+.zone-ct { border-left: 2mm solid #6FAE6E; }
+.zone-od { border-left: 2mm solid #9D8BD9; }
+.zone-ri { border-left: 2mm solid #5F6B7A; }
+</style>
+</head>
+<body>
+<div class="mat">
+  <div>
+    <div class="title">RUNWAY READY — Studio Mat</div>
+    <div class="sub">Player: ____________________________   ·   ISO/IEC 29119-3 Test Documentation Hierarchy</div>
+  </div>
+
+  <div class="zone zone-bi">
+    <div class="label">Zone 1</div>
+    <div class="name">BRAND IDENTITY</div>
+    <div class="iso">Organizational Test Strategy · place 1 card here at game start</div>
+  </div>
+
+  <div class="zone zone-rr">
+    <div class="label">Zone 2 — Phase 1: PLAN</div>
+    <div class="name">RUNWAY ROADMAP</div>
+    <div class="iso">Project Test Plan · 1 active per round</div>
+  </div>
+
+  <div class="zone zone-ct">
+    <div class="label">Zone 3 — Phase 2: DESIGN</div>
+    <div class="name">COLLECTION THEME</div>
+    <div class="iso">Test Design Specification · 1 active per Roadmap</div>
+  </div>
+
+  <div class="zone zone-od outfits">
+    <div style="grid-column: 1 / -1;">
+      <div class="label">Zone 4 — Phase 3: SPECIFY</div>
+      <div class="name">OUTFIT DETAIL CARDS</div>
+      <div class="iso">Test Case Specification · place ≥ 3 cards before Rehearsal</div>
+    </div>
+    <div class="slot">Outfit Slot 1</div>
+    <div class="slot">Outfit Slot 2</div>
+    <div class="slot">Outfit Slot 3</div>
+    <div class="slot">Outfit Slot 4 / 5 (optional)</div>
+  </div>
+
+  <div class="zone zone-ri">
+    <div class="label">Zone 5 — Phase 4: PROCEDURE</div>
+    <div class="name">RUNWAY INSTRUCTIONS</div>
+    <div class="iso">Test Procedure Specification · declares walk order &amp; dependencies</div>
+  </div>
+
+  <div class="summary">
+    <strong style="font-size: 10pt;">REHEARSAL SUMMARY</strong> &nbsp;
+    <span style="font-size: 8pt; color: #666;">Phase 5 · Test Status / Completion Report · fill 1 row per Outfit at end of round</span>
+    <table>
+      <thead><tr><th style="width: 25%;">Outfit ID</th><th style="width: 15%;">Pass / Fail</th><th>Originating Doc Field (if Fail)</th></tr></thead>
+      <tbody>
+        <tr><td>&nbsp;</td><td></td><td></td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td></tr>
+        <tr><td>&nbsp;</td><td></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>

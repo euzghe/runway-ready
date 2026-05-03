@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<title>Runway Ready — Playtester Handout</title>
+<style>
+@page { size: A4; margin: 14mm; }
+body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #222; font-size: 10pt; line-height: 1.4; max-width: 180mm; margin: 0 auto; }
+h1 { font-size: 18pt; border-bottom: 0.6mm solid #3B3F8F; padding-bottom: 2mm; }
+h2 { font-size: 13pt; color: #3B3F8F; margin-top: 8mm; }
+h3 { font-size: 11pt; }
+table { width: 100%; border-collapse: collapse; margin: 3mm 0; font-size: 9pt; }
+th, td { border: 0.2mm solid #999; padding: 1.5mm 2mm; text-align: left; vertical-align: top; }
+th { background: #eee; }
+ul { padding-left: 5mm; }
+code { background: #f3f3f3; padding: 0 1mm; border-radius: 1mm; }
+hr { border: none; border-top: 0.2mm solid #999; margin: 6mm 0; }
+blockquote { border-left: 2mm solid #6FAE6E; padding-left: 4mm; margin-left: 0; color: #444; }
+.section { page-break-after: always; }
+.section:last-child { page-break-after: auto; }
+</style>
+</head><body><div class="section"><h1>Runway Ready — Quick Reference (1 page)</h1>
+
+<h2>Goal</h2>
+<p>Send outfits down the runway by producing <strong>valid ISO/IEC 29119-3 documentation</strong> at every layer. The player whose paper trail survives execution wins.</p>
+
+<h2>Setup</h2>
+<p>1 Brand Identity face-up · Hand of 5 Outfits + 1 Roadmap + 1 Theme · Wardrobe Malfunction & Event decks in centre.</p>
+
+<h2>Turn — 5 phases, in order</h2>
+
+<table>
+<tr><th>#</th><th>Phase</th><th>ISO doc</th><th>Required action</th></tr>
+<tr><td>1</td><td>Plan</td><td>Project Test Plan</td><td>Place Runway Roadmap (Scope / Schedule / Resources)</td></tr>
+<tr><td>2</td><td>Design</td><td>Test Design Specification</td><td>Place Collection Theme on Roadmap</td></tr>
+<tr><td>3</td><td>Specify</td><td>Test Case Specification</td><td>Play ≥3 Outfit Detail cards under the Theme</td></tr>
+<tr><td>4</td><td>Procedure</td><td>Test Procedure Spec</td><td>Place Runway Instructions (sequence + dependencies)</td></tr>
+<tr><td>5</td><td>Rehearsal</td><td>Execution + Defects</td><td>Read aloud → Inspection 60 s → Roll d6 per outfit → Score</td></tr>
+</table>
+
+<p><strong>You may not skip a phase.</strong> Skipping is the misconception this game refuses to let you have.</p>
+
+<h2>Rehearsal sub-steps</h2>
+
+<p>1. Read each Outfit's <em>Pre-conditions</em> and <em>Expected Result</em> aloud.</p>
+<p>2. Opponents have <strong>60 seconds</strong> to call out a flaw → +2 to the spotter, you must Revise.</p>
+<p>3. Roll d6 per Outfit:</p>
+<ul>
+<li>1–2 → Wardrobe Malfunction (resolve via Traceability).</li>
+<li>3–6 → Walks cleanly <strong>unless an unflagged planted flaw exists</strong> — then it always fails.</li>
+<p>4. Fill your Rehearsal Summary pad.</p>
+</ul>
+
+<h2>Resolving a Wardrobe Malfunction</h2>
+
+<p>1. The card names the <strong>originating ISO field</strong> (e.g., <em>Pre-conditions</em>).</p>
+<p>2. Find the doc on your mat at fault.</p>
+<p>3. <strong>Say out loud</strong> what was wrong with that field.</p>
+<p>4. Discard / lose 2 pts. Cannot identify in 30 s → −4 pts and Carry-Over Defect.</p>
+
+<h2>Scoring (per round)</h2>
+
+<table>
+<tr><th>Action</th><th>Pts</th></tr>
+<tr><td>Outfit walks cleanly</td><td>+3</td></tr>
+<tr><td>Procedure dependency held</td><td>+1</td></tr>
+<tr><td>Named originating doc field correctly</td><td>+2</td></tr>
+<tr><td>Spotted a rival's planted flaw (Inspection)</td><td>+2</td></tr>
+<tr><td>Used a Revision</td><td>−1</td></tr>
+<tr><td>Unresolved Wardrobe Malfunction</td><td>−4</td></tr>
+<tr><td>Out-of-hierarchy play attempt</td><td>−2</td></tr>
+</table>
+
+<h2>Lite (10-min demo) variant</h2>
+
+<p>1 round · exactly 3 Outfits per player · skip Events · merge Procedure into Specify.</p>
+
+<h2>Memory hooks (the only fashion-flavour bit you need)</h2>
+
+<table>
+<tr><th>Card</th><th>Brain hook</th><th>ISO doc</th></tr>
+<tr><td>Brand Identity</td><td>"the house style — never breaks"</td><td>Organizational Test Strategy</td></tr>
+<tr><td>Runway Roadmap</td><td>"this season's plan"</td><td>Project Test Plan</td></tr>
+<tr><td>Collection Theme</td><td>"this collection's idea"</td><td>Test Design Specification</td></tr>
+<tr><td>Outfit Detail</td><td>"one outfit on one model"</td><td>Test Case Specification</td></tr>
+<tr><td>Runway Instructions</td><td>"who walks when"</td><td>Test Procedure Specification</td></tr>
+<tr><td>Wardrobe Malfunction</td><td>"the broken zipper"</td><td>Defect Report</td></tr>
+<tr><td>Rehearsal Summary</td><td>"post-show recap"</td><td>Test Status / Completion Rep.</td></tr>
+</table></div><div class="section"><h1>Playtester Feedback Form</h1>
+
+<blockquote>Fill this in immediately after the 10-minute session. Be specific — "it was fun" doesn't help us improve. "I missed the Pre-condition flaw on OD-F-02 because I didn't realise size 36 vs size 40 mattered" does.</blockquote>
+
+<hr>
+
+<h2>Section A — Did the game teach you something?</h2>
+
+<p><strong>A1.</strong> Before this game, could you confidently distinguish between an <em>Organizational Test Strategy</em> and a <em>Project Test Plan</em>?</p>
+
+<ul>
+<li>[ ] Yes</li>
+<li>[ ] Partially</li>
+<li>[ ] No</li>
+</ul>
+
+<p><strong>A2.</strong> Can you do so <em>now</em>?</p>
+
+<ul>
+<li>[ ] Yes</li>
+<li>[ ] Partially</li>
+<li>[ ] No</li>
+</ul>
+
+<p><strong>A3.</strong> Name <strong>one</strong> ISO/IEC 29119-3 document field whose purpose became clearer to you because of a card you played:</p>
+
+<pre>
+Field name: __________________________
+Why it became clearer:
+______________________________________________________________________
+______________________________________________________________________
+</pre>
+
+<p><strong>A4.</strong> When a Wardrobe Malfunction was drawn against you, were you able to name the originating doc field within 30 seconds?</p>
+
+<ul>
+<li>[ ] Always</li>
+<li>[ ] Sometimes</li>
+<li>[ ] Rarely</li>
+<li>[ ] Never</li>
+</ul>
+
+<p>If "Rarely" or "Never": which field gave you the most trouble?</p>
+<pre>
+______________________________________________________________________
+</pre>
+
+<h2>Section B — Did the game expose a misconception you held?</h2>
+
+<p><strong>B1.</strong> Did you, during the game, attempt a play that the rules / opponents blocked because of the documentation hierarchy (e.g., trying to play an Outfit before a Theme)?</p>
+
+<ul>
+<li>[ ] Yes</li>
+<li>[ ] No</li>
+</ul>
+
+<p>If yes, what did you learn from being blocked?</p>
+<pre>
+______________________________________________________________________
+______________________________________________________________________
+</pre>
+
+<p><strong>B2.</strong> During the Inspection sub-step, did you spot a planted flaw on a rival's Outfit that you wouldn't have spotted before this game?</p>
+
+<ul>
+<li>[ ] Yes</li>
+<li>[ ] No</li>
+</ul>
+
+<p>If yes, what was the flaw?</p>
+<pre>
+______________________________________________________________________
+</pre>
+
+<p><strong>B3.</strong> Was there a moment where a defect that <em>looked</em> like bad luck was actually a documentation flaw? Describe it.</p>
+
+<pre>
+______________________________________________________________________
+______________________________________________________________________
+</pre>
+
+<h2>Section C — Game mechanics</h2>
+
+<p><strong>C1.</strong> Were the rules clear enough to play within 5 minutes of opening the box?</p>
+
+<ul>
+<li>[ ] Yes</li>
+<li>[ ] Mostly — except: ______________________________________________</li>
+<li>[ ] No — the unclear bits were: ____________________________________</li>
+</ul>
+
+<p><strong>C2.</strong> Did the 10-minute Lite variant feel rushed, just right, or slow?</p>
+
+<ul>
+<li>[ ] Rushed</li>
+<li>[ ] Just right</li>
+<li>[ ] Slow</li>
+</ul>
+
+<p><strong>C3.</strong> Was any phase confusing or unnecessary?</p>
+
+<ul>
+<li>[ ] Phase 1 — Plan</li>
+<li>[ ] Phase 2 — Design</li>
+<li>[ ] Phase 3 — Specify</li>
+<li>[ ] Phase 4 — Procedure</li>
+<li>[ ] Phase 5 — Rehearsal</li>
+</ul>
+
+<p>Why?</p>
+<pre>
+______________________________________________________________________
+</pre>
+
+<h2>Section D — Three open questions (verbal debrief, ≤ 30 seconds each)</h2>
+
+<p><strong>D1.</strong> What did the game make <em>visible</em> that you couldn't see by reading the standard?</p>
+
+<pre>
+______________________________________________________________________
+______________________________________________________________________
+</pre>
+
+<p><strong>D2.</strong> If you had to teach this standard to a friend, would you use this game?</p>
+
+<ul>
+<li>[ ] Definitely</li>
+<li>[ ] Maybe</li>
+<li>[ ] No</li>
+</ul>
+
+<p>Why?</p>
+<pre>
+______________________________________________________________________
+</pre>
+
+<p><strong>D3.</strong> What is the single biggest improvement we should make for Week 4?</p>
+
+<pre>
+______________________________________________________________________
+______________________________________________________________________
+</pre>
+
+<hr>
+
+<p><em>Thank you. Your answers go directly into the Week 4 improvement plan.</em></p></div></body></html>
