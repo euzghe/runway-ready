@@ -1,0 +1,2221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1200">
+<title>Runway Ready — ISO/IEC 29119-3 in play</title>
+<style>
+/* ======================================================================
+   RUNWAY READY — single-file web prototype
+   Editorial fashion design palette · scrollable layout · HCI-considered
+   No external dependencies. Open this file directly in a browser.
+   ====================================================================== */
+
+:root {
+  /* Editorial palette — drawn from print fashion magazines */
+  --bg:           #f5f0e8;   /* warm cream paper */
+  --bg-deep:      #efe8db;   /* slightly darker cream for sections */
+  --surface:      #ffffff;
+  --ink:          #1a1820;   /* deep ink, not pure black */
+  --ink-soft:     #4a4654;
+  --ink-fade:     #8a8694;
+  --rule:         #d8d2c4;   /* dividers / borders */
+  --gold:         #b8924a;   /* champagne gold accent */
+  --gold-soft:    #f0e4cc;
+  --champagne:    #faf3e3;
+
+  --c-bi:         #8b2848;   /* deep rose — Brand Identity (Organizational Strategy) */
+  --c-rr:         #1f3a5f;   /* deep navy — Roadmap (Project Plan) */
+  --c-ct:         #5b7a4f;   /* moss — Theme (Design Spec) */
+  --c-od:         #6e5d96;   /* lavender — Outfit Detail (Test Case) */
+  --c-wm:         #8a2727;   /* burgundy — Wardrobe Malfunction (Defect) */
+  --c-pass:       #4a7c59;
+  --c-fail:       #8b3a3a;
+
+  --shadow-1:     0 1px 2px rgba(20,20,30,0.04);
+  --shadow-2:     0 2px 8px rgba(20,20,30,0.06);
+  --shadow-3:     0 6px 16px rgba(20,20,30,0.10);
+  --shadow-modal: 0 20px 60px rgba(20,20,30,0.30);
+
+  --r-sm: 4px;
+  --r-md: 8px;
+  --r-lg: 12px;
+
+  --serif: 'Bodoni 72', 'Didot', 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --sans:  -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono:  ui-monospace, 'SF Mono', 'Menlo', monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { height: 100%; }
+body {
+  min-height: 100%;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--ink);
+  background: var(--bg);
+  overflow-x: hidden;          /* allow vertical scroll, not horizontal */
+  -webkit-font-smoothing: antialiased;
+}
+
+button { font: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+button:disabled { cursor: not-allowed; opacity: 0.4; }
+button:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+a { color: var(--gold); }
+em { font-style: italic; color: var(--ink-soft); }
+
+/* Screens use display:none until activated. Active screens flow naturally
+   so the page can scroll if content exceeds the viewport. */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ======================================================================
+   WELCOME SCREEN
+   ====================================================================== */
+#screen-welcome.active {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 60px 24px;
+  background:
+    radial-gradient(circle at 10% 0%, rgba(184,146,74,0.08) 0%, transparent 40%),
+    radial-gradient(circle at 90% 100%, rgba(139,40,72,0.10) 0%, transparent 50%),
+    linear-gradient(180deg, #14121a 0%, #1f1d28 100%);
+  color: #f5f0e8;
+}
+.welcome-card {
+  background: rgba(245,240,232,0.04);
+  border: 1px solid rgba(245,240,232,0.10);
+  border-radius: var(--r-lg);
+  padding: 56px 64px;
+  max-width: 640px;
+  width: 100%;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+.welcome-card::before {
+  content: '';
+  position: absolute;
+  top: 24px; left: 24px; right: 24px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.4;
+}
+.welcome-eyebrow {
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 12px;
+}
+.welcome-title {
+  font-family: var(--serif);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  line-height: 0.95;
+  margin-bottom: 16px;
+}
+.welcome-title em { color: var(--gold); font-style: italic; }
+.welcome-sub {
+  font-size: 15px;
+  line-height: 1.6;
+  opacity: 0.75;
+  margin-bottom: 36px;
+  max-width: 480px;
+}
+.welcome-sub strong { color: var(--gold); font-weight: 500; }
+.welcome-form { display: grid; gap: 20px; }
+.welcome-form label {
+  font-family: var(--sans);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  opacity: 0.55;
+  margin-bottom: 8px;
+  display: block;
+}
+.welcome-radios { display: flex; gap: 10px; }
+.welcome-radios button {
+  flex: 1;
+  padding: 14px;
+  border: 1px solid rgba(245,240,232,0.18);
+  border-radius: var(--r-sm);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  transition: all 0.18s ease;
+  background: rgba(245,240,232,0.03);
+}
+.welcome-radios button:hover { border-color: rgba(245,240,232,0.4); }
+.welcome-radios button.selected {
+  border-color: var(--gold);
+  background: rgba(184,146,74,0.12);
+  color: var(--gold);
+}
+.welcome-names { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.welcome-names input {
+  padding: 12px 14px;
+  font-size: 14px;
+  font-family: var(--sans);
+  border-radius: var(--r-sm);
+  border: 1px solid rgba(245,240,232,0.18);
+  background: rgba(245,240,232,0.04);
+  color: #f5f0e8;
+  transition: border-color 0.15s;
+}
+.welcome-names input::placeholder { color: rgba(245,240,232,0.35); }
+.welcome-names input:focus { outline: none; border-color: var(--gold); }
+.welcome-start {
+  margin-top: 28px;
+  padding: 18px;
+  font-family: var(--sans);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: #1a1820;
+  border-radius: var(--r-sm);
+  transition: background 0.15s, transform 0.1s;
+}
+.welcome-start:hover:not(:disabled) { background: #d4ad5e; }
+.welcome-start:active { transform: translateY(1px); }
+.welcome-meta {
+  margin-top: 36px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(245,240,232,0.08);
+  font-size: 11px;
+  letter-spacing: 0.3px;
+  opacity: 0.5;
+  line-height: 1.7;
+}
+
+/* ======================================================================
+   GAME SCREEN — sticky header + sticky sidebar + scrollable main
+   ====================================================================== */
+#screen-game.active {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header header"
+    "main   sidebar";
+  min-height: 100vh;
+}
+
+.gh-header {
+  grid-area: header;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 24px;
+  padding: 14px 32px;
+  background: #1a1820;
+  color: #f5f0e8;
+  border-bottom: 1px solid rgba(245,240,232,0.08);
+}
+.gh-brand {
+  font-family: var(--serif);
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+.gh-brand em { font-style: italic; opacity: 0.7; margin-left: 4px; font-size: 14px; }
+.gh-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.gh-phase {
+  font-family: var(--sans);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.gh-active {
+  font-family: var(--serif);
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+.gh-active .who { color: var(--gold); font-style: italic; }
+.gh-timer {
+  font-family: var(--mono);
+  font-size: 18px;
+  font-weight: 600;
+  min-width: 64px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--gold);
+}
+.gh-timer.warn { color: #e57373; animation: pulse 1s infinite; }
+@keyframes pulse { 50% { opacity: 0.5; } }
+
+.main-col {
+  grid-area: main;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.side-col {
+  grid-area: sidebar;
+  background: #1a1820;
+  color: #f5f0e8;
+  padding: 24px 20px;
+  position: sticky;
+  top: 60px;
+  align-self: start;
+  max-height: calc(100vh - 60px);
+  overflow-y: auto;
+  border-left: 1px solid rgba(245,240,232,0.06);
+}
+
+/* ── Active player mat ──────────────────────────────────────────── */
+.mat {
+  padding: 28px 32px 16px 32px;
+  background: var(--bg);
+}
+.mat-section-label {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--ink-fade);
+  margin-bottom: 12px;
+}
+.mat-row {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 14px;
+  align-items: stretch;
+}
+.zone {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  min-height: 110px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-shadow: var(--shadow-1);
+}
+.zone-empty {
+  color: var(--ink-fade);
+  font-size: 12px;
+  font-style: italic;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  text-align: center;
+  padding: 20px 8px;
+}
+.zone .zone-label {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ink-fade);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.zone-bi { border-top: 3px solid var(--c-bi);  flex: 0 0 240px; }
+.zone-rr { border-top: 3px solid var(--c-rr);  flex: 0 0 280px; }
+.zone-ct { border-top: 3px solid var(--c-ct);  flex: 0 0 260px; }
+.zone-od { border-top: 3px solid var(--c-od); }
+
+/* Highlight the next-action zone */
+.zone.awaiting {
+  border-color: var(--gold);
+  background: linear-gradient(180deg, var(--champagne) 0%, var(--surface) 30%);
+  animation: gentle-glow 2.4s ease-in-out infinite;
+}
+@keyframes gentle-glow { 50% { box-shadow: 0 0 0 3px rgba(184,146,74,0.18); } }
+
+/* ── Cards ──────────────────────────────────────────────────────── */
+.card {
+  background: var(--surface);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  font-size: 12px;
+  line-height: 1.45;
+  box-shadow: var(--shadow-1);
+  border: 1px solid var(--rule);
+  position: relative;
+}
+.card-stripe {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--r-md) var(--r-md) 0 0;
+}
+.card-bi .card-stripe { background: var(--c-bi); }
+.card-rr .card-stripe { background: var(--c-rr); }
+.card-ct .card-stripe { background: var(--c-ct); }
+.card-od .card-stripe { background: var(--c-od); }
+.card-wm .card-stripe { background: var(--c-wm); }
+.card-wm { background: #fdf6f3; }
+
+.card-deck-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-fade);
+  margin-bottom: 4px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+.card-bi .card-deck-label { color: var(--c-bi); }
+.card-rr .card-deck-label { color: var(--c-rr); }
+.card-ct .card-deck-label { color: var(--c-ct); }
+.card-od .card-deck-label { color: var(--c-od); }
+.card-wm .card-deck-label { color: var(--c-wm); }
+
+.card-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.2;
+  margin-bottom: 10px;
+  color: var(--ink);
+  letter-spacing: 0.2px;
+}
+.card-od .card-title { font-family: var(--mono); font-size: 13px; letter-spacing: 0.5px; }
+
+.card .field { margin-bottom: 4px; padding: 1px 0; }
+.card .field .name {
+  font-style: italic;
+  color: var(--ink-fade);
+  font-size: 11px;
+  margin-right: 4px;
+}
+.card-rule {
+  background: var(--gold-soft);
+  border-left: 3px solid var(--gold);
+  padding: 8px 10px;
+  margin-top: 10px;
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  font-size: 11px;
+  line-height: 1.45;
+}
+.card-rule b { color: #7a5e2c; font-weight: 600; }
+
+.iso-tag {
+  font-size: 9px;
+  color: var(--ink-fade);
+  margin-top: 10px;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+  font-style: italic;
+  letter-spacing: 0.3px;
+  text-align: center;
+}
+
+/* In-hand cards: tighter and clickable */
+.card.in-hand {
+  width: 200px;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s;
+  border-color: var(--rule);
+}
+.card.in-hand:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-3);
+  border-color: var(--gold);
+}
+.card.in-hand.disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+  filter: saturate(0.6);
+}
+.card.in-hand.disabled:hover {
+  transform: none;
+  box-shadow: var(--shadow-1);
+  border-color: var(--rule);
+}
+.card.played { width: 100%; }
+
+/* ── Action bar (between mat and hand) ─────────────────────────── */
+.action-bar {
+  padding: 14px 32px;
+  background: var(--bg);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  min-height: 56px;
+}
+.action-text { font-size: 13px; color: var(--ink-soft); flex: 1; }
+.action-text b { color: var(--ink); font-weight: 600; }
+.action-text .phase-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-soft);
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  margin-right: 8px;
+  font-weight: 600;
+}
+.action-btn {
+  padding: 12px 24px;
+  background: var(--ink);
+  color: #f5f0e8;
+  border-radius: var(--r-sm);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  transition: background 0.15s, transform 0.08s;
+}
+.action-btn:disabled { background: var(--ink-fade); }
+.action-btn:hover:not(:disabled) { background: #2a2632; }
+.action-btn:active:not(:disabled) { transform: translateY(1px); }
+
+/* ── Hand ────────────────────────────────────────────────────── */
+.hand {
+  padding: 24px 32px 32px 32px;
+  background: var(--bg-deep);
+}
+.hand-section { margin-bottom: 20px; }
+.hand-section:last-child { margin-bottom: 0; }
+.hand-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--ink-fade);
+  margin-bottom: 10px;
+  font-weight: 600;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--rule);
+}
+.hand-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  align-items: stretch;
+}
+
+/* ── Log ─────────────────────────────────────────────────────── */
+.log {
+  padding: 12px 32px;
+  background: #1a1820;
+  color: #c9c4b8;
+  font-size: 11px;
+  font-family: var(--mono);
+  border-top: 1px solid rgba(245,240,232,0.06);
+  max-height: 100px;
+  overflow-y: auto;
+}
+.log-entry { padding: 2px 0; opacity: 0.5; letter-spacing: 0.2px; }
+.log-entry:last-child { opacity: 1; color: var(--gold); }
+
+/* ── Scoreboard sidebar ──────────────────────────────────────── */
+.sb-title {
+  font-family: var(--sans);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(245,240,232,0.10);
+}
+.sb-player {
+  background: rgba(245,240,232,0.04);
+  border-radius: var(--r-md);
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  border-left: 3px solid transparent;
+  transition: all 0.2s;
+}
+.sb-player.active {
+  border-left-color: var(--gold);
+  background: rgba(184,146,74,0.10);
+}
+.sb-name {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 17px;
+  letter-spacing: 0.3px;
+}
+.sb-bi {
+  font-size: 11px;
+  opacity: 0.55;
+  margin-top: 2px;
+  letter-spacing: 0.3px;
+  font-style: italic;
+}
+.sb-score {
+  font-family: var(--mono);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--gold);
+  margin-top: 8px;
+  font-variant-numeric: tabular-nums;
+}
+.sb-score-unit {
+  font-size: 11px;
+  color: var(--ink-fade);
+  margin-left: 4px;
+  font-family: var(--sans);
+}
+
+/* ======================================================================
+   MODALS — editorial overlay
+   ====================================================================== */
+.modal-veil {
+  position: fixed;
+  inset: 0;
+  background: rgba(20,18,28,0.82);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  z-index: 200;
+  padding: 40px 20px;
+  overflow-y: auto;
+}
+.modal {
+  background: var(--bg);
+  border-radius: var(--r-lg);
+  max-width: 1080px;
+  width: 100%;
+  padding: 36px 40px;
+  box-shadow: var(--shadow-modal);
+  margin: auto;
+  position: relative;
+}
+.modal::before {
+  content: '';
+  position: absolute;
+  top: 16px; left: 40px; right: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.35;
+}
+.modal-eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.modal h2 {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 8px;
+  color: var(--ink);
+  letter-spacing: -0.3px;
+}
+.modal .modal-sub {
+  color: var(--ink-soft);
+  font-size: 14px;
+  line-height: 1.55;
+  margin-bottom: 24px;
+  max-width: 720px;
+}
+.modal-actions {
+  margin-top: 28px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* ── Inspection modal ────────────────────────────────────────── */
+.insp-flaggers {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 16px 20px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--r-md);
+  align-items: center;
+  flex-wrap: wrap;
+}
+.insp-flaggers .label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  color: var(--ink-fade);
+  font-weight: 600;
+  margin-right: 4px;
+}
+.insp-flagger {
+  padding: 10px 18px;
+  border: 1px solid var(--rule);
+  border-radius: var(--r-sm);
+  font-weight: 500;
+  font-size: 13px;
+  background: var(--surface);
+  color: var(--ink);
+  transition: all 0.15s;
+}
+.insp-flagger:hover:not(:disabled) { border-color: var(--ink); }
+.insp-flagger.active {
+  background: var(--ink);
+  color: var(--gold);
+  border-color: var(--ink);
+  box-shadow: var(--shadow-2);
+}
+.insp-flagger:disabled { opacity: 0.3; }
+.insp-flagger small { display: block; font-size: 9px; opacity: 0.6; letter-spacing: 1.5px; text-transform: uppercase; margin-top: 2px; font-weight: 600; }
+
+.insp-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.insp-card {
+  background: var(--surface);
+  border-radius: var(--r-md);
+  padding: 18px;
+  border-top: 3px solid var(--c-od);
+  box-shadow: var(--shadow-2);
+}
+.insp-card .card-title {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.insp-card .card-deck-label { color: var(--c-od); margin-bottom: 12px; }
+.insp-card .field {
+  padding: 8px 10px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background 0.12s;
+  margin: 3px 0;
+  border-left: 2px solid transparent;
+}
+.insp-card .field:hover { background: var(--gold-soft); border-left-color: var(--gold); }
+.insp-card .field.flagged-correct {
+  background: #e8f1ea;
+  border-left-color: var(--c-pass);
+  cursor: default;
+}
+.insp-card .field.flagged-correct::after {
+  content: ' ✓ caught';
+  font-size: 10px;
+  color: var(--c-pass);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.insp-card .field.flagged-wrong {
+  background: #f3e2e2;
+  border-left-color: var(--c-fail);
+  cursor: default;
+}
+.insp-card .field.flagged-wrong::after {
+  content: ' ✗ no flaw';
+  font-size: 10px;
+  color: var(--c-fail);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.insp-card .field.disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.insp-card .field.disabled:hover {
+  background: transparent;
+  border-left-color: transparent;
+}
+
+/* ── Execution modal ─────────────────────────────────────────── */
+.exec-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  margin-top: 16px;
+}
+.exec-cell {
+  background: var(--surface);
+  border-radius: var(--r-md);
+  padding: 24px 20px;
+  text-align: center;
+  border-top: 3px solid var(--c-od);
+  box-shadow: var(--shadow-2);
+}
+.exec-cell .exec-id {
+  font-family: var(--mono);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+  margin-bottom: 12px;
+  color: var(--ink-soft);
+}
+.exec-die {
+  font-family: var(--serif);
+  font-size: 64px;
+  font-weight: 400;
+  line-height: 1;
+  margin: 12px 0;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.exec-die-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-fade);
+  margin-bottom: -6px;
+}
+.exec-result {
+  font-weight: 600;
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border-radius: var(--r-sm);
+  display: inline-block;
+}
+.exec-result.pass {
+  background: #e8f1ea;
+  color: var(--c-pass);
+}
+.exec-result.fail {
+  background: #f3e2e2;
+  color: var(--c-fail);
+}
+.exec-note {
+  font-size: 11px;
+  color: var(--ink-fade);
+  margin-top: 10px;
+  min-height: 14px;
+  font-style: italic;
+}
+
+/* ── Resolution modal ────────────────────────────────────────── */
+.res-malf {
+  background: #fdf6f3;
+  border: 1px solid #e8c5c5;
+  border-left: 4px solid var(--c-wm);
+  padding: 20px 24px;
+  border-radius: var(--r-md);
+  margin-bottom: 20px;
+}
+.res-malf .res-malf-id {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  color: var(--c-wm);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.res-malf .res-malf-desc {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  margin: 8px 0;
+  line-height: 1.25;
+  color: var(--ink);
+}
+.res-malf .res-malf-meta {
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-style: italic;
+}
+.res-prompt {
+  font-size: 14px;
+  margin-bottom: 16px;
+  padding: 14px 18px;
+  background: var(--gold-soft);
+  border-radius: var(--r-md);
+  color: var(--ink);
+  border-left: 3px solid var(--gold);
+}
+.res-card {
+  background: var(--surface);
+  border-radius: var(--r-md);
+  padding: 22px;
+  border-top: 3px solid var(--c-od);
+  box-shadow: var(--shadow-2);
+}
+.res-card .card-title {
+  font-family: var(--mono);
+  font-size: 14px;
+}
+.res-card .card-deck-label { color: var(--c-od); margin-bottom: 14px; }
+.res-card .field {
+  padding: 10px 12px;
+  border-radius: var(--r-sm);
+  cursor: pointer;
+  transition: background 0.12s;
+  margin: 4px 0;
+  border-left: 2px solid transparent;
+}
+.res-card .field:hover { background: var(--gold-soft); border-left-color: var(--gold); }
+.res-card .field.correct {
+  background: #e8f1ea;
+  border-left-color: var(--c-pass);
+  cursor: default;
+}
+.res-card .field.wrong {
+  background: #f3e2e2;
+  border-left-color: var(--c-fail);
+  cursor: default;
+}
+.insp-feedback {
+  margin-top: 14px;
+  padding: 12px 16px;
+  border-radius: var(--r-md);
+  font-size: 13px;
+  font-weight: 500;
+}
+.insp-feedback.correct { background: #e8f1ea; color: var(--c-pass); border-left: 3px solid var(--c-pass); }
+.insp-feedback.wrong { background: #f3e2e2; color: var(--c-fail); border-left: 3px solid var(--c-fail); }
+
+/* ── Turn-end modal ─────────────────────────────────────────── */
+.te-summary {
+  background: var(--surface);
+  border-radius: var(--r-md);
+  padding: 20px 24px;
+  margin-top: 16px;
+  border: 1px solid var(--rule);
+}
+.te-summary table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.te-summary th, .te-summary td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid var(--rule);
+}
+.te-summary th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--ink-fade);
+  font-weight: 600;
+  background: var(--bg-deep);
+}
+.te-summary tr:last-child td { border-bottom: none; }
+.te-summary td.pass { color: var(--c-pass); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 11px; }
+.te-summary td.fail { color: var(--c-fail); font-weight: 600; letter-spacing: 1px; text-transform: uppercase; font-size: 11px; }
+.te-summary td.id-cell { font-family: var(--mono); font-size: 12px; }
+.te-delta {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--r-sm);
+  font-weight: 600;
+  font-size: 11px;
+  font-family: var(--mono);
+  margin-left: 8px;
+}
+.te-delta.pos { background: #e8f1ea; color: var(--c-pass); }
+.te-delta.neg { background: #f3e2e2; color: var(--c-fail); }
+
+/* ── End screen ─────────────────────────────────────────────── */
+#screen-end.active {
+  display: block;
+  min-height: 100vh;
+  padding: 60px 40px 80px 40px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(184,146,74,0.15) 0%, transparent 50%),
+    linear-gradient(180deg, #14121a 0%, #1f1d28 100%);
+  color: #f5f0e8;
+}
+.end-trophy {
+  text-align: center;
+  margin-bottom: 48px;
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.end-trophy .end-eyebrow {
+  font-size: 11px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+}
+.end-trophy h1 {
+  font-family: var(--serif);
+  font-size: 56px;
+  font-weight: 400;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+.end-trophy h1 em { color: var(--gold); font-style: italic; }
+.end-trophy .winner {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-style: italic;
+  color: rgba(245,240,232,0.7);
+  margin-top: 14px;
+}
+.end-leaderboard {
+  background: rgba(245,240,232,0.04);
+  border: 1px solid rgba(245,240,232,0.08);
+  border-radius: var(--r-lg);
+  padding: 32px 40px;
+  max-width: 720px;
+  margin: 0 auto 48px auto;
+}
+.end-leaderboard .sb-title { color: var(--gold); border-bottom-color: rgba(245,240,232,0.10); }
+.end-row {
+  display: grid;
+  grid-template-columns: 50px 1fr 110px;
+  gap: 20px;
+  align-items: center;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(245,240,232,0.08);
+}
+.end-row:last-child { border-bottom: none; }
+.end-rank {
+  font-family: var(--serif);
+  font-size: 32px;
+  font-weight: 400;
+  color: rgba(245,240,232,0.3);
+  text-align: center;
+}
+.end-row.first .end-rank { color: var(--gold); }
+.end-name {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  letter-spacing: 0.3px;
+}
+.end-name .bi-tag {
+  font-family: var(--sans);
+  font-size: 11px;
+  opacity: 0.55;
+  display: block;
+  margin-top: 2px;
+  font-style: italic;
+}
+.end-pts {
+  font-family: var(--mono);
+  font-size: 28px;
+  font-weight: 500;
+  text-align: right;
+  color: var(--gold);
+  font-variant-numeric: tabular-nums;
+}
+.end-summaries {
+  max-width: 920px;
+  margin: 0 auto;
+  display: grid;
+  gap: 24px;
+}
+.end-summary {
+  background: rgba(245,240,232,0.03);
+  border: 1px solid rgba(245,240,232,0.06);
+  border-radius: var(--r-md);
+  padding: 24px 28px;
+}
+.end-summary h3 {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 22px;
+  color: var(--gold);
+  margin-bottom: 14px;
+  letter-spacing: 0.3px;
+}
+.end-summary table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.end-summary th, .end-summary td {
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(245,240,232,0.06);
+}
+.end-summary th {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  opacity: 0.55;
+  font-weight: 600;
+}
+.end-summary td { color: rgba(245,240,232,0.9); }
+.end-summary td.pass { color: #8db899; font-weight: 600; }
+.end-summary td.fail { color: #d97676; font-weight: 600; }
+.end-actions {
+  text-align: center;
+  margin-top: 48px;
+}
+.end-actions button {
+  padding: 16px 36px;
+  background: var(--gold);
+  color: #1a1820;
+  font-weight: 600;
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: background 0.15s;
+}
+.end-actions button:hover { background: #d4ad5e; }
+
+/* ── Misc helpers ───────────────────────────────────────────── */
+.bi-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  background: var(--c-bi);
+  color: white;
+  border-radius: var(--r-sm);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* ── Animations ─────────────────────────────────────────────── */
+@keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-3px)} 75%{transform:translateX(3px)} }
+.shake { animation: shake 0.3s; }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+.modal { animation: fade-in 0.18s ease; }
+.modal-veil { animation: fade-in 0.18s ease; }
+
+/* ── Responsive: collapse sidebar on narrow screens ─────────── */
+@media (max-width: 1080px) {
+  #screen-game.active {
+    grid-template-columns: 1fr;
+    grid-template-areas: "header" "main" "sidebar";
+  }
+  .side-col {
+    position: static;
+    max-height: none;
+    border-left: none;
+    border-top: 1px solid rgba(245,240,232,0.06);
+  }
+  .gh-header { grid-template-columns: auto 1fr auto; padding: 12px 20px; }
+  .gh-brand { font-size: 16px; }
+  .mat, .action-bar, .hand, .log { padding-left: 20px; padding-right: 20px; }
+  .insp-grid, .exec-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 720px) {
+  .insp-grid, .exec-grid { grid-template-columns: 1fr; }
+  .welcome-card { padding: 36px 28px; }
+  .welcome-title { font-size: 44px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ======================================================================
+     SCREENS
+     ====================================================================== -->
+
+<div id="screen-welcome" class="screen active">
+  <div class="welcome-card">
+    <div class="welcome-eyebrow">Group SunShine · Week 3 Prototype</div>
+    <div class="welcome-title">Runway <em>Ready</em></div>
+    <div class="welcome-sub">A 10-minute card game that teaches <strong>ISO/IEC 29119-3 Test Documentation</strong> by running a fashion house. The dice cannot save bad documentation — only paper trails that survive Inspection win the runway.</div>
+
+    <div class="welcome-form">
+      <div>
+        <label>How many designers at the table?</label>
+        <div class="welcome-radios" id="player-count">
+          <button data-count="3">3 players</button>
+          <button data-count="4" class="selected">4 players</button>
+        </div>
+      </div>
+
+      <div>
+        <label>Designer names</label>
+        <div class="welcome-names" id="player-names"></div>
+      </div>
+
+      <button class="welcome-start" id="start-btn">Open the Show</button>
+    </div>
+
+    <div class="welcome-meta">
+      ISO/IEC 29119-3 Test Documentation · Lite variant · 1 round · 3 outfits per designer.<br>
+      All players gather around one screen. Inspectors take turns calling out flaws.
+    </div>
+  </div>
+</div>
+
+
+<div id="screen-game" class="screen">
+  <div class="gh-header">
+    <div class="gh-brand">Runway<em>Ready</em></div>
+    <div class="gh-center">
+      <div class="gh-phase" id="phase-label">—</div>
+      <div class="gh-active">turn of <span class="who" id="active-name">—</span></div>
+    </div>
+    <div class="gh-timer" id="timer">&nbsp;</div>
+  </div>
+
+  <div class="main-col">
+    <div class="mat" id="mat"></div>
+    <div class="action-bar">
+      <div class="action-text" id="action-text">&nbsp;</div>
+      <button class="action-btn" id="action-btn" style="display:none;" disabled>Continue</button>
+    </div>
+    <div class="hand" id="hand"></div>
+    <div class="log" id="log"></div>
+  </div>
+  <div class="side-col">
+    <div class="sb-title">Scoreboard</div>
+    <div id="scoreboard"></div>
+  </div>
+</div>
+
+
+<div id="screen-end" class="screen"></div>
+
+
+<!-- Modals are appended to body dynamically -->
+
+
+<script>
+// ======================================================================
+// CARD DATA — embedded from 02_Cards/. Lite variant subset.
+// ======================================================================
+
+const CARDS = {
+  brandIdentity: [
+    { id: 'BI-01', name: 'Maison Solère', policyRef: 'Sustainability Charter §1', scope: 'All collections, all seasons', risks: 'Greenwashing, supply-chain delays', globalRule: 'Every Outfit must use only sustainable materials. Polyester, leather and synthetic fur are forbidden in Inputs.' },
+    { id: 'BI-03', name: 'Studio Heliograph', policyRef: 'Minimalism Manifesto v3', scope: 'Ready-to-wear, Spring/Summer', risks: 'Visual monotony', globalRule: 'No Outfit may declare more than one accessory in Inputs.' },
+    { id: 'BI-06', name: 'Linea Pura', policyRef: 'Functional Wear Charter', scope: 'Performance-wear, all seasons', risks: 'Aesthetic dismissal', globalRule: 'Every Outfit\'s Expected Result must include a movement constraint (e.g. "permits full arm extension").' },
+    { id: 'BI-08', name: 'Atelier Bruté', policyRef: 'Brutalist Aesthetic Code', scope: 'Conceptual menswear', risks: 'Wearability, retail viability', globalRule: 'Every Outfit must use a single dominant material. Mixed-material Inputs are invalid.' },
+  ],
+
+  roadmap: [
+    { id: 'RR-01', name: 'SS26 Capsule Drop', scope: 'Up to 4 Outfits, day-wear only', references: 'Active Brand Identity', schedule: '1 round (10 min)', resources: '1 accessory cap per Outfit', risks: 'Tight schedule', approach: 'Fast-iteration, single rehearsal' },
+    { id: 'RR-03', name: 'Resort Pop-Up', scope: '3–5 Outfits, beach / resort', references: 'Active Brand Identity', schedule: '1 round', resources: 'No fragile materials', risks: 'Sand, sun, salt-water', approach: 'Lightweight, durable fabrics' },
+    { id: 'RR-05', name: 'Student Showcase', scope: '3 Outfits, mixed casual / formal', references: 'Active Brand Identity', schedule: '1 round', resources: 'Tight budget — max 1 hand-finished element across all Outfits', risks: 'Inexperienced models', approach: 'Forgiving silhouettes' },
+    { id: 'RR-07', name: 'Sustainability Showcase', scope: '4 Outfits, certified materials only', references: 'Brand Identity (must be sustainability-aligned)', schedule: '1 round', resources: 'No leather, no synthetic fur', risks: 'Material sourcing failures', approach: 'Auditor visit possible' },
+    { id: 'RR-09', name: 'Streetwear Drop', scope: '5 Outfits, casual urban', references: 'Active Brand Identity', schedule: '1 round', resources: 'No couture techniques', risks: 'Trend-cycle mismatch', approach: 'Fast turnaround' },
+    { id: 'RR-12', name: 'Inclusive Sizing Showcase', scope: '4 Outfits across ≥3 distinct sizes', references: 'Brand Identity', schedule: '1 round', resources: 'Tailoring time prioritised', risks: 'Sizing mismatches', approach: 'Each Outfit must declare its size in Pre-conditions' },
+    { id: 'RR-04', name: 'Industry Press Show', scope: '4 Outfits, press-friendly', references: 'Brand Identity + press-kit reference', schedule: '1 round, +30 sec inspection', resources: '2 accessory cap', risks: 'Live photography, journalists\' scrutiny', approach: 'Each Outfit must have a unique selling point' },
+    { id: 'RR-10', name: 'Pre-Fall Lookbook', scope: '4 Outfits, layered', references: 'Active Brand Identity', schedule: '1 round', resources: 'Outerwear required on every Outfit', risks: 'Studio overheating', approach: 'Static photography rehearsal' },
+  ],
+
+  theme: [
+    { id: 'CT-01', name: 'Mediterranean Breeze', featureId: 'MB-SS26', conditions: 'Light fabrics; sand / coral / off-white palette; flowing silhouettes', traceability: 'REQ-FASHION-MB-01..03', coverage: 'Day, transitional, evening — at least one per Outfit set' },
+    { id: 'CT-02', name: 'Concrete Geometry', featureId: 'CG-AW26', conditions: 'Structured tailoring; grey / black palette; sharp angles', traceability: 'REQ-FASHION-CG-01..03', coverage: 'Architectural silhouettes' },
+    { id: 'CT-03', name: 'Soft Rebellion', featureId: 'SR-PF26', conditions: 'Punk references in pastel palette; contrast textures', traceability: 'REQ-FASHION-SR-01..03', coverage: 'Each Outfit must contradict its own palette intentionally' },
+    { id: 'CT-04', name: 'Heritage Reframed', featureId: 'HR-CR26', conditions: 'Traditional silhouettes with modern detailing', traceability: 'REQ-FASHION-HR-01..03', coverage: 'Each Outfit declares which heritage element it modernises' },
+    { id: 'CT-05', name: 'Atmospheric Layers', featureId: 'AL-PF26', conditions: 'Layered outerwear; muted greens, browns, slate', traceability: 'REQ-FASHION-AL-01..03', coverage: 'Every Outfit ≥ 3 visible layers' },
+    { id: 'CT-06', name: 'Liquid Light', featureId: 'LL-SS26', conditions: 'Reflective fabrics; metallic palette; fluid drape', traceability: 'REQ-FASHION-LL-01..03', coverage: 'Each Outfit must reflect light visibly under spotlight' },
+    { id: 'CT-07', name: 'Off-Grid', featureId: 'OG-AW26', conditions: 'Utility wear; earth tones; reinforced seams', traceability: 'REQ-FASHION-OG-01..03', coverage: 'Every Outfit must declare a functional pocket count' },
+    { id: 'CT-08', name: 'Theatre of Memory', featureId: 'TM-CR26', conditions: 'Costume-inspired; period silhouettes; rich palette', traceability: 'REQ-FASHION-TM-01..03', coverage: 'Each Outfit references a specific historical era' },
+  ],
+
+  // Outfit Detail. flaws=[] means clean. Identifier will be re-randomized at deal time
+  // so clean and flawed cards do not follow a guessable numbering pattern.
+  outfit: [
+    // Clean (6)
+    { internalId: 'OD-C-01', season: 'SS26', flaws: [], moderatorNote: '(clean)',
+      fields: { 'Identifier': 'SS26-001', 'Objective': 'Showcase opening Mediterranean Breeze look.', 'Pre-conditions': 'Model size 38; sandals fitted; chignon.', 'Inputs': 'Linen slip dress, off-white; raffia belt; gold hoop earrings.', 'Expected Result': 'Model walks 12 steps without tripping; dress drapes evenly at hip.', 'Post-conditions': 'Dress returned undamaged.', 'Traceability ID': 'REQ-FASHION-MB-01' } },
+    { internalId: 'OD-C-02', season: 'SS26', flaws: [], moderatorNote: '(clean)',
+      fields: { 'Identifier': 'SS26-002', 'Objective': 'Demonstrate Theme\'s flowing silhouette.', 'Pre-conditions': 'Model size 36; flat sandals; natural make-up.', 'Inputs': 'Coral wide-leg trousers; cream silk camisole; matching scarf.', 'Expected Result': 'Trousers do not bunch at ankle; scarf remains draped on shoulder.', 'Post-conditions': 'Camisole shows no perspiration marks.', 'Traceability ID': 'REQ-FASHION-MB-02' } },
+    { internalId: 'OD-C-03', season: 'AW26', flaws: [], moderatorNote: '(clean)',
+      fields: { 'Identifier': 'AW26-001', 'Objective': 'Anchor Concrete Geometry with structured opener.', 'Pre-conditions': 'Model size 40; ankle boots; slicked-back hair.', 'Inputs': 'Charcoal wool blazer; matching tailored trousers; white tee.', 'Expected Result': 'Shoulders maintain structured line; trouser break sits at ankle.', 'Post-conditions': 'Blazer returned without creasing.', 'Traceability ID': 'REQ-FASHION-CG-01' } },
+    { internalId: 'OD-C-07', season: 'PF26', flaws: [], moderatorNote: '(clean)',
+      fields: { 'Identifier': 'PF26-002', 'Objective': 'Demonstrate three-layer outerwear styling.', 'Pre-conditions': 'Model size 40; chunky boots; loose plait.', 'Inputs': 'Olive parka; brown wool cardigan; cream knit base layer.', 'Expected Result': 'All three layers visible from front and side; parka zip closes fully.', 'Post-conditions': 'Layers separable without snags.', 'Traceability ID': 'REQ-FASHION-AL-01' } },
+    { internalId: 'OD-C-09', season: 'AW26', flaws: [], moderatorNote: '(clean)',
+      fields: { 'Identifier': 'AW26-003', 'Objective': 'Demonstrate Off-Grid utility silhouette.', 'Pre-conditions': 'Model size 42; hiking boots; bare make-up.', 'Inputs': 'Reinforced canvas jumpsuit (six functional pockets); vegan-leather belt.', 'Expected Result': 'All six pockets visibly accessible; belt does not interfere with stride.', 'Post-conditions': 'Jumpsuit returned with reinforcements intact.', 'Traceability ID': 'REQ-FASHION-OG-01' } },
+    { internalId: 'OD-C-13', season: 'SS26', flaws: [], moderatorNote: '(clean)',
+      fields: { 'Identifier': 'SS26-005', 'Objective': 'Closing Mediterranean Breeze; signature piece.', 'Pre-conditions': 'Model size 38; gold sandals; loose waves.', 'Inputs': 'Floor-length linen kaftan; raffia clutch.', 'Expected Result': 'Kaftan flows behind model in spotlight finale pose.', 'Post-conditions': 'Kaftan returned uncreased.', 'Traceability ID': 'REQ-FASHION-MB-03' } },
+    { internalId: 'OD-C-04', season: 'AW26', flaws: [], moderatorNote: '(clean)',
+      fields: { 'Identifier': 'AW26-002', 'Objective': 'Demonstrate the geometric drape technique.', 'Pre-conditions': 'Model size 38; closed-toe shoes; minimal jewellery.', 'Inputs': 'Black asymmetric coat; grey turtleneck; tapered trousers.', 'Expected Result': 'Asymmetric hem swings cleanly; turtleneck does not bunch.', 'Post-conditions': 'Coat hangs without creases.', 'Traceability ID': 'REQ-FASHION-CG-02' } },
+    { internalId: 'OD-C-05', season: 'PF26', flaws: [], moderatorNote: '(clean)',
+      fields: { 'Identifier': 'PF26-001', 'Objective': 'Open Soft Rebellion narrative with pastel-punk contrast.', 'Pre-conditions': 'Model size 36; lace-up boots; smudged eyeliner.', 'Inputs': 'Pastel-pink slip dress; vegan-leather jacket; chain belt.', 'Expected Result': 'Jacket and dress visible together; chain belt does not snag dress.', 'Post-conditions': 'Jacket returned without scuffs.', 'Traceability ID': 'REQ-FASHION-SR-01' } },
+    { internalId: 'OD-C-06', season: 'CR26', flaws: [], moderatorNote: '(clean)',
+      fields: { 'Identifier': 'CR26-001', 'Objective': 'Show heritage tailoring reframed for modern silhouette.', 'Pre-conditions': 'Model size 38; oxfords; updo.', 'Inputs': 'Tweed jacket; contemporary cropped trousers; silk blouse.', 'Expected Result': 'Jacket buttons remain closed throughout walk; trouser hem grazes ankle.', 'Post-conditions': 'Heritage jacket undamaged.', 'Traceability ID': 'REQ-FASHION-HR-01' } },
+
+    // Flawed (8) — moderatorNote is shown post-game only
+    { internalId: 'OD-F-01', season: 'SS26', flaws: ['Expected Result'],
+      moderatorNote: 'Expected Result is blank — the test case is not falsifiable.',
+      fields: { 'Identifier': 'SS26-101', 'Objective': 'Open Mediterranean Breeze evening segment.', 'Pre-conditions': 'Model size 38; gold sandals; loose waves.', 'Inputs': 'Coral linen gown; gold cuff bracelet.', 'Expected Result': '', 'Post-conditions': 'Gown returned to wardrobe.', 'Traceability ID': 'REQ-FASHION-MB-04' } },
+    { internalId: 'OD-F-02', season: 'AW26', flaws: ['Pre-conditions'],
+      moderatorNote: 'Pre-condition declares size 36 but Inputs list size-40 garments.',
+      fields: { 'Identifier': 'AW26-101', 'Objective': 'Anchor Concrete Geometry evening look.', 'Pre-conditions': 'Model size 36; ankle boots; sleek hair.', 'Inputs': 'Charcoal wool blazer in size 40; matching trousers in size 40.', 'Expected Result': 'Shoulders maintain structured line.', 'Post-conditions': 'Blazer returned undamaged.', 'Traceability ID': 'REQ-FASHION-CG-04' } },
+    { internalId: 'OD-F-05', season: 'PF26', flaws: ['Expected Result'],
+      moderatorNote: 'Expected Result is non-measurable ("Looks good"). Ambiguous, non-falsifiable.',
+      fields: { 'Identifier': 'PF26-101', 'Objective': 'Open Soft Rebellion evening segment.', 'Pre-conditions': 'Model size 36; lace-up boots.', 'Inputs': 'Pink slip dress; vegan-leather jacket; chain belt.', 'Expected Result': 'Looks good.', 'Post-conditions': 'Returned undamaged.', 'Traceability ID': 'REQ-FASHION-SR-02' } },
+    { internalId: 'OD-F-08', season: 'AW26', flaws: ['Post-conditions'],
+      moderatorNote: 'Post-conditions directly contradict Expected Result (six accessible pockets vs three sealed shut).',
+      fields: { 'Identifier': 'AW26-103', 'Objective': 'Demonstrate the Off-Grid jumpsuit.', 'Pre-conditions': 'Model size 42; hiking boots.', 'Inputs': 'Canvas jumpsuit (six pockets); vegan-leather belt.', 'Expected Result': 'All six pockets are visibly accessible.', 'Post-conditions': 'Jumpsuit returned with three pockets sealed shut.', 'Traceability ID': 'REQ-FASHION-OG-03' } },
+    { internalId: 'OD-F-09', season: 'PF26', flaws: ['Inputs'],
+      moderatorNote: 'Inputs declare only one garment but the Expected Result references three layers — insufficient inputs.',
+      fields: { 'Identifier': 'PF26-102', 'Objective': 'Layered Atmospheric Layers look.', 'Pre-conditions': 'Model size 40; chunky boots.', 'Inputs': 'Olive parka.', 'Expected Result': 'All three layers visible from front and side.', 'Post-conditions': 'Layers separable without snags.', 'Traceability ID': 'REQ-FASHION-AL-02' } },
+    { internalId: 'OD-F-11', season: 'AW26', flaws: ['Expected Result'],
+      moderatorNote: 'Self-referential / tautological Expected Result — cannot fail by definition.',
+      fields: { 'Identifier': 'AW26-104', 'Objective': 'Concrete Geometry silhouette study.', 'Pre-conditions': 'Model size 38; closed-toe shoes.', 'Inputs': 'Asymmetric coat; turtleneck; tapered trousers.', 'Expected Result': 'The expected result is whatever happens during the rehearsal.', 'Post-conditions': 'Coat hangs without creases.', 'Traceability ID': 'REQ-FASHION-CG-05' } },
+    { internalId: 'OD-F-06', season: 'CR26', flaws: ['Traceability ID'],
+      moderatorNote: 'Traceability ID is blank — the case cannot be tied back to the Theme\'s coverage criteria.',
+      fields: { 'Identifier': 'CR26-101', 'Objective': 'Bridal heritage reframed look.', 'Pre-conditions': 'Model size 38; satin pumps.', 'Inputs': 'Ivory silk gown with lace overlay; pearl earrings.', 'Expected Result': 'Train follows model without dragging.', 'Post-conditions': 'Lace returned undamaged.', 'Traceability ID': '' } },
+    { internalId: 'OD-F-07', season: 'SS26', flaws: ['Pre-conditions'],
+      moderatorNote: 'Pre-condition is subjective and unverifiable ("Model is in a good mood").',
+      fields: { 'Identifier': 'SS26-103', 'Objective': 'Open the Liquid Light segment.', 'Pre-conditions': 'Model is in a good mood.', 'Inputs': 'Silver foil dress; bracelet.', 'Expected Result': 'Dress reflects spotlight at three points.', 'Post-conditions': 'Returned undamaged.', 'Traceability ID': 'REQ-FASHION-LL-03' } },
+  ],
+
+  // Wardrobe Malfunction lookup (keyed by originating field)
+  malfunction: {
+    'Pre-conditions': { id: 'WM-01', severity: 'High', description: 'Heel snapped on the runway.', impact: 'Outfit fails; rehearsal halted.' },
+    'Inputs':         { id: 'WM-02', severity: 'Critical', description: 'Garment opened at the side seam mid-walk.', impact: 'Outfit fails; spectator concern.' },
+    'Expected Result':{ id: 'WM-07', severity: 'High', description: 'Expected look not achieved — jury cannot agree.', impact: 'Outfit cannot be scored.' },
+    'Post-conditions':{ id: 'WM-12', severity: 'Medium', description: 'Post-show audit found contradiction.', impact: 'Rehearsal Summary cannot be closed.' },
+    'Traceability ID':{ id: 'WM-08', severity: 'Medium', description: 'Outfit not traceable to a Theme requirement.', impact: 'Coverage gap recorded.' },
+    'Identifier':     { id: 'WM-09', severity: 'High', description: 'Two Outfits share an identifier.', impact: 'Backstage confusion.' },
+  },
+};
+
+// ISO field display order (for outfit cards)
+const OD_FIELDS = ['Identifier','Objective','Pre-conditions','Inputs','Expected Result','Post-conditions','Traceability ID'];
+
+// ======================================================================
+// STATE
+// ======================================================================
+const state = {
+  phase: 'welcome',
+  players: [],
+  activePlayerIdx: 0,
+  decks: { roadmap: [], theme: [], outfit: [] },
+  log: [],
+  // inspection scratch
+  inspection: { activeFlagger: null, flagsRemaining: {}, results: [], endsAt: 0, ticker: null },
+  // execution scratch
+  execution: { results: [], step: 0 },
+  // resolution scratch
+  resolution: { queue: [], current: null, attempts: 0, endsAt: 0, ticker: null },
+};
+
+// ======================================================================
+// UTILITIES
+// ======================================================================
+function $(sel, root) { return (root || document).querySelector(sel); }
+function el(tag, attrs = {}, ...children) {
+  const node = document.createElement(tag);
+  for (const k in attrs) {
+    if (k === 'class') node.className = attrs[k];
+    else if (k === 'html') node.innerHTML = attrs[k];
+    else if (k.startsWith('on')) node.addEventListener(k.substring(2), attrs[k]);
+    else if (k === 'dataset') Object.assign(node.dataset, attrs[k]);
+    else node.setAttribute(k, attrs[k]);
+  }
+  for (const c of children.flat()) {
+    if (c == null || c === false) continue;
+    node.appendChild(typeof c === 'string' ? document.createTextNode(c) : c);
+  }
+  return node;
+}
+function shuffle(arr, rng = Math.random) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function logSay(msg) {
+  state.log.push(msg);
+  if (state.log.length > 40) state.log.shift();
+  renderLog();
+}
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $('#' + id).classList.add('active');
+}
+
+// ======================================================================
+// WELCOME
+// ======================================================================
+let pickedCount = 4;
+function setupWelcome() {
+  const countWrap = $('#player-count');
+  countWrap.querySelectorAll('button').forEach(b => {
+    b.addEventListener('click', () => {
+      pickedCount = parseInt(b.dataset.count);
+      countWrap.querySelectorAll('button').forEach(x => x.classList.remove('selected'));
+      b.classList.add('selected');
+      renderNameInputs();
+    });
+  });
+  renderNameInputs();
+  $('#start-btn').addEventListener('click', startGame);
+}
+function renderNameInputs() {
+  const wrap = $('#player-names');
+  wrap.innerHTML = '';
+  const defaultNames = ['Aysel','Bilge','Cem','Deniz'];
+  for (let i = 0; i < pickedCount; i++) {
+    const inp = el('input', { type: 'text', placeholder: `Player ${i+1}`, value: defaultNames[i], maxlength: 16, dataset: { idx: i } });
+    wrap.appendChild(inp);
+  }
+}
+
+// ======================================================================
+// GAME START
+// ======================================================================
+function startGame() {
+  const names = Array.from($('#player-names').querySelectorAll('input')).map(i => i.value.trim() || `Player ${parseInt(i.dataset.idx)+1}`);
+
+  // Build players
+  const shuffledBI = shuffle(CARDS.brandIdentity);
+  state.players = names.map((name, idx) => ({
+    idx,
+    name,
+    brandIdentity: shuffledBI[idx % shuffledBI.length],
+    hand: { roadmaps: [], themes: [], outfits: [] },
+    mat: { brandIdentity: null, roadmap: null, theme: null, outfits: [] },
+    score: 0,
+    summary: [],   // { outfitId, pass, originatingField? }
+    scoreLog: [],  // { delta, reason }
+  }));
+
+  // Re-randomize Outfit identifiers per season to hide clean/flawed pattern
+  const odBySeason = {};
+  CARDS.outfit.forEach(o => { (odBySeason[o.season] = odBySeason[o.season] || []).push({ ...o, fields: { ...o.fields } }); });
+  const renumberedOutfits = [];
+  for (const season of Object.keys(odBySeason)) {
+    const bucket = shuffle(odBySeason[season]);
+    bucket.forEach((c, i) => {
+      c.fields.Identifier = `${season}-${String(i+1).padStart(3,'0')}`;
+      c.cardId = c.fields.Identifier; // visible ID
+      renumberedOutfits.push(c);
+    });
+  }
+
+  state.decks.outfit = shuffle(renumberedOutfits);
+  state.decks.roadmap = shuffle(CARDS.roadmap.map(c => ({ ...c })));
+  state.decks.theme = shuffle(CARDS.theme.map(c => ({ ...c })));
+
+  // Place each player's BI on their mat
+  state.players.forEach(p => p.mat.brandIdentity = p.brandIdentity);
+
+  // Deal: hand sizes adapt to deck sizes vs player count.
+  // Caps: 2 roadmaps, 2 themes, 5 outfits per player. Floor by deck/playerCount so we never undershoot.
+  const N = state.players.length;
+  const handR = Math.max(1, Math.min(2, Math.floor(state.decks.roadmap.length / N)));
+  const handT = Math.max(1, Math.min(2, Math.floor(state.decks.theme.length / N)));
+  const handO = Math.max(3, Math.min(5, Math.floor(state.decks.outfit.length / N)));
+  for (const p of state.players) {
+    for (let i = 0; i < handR; i++) p.hand.roadmaps.push(state.decks.roadmap.shift());
+    for (let i = 0; i < handT; i++) p.hand.themes.push(state.decks.theme.shift());
+    for (let i = 0; i < handO; i++) p.hand.outfits.push(state.decks.outfit.shift());
+  }
+
+  state.activePlayerIdx = 0;
+  showScreen('screen-game');
+  startTurn();
+}
+
+// ======================================================================
+// TURN / PHASES
+// ======================================================================
+function activePlayer() { return state.players[state.activePlayerIdx]; }
+
+function startTurn() {
+  const p = activePlayer();
+  state.phase = 'plan';
+  logSay(`▶ Turn of ${p.name} begins. Brand Identity: ${p.brandIdentity.name}.`);
+  render();
+}
+
+function playRoadmap(idx) {
+  const p = activePlayer();
+  if (state.phase !== 'plan') return;
+  p.mat.roadmap = p.hand.roadmaps.splice(idx, 1)[0];
+  state.phase = 'design';
+  logSay(`${p.name} placed Runway Roadmap: "${p.mat.roadmap.name}". (Project Test Plan)`);
+  render();
+}
+
+function playTheme(idx) {
+  const p = activePlayer();
+  if (state.phase !== 'design') return;
+  p.mat.theme = p.hand.themes.splice(idx, 1)[0];
+  state.phase = 'specify';
+  logSay(`${p.name} placed Collection Theme: "${p.mat.theme.name}". (Test Design Spec)`);
+  render();
+}
+
+function playOutfit(idx) {
+  const p = activePlayer();
+  if (state.phase !== 'specify') return;
+  if (p.mat.outfits.length >= 3) return;
+  const outfit = p.hand.outfits.splice(idx, 1)[0];
+  p.mat.outfits.push(outfit);
+  logSay(`${p.name} drafted Outfit ${outfit.cardId}. (Test Case Spec)`);
+  if (p.mat.outfits.length === 3) {
+    setTimeout(startInspection, 250);
+  } else {
+    render();
+  }
+}
+
+// ======================================================================
+// INSPECTION
+// ======================================================================
+function startInspection() {
+  state.phase = 'inspection';
+  state.inspection.activeFlagger = null;
+  state.inspection.results = [];
+  state.inspection.flagsRemaining = {};
+  state.players.forEach(p => {
+    if (p.idx !== state.activePlayerIdx) state.inspection.flagsRemaining[p.idx] = 2;
+  });
+  state.inspection.endsAt = Date.now() + 60000;
+  logSay(`Inspection begins — 60 sec. Inspectors: claim a flag, then click a suspect field.`);
+  startTimer(state.inspection.endsAt, () => {
+    if (state.phase === 'inspection') endInspection();
+  });
+  render();
+  renderInspectionModal();
+}
+
+function setFlagger(playerIdx) {
+  if (state.inspection.flagsRemaining[playerIdx] <= 0) return;
+  state.inspection.activeFlagger = state.inspection.activeFlagger === playerIdx ? null : playerIdx;
+  renderInspectionModal();
+}
+
+function flagField(outfitCardId, fieldName) {
+  if (state.phase !== 'inspection') return;
+  const flaggerIdx = state.inspection.activeFlagger;
+  if (flaggerIdx == null) return;
+  if (state.inspection.flagsRemaining[flaggerIdx] <= 0) return;
+  // Already flagged this exact field?
+  if (state.inspection.results.some(r => r.outfitId === outfitCardId && r.fieldName === fieldName)) return;
+
+  const outfit = activePlayer().mat.outfits.find(o => o.cardId === outfitCardId);
+  const correct = outfit && outfit.flaws.includes(fieldName);
+
+  state.inspection.results.push({ outfitId: outfitCardId, fieldName, flaggerIdx, correct });
+  state.inspection.flagsRemaining[flaggerIdx]--;
+  state.inspection.activeFlagger = null;
+
+  // Award/penalise immediately
+  const flagger = state.players[flaggerIdx];
+  if (correct) {
+    addScore(flagger, +2, `Inspection: caught flaw in ${outfit.cardId} (${fieldName})`);
+    logSay(`✔ ${flagger.name} caught a flaw in ${outfit.cardId} → ${fieldName}.`);
+  } else {
+    addScore(flagger, -1, `Inspection: false flag on ${outfit.cardId} (${fieldName})`);
+    logSay(`✘ ${flagger.name} flagged ${outfit.cardId}/${fieldName} — no flaw there.`);
+  }
+  renderInspectionModal();
+  renderScoreboard();
+}
+
+function endInspection() {
+  stopTimer();
+  closeModal();
+  state.phase = 'execution';
+  startExecution();
+}
+
+// ======================================================================
+// EXECUTION
+// ======================================================================
+function startExecution() {
+  state.phase = 'execution';
+  const p = activePlayer();
+  state.execution.results = p.mat.outfits.map(outfit => {
+    const flaggedFields = state.inspection.results
+      .filter(r => r.outfitId === outfit.cardId && r.correct)
+      .map(r => r.fieldName);
+    const unflaggedFlaws = outfit.flaws.filter(f => !flaggedFields.includes(f));
+    const dieRoll = 1 + Math.floor(Math.random() * 6);
+    let pass, note, originatingField = null;
+    if (unflaggedFlaws.length > 0) {
+      pass = false;
+      originatingField = unflaggedFlaws[0];
+      note = `Unflagged flaw in ${originatingField} → forced fail.`;
+    } else if (outfit.flaws.length > 0) {
+      // Flagged + revised — treat as clean roll
+      pass = dieRoll >= 3;
+      note = pass ? `Revised after Inspection — clean walk.` : `Revised but unlucky dice.`;
+    } else {
+      pass = dieRoll >= 3;
+      note = pass ? `Clean walk.` : `Bad luck (no defect).`;
+    }
+    return { outfit, dieRoll, pass, note, originatingField };
+  });
+  renderExecutionModal();
+}
+
+function applyExecutionScores() {
+  const p = activePlayer();
+  state.execution.results.forEach(r => {
+    if (r.pass) {
+      addScore(p, +3, `Outfit ${r.outfit.cardId} walked cleanly`);
+      p.summary.push({ outfitId: r.outfit.cardId, pass: true, originatingField: '—' });
+    } else if (!r.originatingField) {
+      // Bad luck (clean failure)
+      addScore(p, -1, `Outfit ${r.outfit.cardId} failed (bad luck)`);
+      p.summary.push({ outfitId: r.outfit.cardId, pass: false, originatingField: 'Bad luck (clean)' });
+    }
+    // Flawed failures handled in resolution
+  });
+}
+
+function continueToResolution() {
+  closeModal();
+  applyExecutionScores();
+
+  // Build resolution queue: failed outfits with originating fields
+  const queue = state.execution.results
+    .filter(r => !r.pass && r.originatingField)
+    .map(r => ({ outfit: r.outfit, originatingField: r.originatingField, malfunction: CARDS.malfunction[r.originatingField] }));
+
+  if (queue.length === 0) {
+    finishTurn();
+    return;
+  }
+
+  state.resolution.queue = queue;
+  state.phase = 'resolution';
+  showNextResolution();
+}
+
+// ======================================================================
+// RESOLUTION
+// ======================================================================
+function showNextResolution() {
+  if (state.resolution.queue.length === 0) {
+    closeModal();
+    finishTurn();
+    return;
+  }
+  state.resolution.current = state.resolution.queue.shift();
+  state.resolution.attempts = 0;
+  state.resolution.endsAt = Date.now() + 30000;
+  startTimer(state.resolution.endsAt, () => {
+    if (state.phase === 'resolution' && state.resolution.current) {
+      // Timeout
+      const p = activePlayer();
+      const cur = state.resolution.current;
+      addScore(p, -4, `Resolution timeout for ${cur.outfit.cardId}`);
+      p.summary.push({
+        outfitId: cur.outfit.cardId, pass: false,
+        originatingField: `${cur.originatingField} (timeout)`,
+        flawNote: cur.outfit.moderatorNote,
+      });
+      logSay(`⌛ ${p.name} timed out resolving ${cur.outfit.cardId} (correct: ${cur.originatingField}).`);
+      stopTimer();
+      showNextResolution();
+    }
+  });
+  renderResolutionModal();
+}
+
+function clickResolutionField(fieldName) {
+  if (state.phase !== 'resolution') return;
+  const cur = state.resolution.current;
+  const p = activePlayer();
+  const correct = fieldName === cur.originatingField;
+  if (correct) {
+    addScore(p, +2, `Named originating field for ${cur.outfit.cardId}`);
+    addScore(p, -2, `Lost outfit ${cur.outfit.cardId} (defect)`);
+    p.summary.push({
+      outfitId: cur.outfit.cardId, pass: false,
+      originatingField: cur.originatingField + ' ✓',
+      flawNote: cur.outfit.moderatorNote,
+    });
+    logSay(`✔ ${p.name} traced ${cur.outfit.cardId} → ${cur.originatingField}.`);
+    stopTimer();
+    setTimeout(showNextResolution, 1100);
+  } else {
+    state.resolution.attempts++;
+    if (state.resolution.attempts >= 1) {
+      addScore(p, -4, `Wrong field on ${cur.outfit.cardId}`);
+      p.summary.push({
+        outfitId: cur.outfit.cardId, pass: false,
+        originatingField: `${cur.originatingField} (missed; said ${fieldName})`,
+        flawNote: cur.outfit.moderatorNote,
+      });
+      logSay(`✘ ${p.name} guessed ${fieldName} for ${cur.outfit.cardId}; correct was ${cur.originatingField}.`);
+      stopTimer();
+      setTimeout(showNextResolution, 1500);
+    }
+  }
+  renderResolutionModal(fieldName, correct);
+}
+
+// ======================================================================
+// END OF TURN
+// ======================================================================
+function finishTurn() {
+  stopTimer();
+  state.phase = 'turn-end';
+  renderTurnEndModal();
+}
+
+function nextPlayerOrEnd() {
+  closeModal();
+  state.activePlayerIdx++;
+  if (state.activePlayerIdx >= state.players.length) {
+    state.phase = 'game-end';
+    renderEndScreen();
+  } else {
+    startTurn();
+  }
+}
+
+// ======================================================================
+// SCORING
+// ======================================================================
+function addScore(player, delta, reason) {
+  player.score += delta;
+  player.scoreLog.push({ delta, reason });
+}
+
+// ======================================================================
+// TIMERS
+// ======================================================================
+let timerHandle = null;
+function startTimer(endsAt, onExpire) {
+  stopTimer();
+  const tick = () => {
+    const remaining = Math.max(0, Math.ceil((endsAt - Date.now()) / 1000));
+    const t = $('#timer');
+    if (t) {
+      t.textContent = remaining + ' s';
+      t.classList.toggle('warn', remaining <= 10);
+    }
+    if (remaining === 0) { stopTimer(); onExpire(); }
+  };
+  tick();
+  timerHandle = setInterval(tick, 250);
+}
+function stopTimer() {
+  if (timerHandle) clearInterval(timerHandle);
+  timerHandle = null;
+  const t = $('#timer');
+  if (t) { t.textContent = ''; t.classList.remove('warn'); }
+}
+
+// ======================================================================
+// RENDER — Main game screen
+// ======================================================================
+function render() {
+  if (state.phase === 'welcome') return;
+  renderHeader();
+  renderMat();
+  renderHand();
+  renderActionBar();
+  renderScoreboard();
+  renderLog();
+}
+
+function renderHeader() {
+  const phaseLabels = {
+    'plan':       'Phase 1 · Plan',
+    'design':     'Phase 2 · Design',
+    'specify':    'Phase 3 · Specify',
+    'inspection': 'Phase 4 · Inspection',
+    'execution':  'Phase 5 · Execution',
+    'resolution': 'Phase 6 · Resolution',
+    'turn-end':   'Turn Summary',
+    'game-end':   'Final Curtain'
+  };
+  $('#phase-label').textContent = (phaseLabels[state.phase] || '—').toUpperCase();
+  $('#active-name').textContent = activePlayer().name;
+}
+
+function renderMat() {
+  const p = activePlayer();
+  const mat = $('#mat');
+  mat.innerHTML = '';
+
+  // Row 1: BI + Roadmap + Theme
+  const row1 = el('div', { class: 'mat-row' });
+  row1.appendChild(zoneBI(p));
+  row1.appendChild(zoneRR(p));
+  row1.appendChild(zoneCT(p));
+  mat.appendChild(row1);
+
+  // Row 2: 3 Outfit slots
+  const row2 = el('div', { class: 'mat-row' });
+  for (let i = 0; i < 3; i++) {
+    row2.appendChild(zoneOD(p, i));
+  }
+  mat.appendChild(row2);
+}
+
+function zoneBI(p) {
+  const zone = el('div', { class: 'zone zone-bi' });
+  zone.appendChild(el('div', { class: 'zone-label' }, 'Brand Identity · Org. Strategy'));
+  if (p.mat.brandIdentity) zone.appendChild(renderBICard(p.mat.brandIdentity, true));
+  else zone.appendChild(el('div', { class: 'zone-empty' }, 'no Brand Identity'));
+  return zone;
+}
+function zoneRR(p) {
+  const awaiting = state.phase === 'plan' && !p.mat.roadmap;
+  const zone = el('div', { class: 'zone zone-rr' + (awaiting ? ' awaiting' : '') });
+  zone.appendChild(el('div', { class: 'zone-label' }, 'Phase 1 · Runway Roadmap'));
+  if (p.mat.roadmap) zone.appendChild(renderRRCard(p.mat.roadmap, true));
+  else zone.appendChild(el('div', { class: 'zone-empty' }, awaiting ? '↓ choose a Roadmap from hand below' : 'awaits a Project Test Plan'));
+  return zone;
+}
+function zoneCT(p) {
+  const awaiting = state.phase === 'design' && !p.mat.theme;
+  const zone = el('div', { class: 'zone zone-ct' + (awaiting ? ' awaiting' : '') });
+  zone.appendChild(el('div', { class: 'zone-label' }, 'Phase 2 · Collection Theme'));
+  if (p.mat.theme) zone.appendChild(renderCTCard(p.mat.theme, true));
+  else zone.appendChild(el('div', { class: 'zone-empty' }, awaiting ? '↓ choose a Theme from hand below' : 'awaits a Test Design Spec'));
+  return zone;
+}
+function zoneOD(p, i) {
+  const awaiting = state.phase === 'specify' && p.mat.outfits.length === i;
+  const zone = el('div', { class: 'zone zone-od' + (awaiting ? ' awaiting' : '') });
+  zone.appendChild(el('div', { class: 'zone-label' }, `Outfit ${i+1} · Test Case`));
+  if (p.mat.outfits[i]) zone.appendChild(renderODCard(p.mat.outfits[i], true));
+  else zone.appendChild(el('div', { class: 'zone-empty' }, awaiting ? '↓ draft an Outfit from hand below' : 'empty slot'));
+  return zone;
+}
+
+function renderBICard(card, played) {
+  return el('div', { class: 'card card-bi ' + (played ? 'played' : 'in-hand') },
+    el('div', { class: 'card-stripe' }),
+    el('div', { class: 'card-deck-label' }, 'Brand Identity'),
+    el('div', { class: 'card-title' }, card.name),
+    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Test policy ref:'), document.createTextNode(' ' + card.policyRef)),
+    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Scope:'), document.createTextNode(' ' + card.scope)),
+    el('div', { class: 'card-rule' }, el('b', {}, 'Global rule. '), document.createTextNode(card.globalRule)),
+    el('div', { class: 'iso-tag' }, 'Organizational Test Strategy')
+  );
+}
+function renderRRCard(card, played, onclick) {
+  const node = el('div', { class: 'card card-rr ' + (played ? 'played' : 'in-hand') },
+    el('div', { class: 'card-stripe' }),
+    el('div', { class: 'card-deck-label' }, 'Runway Roadmap'),
+    el('div', { class: 'card-title' }, card.name),
+    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Scope:'), document.createTextNode(' ' + card.scope)),
+    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Schedule:'), document.createTextNode(' ' + card.schedule)),
+    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Resources:'), document.createTextNode(' ' + card.resources)),
+    el('div', { class: 'iso-tag' }, 'Project Test Plan')
+  );
+  if (onclick) node.addEventListener('click', onclick);
+  return node;
+}
+function renderCTCard(card, played, onclick) {
+  const node = el('div', { class: 'card card-ct ' + (played ? 'played' : 'in-hand') },
+    el('div', { class: 'card-stripe' }),
+    el('div', { class: 'card-deck-label' }, 'Collection Theme'),
+    el('div', { class: 'card-title' }, card.name),
+    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Feature ID:'), document.createTextNode(' ' + card.featureId)),
+    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Test conditions:'), document.createTextNode(' ' + card.conditions)),
+    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Coverage:'), document.createTextNode(' ' + card.coverage)),
+    el('div', { class: 'iso-tag' }, 'Test Design Specification')
+  );
+  if (onclick) node.addEventListener('click', onclick);
+  return node;
+}
+function renderODCard(card, played, onclick) {
+  const node = el('div', { class: 'card card-od ' + (played ? 'played' : 'in-hand') },
+    el('div', { class: 'card-stripe' }),
+    el('div', { class: 'card-deck-label' }, 'Outfit Detail'),
+    el('div', { class: 'card-title' }, card.cardId)
+  );
+  for (const fname of OD_FIELDS) {
+    if (fname === 'Identifier') continue; // shown in title
+    const v = card.fields[fname];
+    node.appendChild(el('div', { class: 'field' },
+      el('span', { class: 'name' }, fname + ':'),
+      document.createTextNode(' ' + (v || ' '))));
+  }
+  node.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification'));
+  if (onclick) node.addEventListener('click', onclick);
+  return node;
+}
+
+function renderHand() {
+  const p = activePlayer();
+  const hand = $('#hand');
+  hand.innerHTML = '';
+
+  // Roadmaps
+  if (p.hand.roadmaps.length) {
+    const sec = el('div', { class: 'hand-section' });
+    sec.appendChild(el('div', { class: 'hand-label' }, `Roadmaps (${p.hand.roadmaps.length})`));
+    const row = el('div', { class: 'hand-row' });
+    p.hand.roadmaps.forEach((c, i) => {
+      const playable = state.phase === 'plan';
+      const card = renderRRCard(c, false, playable ? () => playRoadmap(i) : null);
+      if (!playable) card.classList.add('disabled');
+      row.appendChild(card);
+    });
+    sec.appendChild(row);
+    hand.appendChild(sec);
+  }
+
+  // Themes
+  if (p.hand.themes.length) {
+    const sec = el('div', { class: 'hand-section' });
+    sec.appendChild(el('div', { class: 'hand-label' }, `Themes (${p.hand.themes.length})`));
+    const row = el('div', { class: 'hand-row' });
+    p.hand.themes.forEach((c, i) => {
+      const playable = state.phase === 'design';
+      const card = renderCTCard(c, false, playable ? () => playTheme(i) : null);
+      if (!playable) card.classList.add('disabled');
+      row.appendChild(card);
+    });
+    sec.appendChild(row);
+    hand.appendChild(sec);
+  }
+
+  // Outfits
+  if (p.hand.outfits.length) {
+    const sec = el('div', { class: 'hand-section' });
+    sec.appendChild(el('div', { class: 'hand-label' }, `Outfits (${p.hand.outfits.length}) — pick 3`));
+    const row = el('div', { class: 'hand-row' });
+    p.hand.outfits.forEach((c, i) => {
+      const playable = state.phase === 'specify' && p.mat.outfits.length < 3;
+      const card = renderODCard(c, false, playable ? () => playOutfit(i) : null);
+      if (!playable) card.classList.add('disabled');
+      row.appendChild(card);
+    });
+    sec.appendChild(row);
+    hand.appendChild(sec);
+  }
+}
+
+function renderActionBar() {
+  const p = activePlayer();
+  const txt = $('#action-text');
+  const btn = $('#action-btn');
+  btn.disabled = true; btn.style.display = 'none';
+  const tag = (label) => `<span class="phase-tag">${label}</span>`;
+  if (state.phase === 'plan') {
+    txt.innerHTML = `${tag('Plan')}<b>${p.name}</b> · pick a <em>Runway Roadmap</em> from your hand to define this season's Project Test Plan.`;
+  } else if (state.phase === 'design') {
+    txt.innerHTML = `${tag('Design')}<b>${p.name}</b> · pick a <em>Collection Theme</em> to declare your Test Design Specification.`;
+  } else if (state.phase === 'specify') {
+    txt.innerHTML = `${tag('Specify')}<b>${p.name}</b> · draft three <em>Outfit Detail</em> cards (${p.mat.outfits.length}/3) — your Test Case Specifications.`;
+  } else if (state.phase === 'inspection') {
+    txt.innerHTML = `${tag('Inspect')}<b>Inspectors</b>: read each Outfit out loud. Tap a field you suspect. Catching a real flaw = +2. False flag = −1.`;
+  } else {
+    txt.innerHTML = '&nbsp;';
+  }
+}
+
+function renderScoreboard() {
+  const sb = $('#scoreboard');
+  if (!sb) return;
+  sb.innerHTML = '';
+  state.players.forEach(p => {
+    const row = el('div', { class: 'sb-player' + (p.idx === state.activePlayerIdx ? ' active' : '') });
+    row.appendChild(el('div', { class: 'sb-name' }, p.name));
+    row.appendChild(el('div', { class: 'sb-bi' }, p.brandIdentity.name));
+    const scoreLine = el('div', { class: 'sb-score' }, String(p.score),
+      el('span', { class: 'sb-score-unit' }, ' pts'));
+    row.appendChild(scoreLine);
+    sb.appendChild(row);
+  });
+}
+
+function renderLog() {
+  const log = $('#log');
+  if (!log) return;
+  log.innerHTML = '';
+  state.log.slice(-6).forEach(line => log.appendChild(el('div', { class: 'log-entry' }, line)));
+  log.scrollTop = log.scrollHeight;
+}
+
+// ======================================================================
+// MODALS — generic
+// ======================================================================
+function openModal(content) {
+  closeModal();
+  const veil = el('div', { class: 'modal-veil', id: 'modal-veil' });
+  const m = el('div', { class: 'modal' });
+  m.appendChild(content);
+  veil.appendChild(m);
+  document.body.appendChild(veil);
+}
+function closeModal() {
+  const v = $('#modal-veil');
+  if (v) v.remove();
+}
+
+// ======================================================================
+// INSPECTION MODAL
+// ======================================================================
+function renderInspectionModal() {
+  if (state.phase !== 'inspection') return;
+  const p = activePlayer();
+  const inspectors = state.players.filter(x => x.idx !== state.activePlayerIdx);
+
+  const root = el('div');
+  root.appendChild(el('div', { class: 'modal-eyebrow' }, 'Phase 4 · Inspection'));
+  root.appendChild(el('h2', {}, `Read ${p.name}'s collection`));
+  root.appendChild(el('div', { class: 'modal-sub' },
+    `Half of the Outfit deck contains planted ISO/IEC 29119-3 defects. Read each card carefully. ` +
+    `Tap your name to claim a flag, then tap the field you suspect. ` +
+    `A correct catch = +2. A false flag = −1.`));
+
+  // Flagger row
+  const flaggerRow = el('div', { class: 'insp-flaggers' });
+  flaggerRow.appendChild(el('span', { class: 'label' }, 'Inspectors'));
+  inspectors.forEach(ins => {
+    const remaining = state.inspection.flagsRemaining[ins.idx];
+    const btn = el('button', {
+      class: 'insp-flagger' + (state.inspection.activeFlagger === ins.idx ? ' active' : ''),
+      onclick: () => setFlagger(ins.idx),
+    },
+      ins.name,
+      el('small', {}, `${remaining} flag${remaining === 1 ? '' : 's'} left`));
+    if (remaining <= 0) btn.disabled = true;
+    flaggerRow.appendChild(btn);
+  });
+  const doneBtn = el('button', { class: 'action-btn', onclick: endInspection, style: 'margin-left:auto; padding:10px 18px;' }, 'Done inspecting');
+  flaggerRow.appendChild(doneBtn);
+  root.appendChild(flaggerRow);
+
+  // Outfit grid
+  const grid = el('div', { class: 'insp-grid' });
+  p.mat.outfits.forEach(outfit => {
+    const card = el('div', { class: 'insp-card' });
+    card.appendChild(el('div', { class: 'card-deck-label' }, 'Outfit Detail · Test Case Specification'));
+    card.appendChild(el('div', { class: 'card-title' }, outfit.cardId));
+    OD_FIELDS.forEach(fname => {
+      if (fname === 'Identifier') return;
+      const v = outfit.fields[fname];
+      const flag = state.inspection.results.find(r => r.outfitId === outfit.cardId && r.fieldName === fname);
+      let cls = 'field';
+      if (flag) cls += flag.correct ? ' flagged-correct' : ' flagged-wrong';
+      else if (state.inspection.activeFlagger == null) cls += ' disabled';
+      const node = el('div', { class: cls,
+        onclick: () => { if (!flag && state.inspection.activeFlagger != null) flagField(outfit.cardId, fname); }
+      },
+        el('span', { class: 'name' }, fname + ':'),
+        document.createTextNode(' ' + (v || '(empty)')));
+      card.appendChild(node);
+    });
+    grid.appendChild(card);
+  });
+  root.appendChild(grid);
+
+  openModal(root);
+  // Re-attach is fine; we re-render on every flag
+}
+
+// ======================================================================
+// EXECUTION MODAL
+// ======================================================================
+function renderExecutionModal() {
+  const root = el('div');
+  root.appendChild(el('div', { class: 'modal-eyebrow' }, 'Phase 5 · Execution'));
+  root.appendChild(el('h2', {}, 'The Rehearsal'));
+  root.appendChild(el('div', { class: 'modal-sub' },
+    'Each Outfit rolls a d6. 1–2 = fail. A planted flaw that escaped Inspection always fails — bad documentation cannot be saved by lucky dice.'));
+
+  const grid = el('div', { class: 'exec-grid' });
+  state.execution.results.forEach(r => {
+    const cell = el('div', { class: 'exec-cell' });
+    cell.appendChild(el('div', { class: 'exec-id' }, r.outfit.cardId));
+    cell.appendChild(el('div', { class: 'exec-die-label' }, 'd6'));
+    cell.appendChild(el('div', { class: 'exec-die' }, String(r.dieRoll)));
+    cell.appendChild(el('div', { class: 'exec-result ' + (r.pass ? 'pass' : 'fail') }, r.pass ? 'walks' : 'fails'));
+    cell.appendChild(el('div', { class: 'exec-note' }, r.note));
+    grid.appendChild(cell);
+  });
+  root.appendChild(grid);
+
+  const actions = el('div', { class: 'modal-actions' });
+  actions.appendChild(el('button', { class: 'action-btn', onclick: continueToResolution }, 'Continue'));
+  root.appendChild(actions);
+
+  openModal(root);
+}
+
+// ======================================================================
+// RESOLUTION MODAL
+// ======================================================================
+function renderResolutionModal(clickedField, wasCorrect) {
+  const cur = state.resolution.current;
+  if (!cur) return;
+  const p = activePlayer();
+
+  const root = el('div');
+  root.appendChild(el('div', { class: 'modal-eyebrow' }, 'Phase 6 · Resolution'));
+  root.appendChild(el('h2', {}, `Wardrobe Malfunction · ${cur.outfit.cardId}`));
+  root.appendChild(el('div', { class: 'modal-sub' }, `${p.name}, identify the originating ISO field. You get one chance — correct = +2, wrong or timeout = −4.`));
+
+  // Malfunction card display
+  const mc = el('div', { class: 'res-malf' });
+  mc.appendChild(el('div', { class: 'res-malf-id' }, `${cur.malfunction.id} · ${cur.malfunction.severity} severity`));
+  mc.appendChild(el('div', { class: 'res-malf-desc' }, cur.malfunction.description));
+  mc.appendChild(el('div', { class: 'res-malf-meta' }, 'Impact: ' + cur.malfunction.impact));
+  root.appendChild(mc);
+
+  root.appendChild(el('div', { class: 'res-prompt' },
+    'Tap the field on YOUR Outfit that produced this defect.'));
+
+  // The outfit, with clickable fields
+  const card = el('div', { class: 'res-card' });
+  card.appendChild(el('div', { class: 'card-deck-label' }, 'Outfit Detail · Test Case Specification'));
+  card.appendChild(el('div', { class: 'card-title' }, cur.outfit.cardId));
+  OD_FIELDS.forEach(fname => {
+    if (fname === 'Identifier') return;
+    const v = cur.outfit.fields[fname];
+    let cls = 'field';
+    if (clickedField === fname) cls += wasCorrect ? ' correct' : ' wrong';
+    const node = el('div', {
+      class: cls,
+      onclick: () => clickResolutionField(fname),
+    },
+      el('span', { class: 'name' }, fname + ':'),
+      document.createTextNode(' ' + (v || '(empty)')));
+    card.appendChild(node);
+  });
+  root.appendChild(card);
+
+  if (clickedField && !wasCorrect) {
+    const r = el('div', { class: 'insp-feedback wrong' }, `✘ Wrong field. Correct: ${cur.originatingField}.`);
+    root.appendChild(r);
+  } else if (clickedField && wasCorrect) {
+    const r = el('div', { class: 'insp-feedback correct' }, `✔ Correct! That was the originating field.`);
+    root.appendChild(r);
+  }
+
+  openModal(root);
+}
+
+// ======================================================================
+// TURN-END MODAL
+// ======================================================================
+function renderTurnEndModal() {
+  const p = activePlayer();
+  const root = el('div');
+  root.appendChild(el('div', { class: 'modal-eyebrow' }, 'Turn Summary'));
+  root.appendChild(el('h2', {}, `${p.name}'s Rehearsal Summary`));
+  root.appendChild(el('div', { class: 'modal-sub' },
+    'This table is the Test Status / Completion Report — one line per Outfit. Notice which ISO fields produced the failures.'));
+
+  const tbl = el('div', { class: 'te-summary' });
+  const t = el('table');
+  t.appendChild(el('thead', {}, el('tr', {},
+    el('th', {}, 'Outfit'), el('th', {}, 'Result'), el('th', {}, 'Originating Doc Field')
+  )));
+  const tb = el('tbody');
+  p.summary.forEach(row => {
+    tb.appendChild(el('tr', {},
+      el('td', { class: 'id-cell' }, row.outfitId),
+      el('td', { class: row.pass ? 'pass' : 'fail' }, row.pass ? 'pass' : 'fail'),
+      el('td', {}, row.originatingField)
+    ));
+  });
+  t.appendChild(tb);
+  tbl.appendChild(t);
+  root.appendChild(tbl);
+
+  // Score breakdown
+  const sb = el('div', { class: 'te-summary', style: 'margin-top:14px;' });
+  sb.appendChild(el('div', { style: 'font-family: var(--serif); font-size: 18px; margin-bottom: 10px;' },
+    `Score this turn: `,
+    el('span', { style: 'font-family: var(--mono); color: var(--gold); font-weight:600;' }, String(p.score) + ' pts')));
+  const recent = p.scoreLog.slice(-12);
+  recent.forEach(s => {
+    const cls = s.delta >= 0 ? 'pos' : 'neg';
+    const sign = s.delta >= 0 ? '+' : '';
+    sb.appendChild(el('div', { style: 'padding: 4px 0; font-size: 12px; color: var(--ink-soft);' },
+      s.reason + ' ', el('span', { class: 'te-delta ' + cls }, sign + s.delta)));
+  });
+  root.appendChild(sb);
+
+  const actions = el('div', { class: 'modal-actions' });
+  const isLast = state.activePlayerIdx === state.players.length - 1;
+  actions.appendChild(el('button', { class: 'action-btn', onclick: nextPlayerOrEnd },
+    isLast ? 'See final results' : 'Next designer'));
+  root.appendChild(actions);
+
+  openModal(root);
+}
+
+// ======================================================================
+// END SCREEN
+// ======================================================================
+function renderEndScreen() {
+  const screen = $('#screen-end');
+  screen.innerHTML = '';
+  showScreen('screen-end');
+
+  const sorted = state.players.slice().sort((a, b) => b.score - a.score);
+  const winner = sorted[0];
+
+  const trophy = el('div', { class: 'end-trophy' });
+  trophy.appendChild(el('div', { class: 'end-eyebrow' }, 'The Show is Over'));
+  trophy.appendChild(el('h1', {}, 'Final ', el('em', {}, 'Curtain')));
+  trophy.appendChild(el('div', { class: 'winner' }, `${winner.name} takes the runway — ${winner.score} pts, the cleanest paper trail.`));
+  screen.appendChild(trophy);
+
+  const lb = el('div', { class: 'end-leaderboard' });
+  lb.appendChild(el('div', { class: 'sb-title' }, 'Leaderboard'));
+  sorted.forEach((p, i) => {
+    const row = el('div', { class: 'end-row' + (i === 0 ? ' first' : '') });
+    row.appendChild(el('div', { class: 'end-rank' }, String(i + 1)));
+    row.appendChild(el('div', { class: 'end-name' }, p.name,
+      el('span', { class: 'bi-tag' }, p.brandIdentity.name)));
+    row.appendChild(el('div', { class: 'end-pts' }, p.score + ' pts'));
+    lb.appendChild(row);
+  });
+  screen.appendChild(lb);
+
+  const sums = el('div', { class: 'end-summaries' });
+  state.players.forEach(p => {
+    const box = el('div', { class: 'end-summary' });
+    box.appendChild(el('h3', {}, `${p.name} — ${p.score} pts`));
+    const t = el('table');
+    t.appendChild(el('thead', {}, el('tr', {},
+      el('th', {}, 'Outfit ID'), el('th', {}, 'Result'), el('th', {}, 'Originating ISO Field')
+    )));
+    const tb = el('tbody');
+    p.summary.forEach(row => {
+      tb.appendChild(el('tr', {},
+        el('td', {}, row.outfitId),
+        el('td', { class: row.pass ? 'pass' : 'fail' }, row.pass ? 'PASS' : 'FAIL'),
+        el('td', {}, row.originatingField)
+      ));
+    });
+    t.appendChild(tb);
+    box.appendChild(t);
+
+    // Show planted-flaw debrief notes (post-game reveal — for learning)
+    const flawed = p.summary.filter(r => !r.pass && r.flawNote);
+    if (flawed.length) {
+      box.appendChild(el('div', { class: 'sb-title', style: 'margin-top:14px;' }, 'Debrief — what those flaws were'));
+      const flawList = el('div', {});
+      flawed.forEach(r => {
+        flawList.appendChild(el('div', { style: 'font-size:12px; opacity:0.85; margin:4px 0;' },
+          `${r.outfitId} → ${r.flawNote}`));
+      });
+      box.appendChild(flawList);
+    }
+
+    sums.appendChild(box);
+  });
+  screen.appendChild(sums);
+
+  const actions = el('div', { class: 'end-actions' });
+  actions.appendChild(el('button', { onclick: () => location.reload() }, 'New Show'));
+  screen.appendChild(actions);
+}
+
+// ======================================================================
+// INIT
+// ======================================================================
+setupWelcome();
+</script>
+</body>
+</html>
