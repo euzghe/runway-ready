@@ -1594,6 +1594,301 @@ body {
   opacity: 0.8;
 }
 
+/* ════════════════════════════════════════════════════════════
+   ⌘  GAME-SCREEN THEATRE PASS
+   Turns the once-editorial game area into "you are inside a
+   live fashion show".
+   ═══════════════════════════════════════════════════════════ */
+
+/* Game screen subtle warm spotlight + slight darkening at edges */
+#screen-game.active {
+  background:
+    radial-gradient(ellipse 80% 30% at 50% 0%, rgba(255,209,102,0.08) 0%, transparent 60%),
+    radial-gradient(ellipse 100% 40% at 50% 100%, rgba(184,146,74,0.06) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, #efe4d2 100%);
+  position: relative;
+}
+
+/* Floating ambient sparkles in game (very subtle, doesn't distract) */
+.game-sparkle {
+  position: fixed;
+  width: 3px; height: 3px;
+  background: var(--bulb);
+  border-radius: 50%;
+  box-shadow: 0 0 6px 1px rgba(255,209,102,0.45);
+  animation: sparkle 4.5s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.6;
+}
+
+/* ── ZONES as glass-and-gold display vitrines ───────────── */
+.zone {
+  background: linear-gradient(180deg, #ffffff 0%, #fffef8 100%);
+  border: 1px solid rgba(184,146,74,0.25);
+  border-top-width: 4px;
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,1),
+    0 1px 3px rgba(0,0,0,0.06),
+    0 0 0 1px rgba(184,146,74,0.06);
+}
+.zone::after {
+  content: '';
+  position: absolute;
+  top: 4px; left: 14%; right: 14%;
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.95), transparent);
+  pointer-events: none;
+  border-radius: 1px;
+}
+/* Decorative tiny gold corners on every zone */
+.zone .zone-corner {
+  position: absolute;
+  width: 12px; height: 12px;
+  border: 1px solid rgba(184,146,74,0.4);
+  pointer-events: none;
+}
+.zone .zone-corner.tl { top: 6px;    left: 6px;    border-right: none; border-bottom: none; }
+.zone .zone-corner.tr { top: 6px;    right: 6px;   border-left: none;  border-bottom: none; }
+.zone .zone-corner.bl { bottom: 6px; left: 6px;    border-right: none; border-top: none; }
+.zone .zone-corner.br { bottom: 6px; right: 6px;   border-left: none;  border-top: none; }
+
+/* ── PERMANENT CATWALK — the runway is always visible ───── */
+.mat-runway {
+  margin: -2px 32px 16px 32px;
+  height: 30px;
+  background:
+    /* warm spotlight glow on top */
+    radial-gradient(ellipse at center top, rgba(255,209,102,0.45) 0%, transparent 70%),
+    /* runway plank lines */
+    repeating-linear-gradient(90deg,
+      transparent 0 36px,
+      rgba(60,40,15,0.18) 36px 37px),
+    /* warm wood */
+    linear-gradient(180deg, #d4a872 0%, #a07a45 100%);
+  border-top: 3px solid var(--gold);
+  border-bottom: 3px solid #4a3417;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  box-shadow:
+    inset 0 6px 12px rgba(255,209,102,0.15),
+    0 4px 12px rgba(184,146,74,0.18);
+}
+.mat-runway::before {
+  content: '✦  T H E   R U N W A Y  ✦';
+  display: block;
+  font-family: var(--serif);
+  font-size: 10px;
+  letter-spacing: 8px;
+  color: rgba(20,18,32,0.55);
+  font-style: italic;
+  line-height: 30px;
+  position: relative;
+  z-index: 2;
+}
+/* Travelling spotlight sweep along the catwalk */
+.mat-runway::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  left: -25%;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(255,240,180,0.55), transparent);
+  animation: spotlight-sweep 5s linear infinite;
+  z-index: 1;
+}
+@keyframes spotlight-sweep {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(280%); }
+}
+
+/* ── ACTION BAR: stage-director banner in dark velvet ──── */
+.action-bar {
+  background:
+    linear-gradient(180deg, var(--ink) 0%, #2a2532 100%);
+  color: var(--bg);
+  border-top: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
+  position: relative;
+  padding: 16px 56px;
+}
+.action-bar::before, .action-bar::after {
+  content: '✦';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gold);
+  font-size: 16px;
+  opacity: 0.75;
+}
+.action-bar::before { left: 24px; }
+.action-bar::after  { right: 24px; }
+.action-text {
+  color: rgba(245,240,232,0.95);
+  font-size: 14px;
+  font-family: var(--serif);
+  font-style: italic;
+}
+.action-text b { color: var(--bulb); font-style: normal; font-family: var(--sans); font-weight: 600; }
+.action-text em { color: var(--gold); font-style: italic; }
+.action-text .phase-tag {
+  background: var(--bulb);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+}
+.action-btn { background: var(--gold); color: var(--ink); }
+.action-btn:hover:not(:disabled) { background: var(--gold-bright); }
+
+/* ── PLAYED CARDS: art-deco gold corner ornaments ─────── */
+.card.played { padding-top: 18px; }
+.card.played::before, .card.played::after {
+  content: '';
+  position: absolute;
+  width: 14px; height: 14px;
+  border: 1px solid rgba(184,146,74,0.55);
+  pointer-events: none;
+}
+.card.played::before {
+  top: 5px; left: 5px;
+  border-right: none; border-bottom: none;
+}
+.card.played::after {
+  bottom: 5px; right: 5px;
+  border-left: none; border-top: none;
+}
+
+/* ── ISO PANEL gets a touch of theatrical warmth ──────── */
+.iso-panel {
+  background:
+    radial-gradient(ellipse at center top, rgba(255,209,102,0.10) 0%, transparent 70%),
+    linear-gradient(180deg, #faf3e3 0%, #fff 100%);
+  border-bottom: 2px solid var(--gold);
+}
+
+/* ════════════════════════════════════════════════════════════
+   ⌘  MODAL TREATMENTS
+   Each modal type gets its own theatrical character.
+   ═══════════════════════════════════════════════════════════ */
+
+/* Inspection modal — Hollywood vanity mirror with bulb frame */
+.modal.inspection-modal {
+  border: 4px solid var(--ink);
+  box-shadow:
+    0 0 0 2px var(--gold),
+    0 0 40px rgba(255,209,102,0.30),
+    var(--shadow-modal);
+  position: relative;
+}
+.modal.inspection-modal::after {
+  content: '';
+  position: absolute;
+  inset: -22px;
+  border-radius: 22px;
+  pointer-events: none;
+  background:
+    /* TOP row of bulbs */
+    radial-gradient(circle 5px at 14px 11px, var(--bulb) 0%, var(--bulb) 50%, transparent 60%) top left   / 28px 22px repeat-x,
+    /* BOTTOM row */
+    radial-gradient(circle 5px at 14px 11px, var(--bulb) 0%, var(--bulb) 50%, transparent 60%) bottom left / 28px 22px repeat-x,
+    /* LEFT column */
+    radial-gradient(circle 5px at 11px 14px, var(--bulb) 0%, var(--bulb) 50%, transparent 60%) top left   / 22px 28px repeat-y,
+    /* RIGHT column */
+    radial-gradient(circle 5px at 11px 14px, var(--bulb) 0%, var(--bulb) 50%, transparent 60%) top right  / 22px 28px repeat-y;
+  filter: drop-shadow(0 0 4px rgba(255,209,102,0.6));
+  animation: marquee-blink 1.6s ease-in-out infinite;
+}
+
+/* Execution modal — bright runway scene */
+.modal.execution-modal {
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,209,102,0.12) 0%, transparent 60%),
+    linear-gradient(180deg, var(--bg) 0%, #faf3e3 100%);
+  border: 3px solid var(--gold);
+  box-shadow:
+    0 0 30px rgba(255,209,102,0.18),
+    var(--shadow-modal);
+}
+
+/* Resolution modal — red velvet alarm */
+.modal.resolution-modal {
+  background: linear-gradient(180deg, #fff 0%, #fdf6f3 100%);
+  border: 3px solid var(--c-wm);
+  box-shadow:
+    0 0 0 1px var(--c-wm),
+    0 0 30px rgba(139,40,72,0.30),
+    var(--shadow-modal);
+  position: relative;
+}
+.modal.resolution-modal::before {
+  background: linear-gradient(90deg, transparent, var(--c-wm), transparent);
+  opacity: 0.6;
+}
+.modal.resolution-modal::after {
+  content: '⚠';
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--c-wm);
+  color: white;
+  font-size: 22px;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid var(--bg);
+  box-shadow: 0 0 16px rgba(139,40,72,0.6);
+  animation: alarm-pulse 1.1s ease-in-out infinite;
+  font-weight: 700;
+}
+@keyframes alarm-pulse {
+  0%, 100% { transform: translateX(-50%) scale(1);    box-shadow: 0 0 16px rgba(139,40,72,0.6); }
+  50%      { transform: translateX(-50%) scale(1.15); box-shadow: 0 0 28px rgba(139,40,72,0.9); }
+}
+
+/* Turn-end modal — paper showbill */
+.modal.turn-end-modal {
+  background:
+    /* paper texture */
+    repeating-linear-gradient(0deg,
+      transparent 0 22px,
+      rgba(184,146,74,0.025) 22px 23px),
+    linear-gradient(180deg, #fdfaf0 0%, #f7efd8 100%);
+  border: 2px solid var(--gold);
+  box-shadow:
+    inset 0 0 0 4px var(--bg),
+    0 0 0 1px rgba(0,0,0,0.04),
+    var(--shadow-modal);
+  position: relative;
+}
+.modal.turn-end-modal::after {
+  content: '~  Showbill  ~';
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--gold);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-style: italic;
+  padding: 5px 22px;
+  border-radius: 14px;
+  font-size: 13px;
+  letter-spacing: 2.5px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+/* ── Mat row spacing tweak so vitrines breathe ─────────── */
+.mat { padding-bottom: 10px; }
+.mat-row { padding: 0 32px; }
+
 /* ── 3D ANIMATED DICE ──────────────────────────────────────── */
 .dice-stage {
   perspective: 700px;
@@ -2283,6 +2578,21 @@ function startGame() {
 
   state.activePlayerIdx = 0;
   showScreen('screen-game');
+
+  // Sprinkle subtle ambient sparkles in the game viewport (one-time)
+  const gameScreen = $('#screen-game');
+  // Clean any existing sparkles from a previous game
+  gameScreen.querySelectorAll('.game-sparkle').forEach(s => s.remove());
+  const sparklePositions = [
+    [8, 12], [18, 78], [88, 18], [92, 65],
+    [12, 45], [85, 38],
+  ];
+  sparklePositions.forEach(([t, l], i) => {
+    const sp = el('div', { class: 'game-sparkle', style:
+      `top: ${t}vh; left: ${l}vw; animation-delay: ${(i * 0.7).toFixed(2)}s;` });
+    gameScreen.appendChild(sp);
+  });
+
   startTurn();
 }
 
@@ -2645,6 +2955,9 @@ function renderMat() {
   row1.appendChild(zoneCT(p));
   mat.appendChild(row1);
 
+  // Permanent catwalk strip — visual anchor between docs and outfits
+  mat.appendChild(el('div', { class: 'mat-runway' }));
+
   // Row 2: 3 Outfit slots
   const row2 = el('div', { class: 'mat-row' });
   for (let i = 0; i < 3; i++) {
@@ -2653,12 +2966,18 @@ function renderMat() {
   mat.appendChild(row2);
 }
 
+// Add gold deco corners to every zone after creation
+function addZoneCorners(zone) {
+  ['tl','tr','bl','br'].forEach(c => zone.appendChild(el('div', { class: 'zone-corner ' + c })));
+  return zone;
+}
+
 function zoneBI(p) {
   const zone = el('div', { class: 'zone zone-bi' });
   zone.appendChild(el('div', { class: 'zone-label' }, 'Brand Identity · Org. Strategy'));
   if (p.mat.brandIdentity) zone.appendChild(renderBICard(p.mat.brandIdentity, true));
   else zone.appendChild(el('div', { class: 'zone-empty' }, 'no Brand Identity'));
-  return zone;
+  return addZoneCorners(zone);
 }
 function zoneRR(p) {
   const awaiting = state.phase === 'plan' && !p.mat.roadmap;
@@ -2666,7 +2985,7 @@ function zoneRR(p) {
   zone.appendChild(el('div', { class: 'zone-label' }, 'Phase 1 · Runway Roadmap'));
   if (p.mat.roadmap) zone.appendChild(renderRRCard(p.mat.roadmap, true));
   else zone.appendChild(el('div', { class: 'zone-empty' }, awaiting ? '↓ choose a Roadmap from hand below' : 'awaits a Project Test Plan'));
-  return zone;
+  return addZoneCorners(zone);
 }
 function zoneCT(p) {
   const awaiting = state.phase === 'design' && !p.mat.theme;
@@ -2674,7 +2993,7 @@ function zoneCT(p) {
   zone.appendChild(el('div', { class: 'zone-label' }, 'Phase 2 · Collection Theme'));
   if (p.mat.theme) zone.appendChild(renderCTCard(p.mat.theme, true));
   else zone.appendChild(el('div', { class: 'zone-empty' }, awaiting ? '↓ choose a Theme from hand below' : 'awaits a Test Design Spec'));
-  return zone;
+  return addZoneCorners(zone);
 }
 function zoneOD(p, i) {
   const awaiting = state.phase === 'specify' && p.mat.outfits.length === i;
@@ -2682,7 +3001,7 @@ function zoneOD(p, i) {
   zone.appendChild(el('div', { class: 'zone-label' }, `Outfit ${i+1} · Test Case`));
   if (p.mat.outfits[i]) zone.appendChild(renderODCard(p.mat.outfits[i], true));
   else zone.appendChild(el('div', { class: 'zone-empty' }, awaiting ? '↓ draft an Outfit from hand below' : 'empty slot'));
-  return zone;
+  return addZoneCorners(zone);
 }
 
 function renderBICard(card, played) {
@@ -2859,10 +3178,10 @@ function renderLog() {
 // ======================================================================
 // MODALS — generic
 // ======================================================================
-function openModal(content) {
+function openModal(content, extraClass) {
   closeModal();
   const veil = el('div', { class: 'modal-veil', id: 'modal-veil' });
-  const m = el('div', { class: 'modal' });
+  const m = el('div', { class: 'modal' + (extraClass ? ' ' + extraClass : '') });
   m.appendChild(content);
   veil.appendChild(m);
   document.body.appendChild(veil);
@@ -2958,7 +3277,7 @@ function renderInspectionModal() {
       el('span', { style: 'opacity:0.7;' }, 'Then "Done inspecting" or pick another inspector.')));
   }
 
-  openModal(root);
+  openModal(root, 'inspection-modal');
 }
 
 // ======================================================================
@@ -3034,7 +3353,7 @@ function renderExecutionModal() {
   actions.appendChild(continueBtn);
   root.appendChild(actions);
 
-  openModal(root);
+  openModal(root, 'execution-modal');
 
   // Sequential dice animation — each die rolls and lands in turn
   cubes.forEach((c, i) => {
@@ -3111,7 +3430,7 @@ function renderResolutionModal(clickedField, wasCorrect) {
     root.appendChild(r);
   }
 
-  openModal(root);
+  openModal(root, 'resolution-modal');
 }
 
 // ======================================================================
@@ -3162,7 +3481,7 @@ function renderTurnEndModal() {
     isLast ? 'See final results' : 'Next designer'));
   root.appendChild(actions);
 
-  openModal(root);
+  openModal(root, 'turn-end-modal');
 }
 
 // ======================================================================
