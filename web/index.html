@@ -12,8 +12,8 @@
    ====================================================================== */
 
 :root {
-  /* Editorial palette — drawn from print fashion magazines */
-  --bg:           #f5f0e8;   /* warm cream paper */
+  /* Theatrical haute-couture palette — runway lights + velvet drapery */
+  --bg:           #f5f0e8;   /* warm cream paper (game area) */
   --bg-deep:      #efe8db;   /* slightly darker cream for sections */
   --surface:      #ffffff;
   --ink:          #1a1820;   /* deep ink, not pure black */
@@ -21,8 +21,14 @@
   --ink-fade:     #8a8694;
   --rule:         #d8d2c4;   /* dividers / borders */
   --gold:         #b8924a;   /* champagne gold accent */
+  --gold-bright:  #d4ad5e;   /* bright gold for highlights */
   --gold-soft:    #f0e4cc;
   --champagne:    #faf3e3;
+  --velvet:       #5a1a26;   /* deep velvet curtain red */
+  --velvet-deep:  #2d0a14;   /* shadow side of velvet */
+  --velvet-light: #7d1e2d;   /* highlight side of velvet */
+  --stage-dark:   #14121a;
+  --bulb:         #ffd166;   /* marquee bulb glow */
 
   --c-bi:         #8b2848;   /* deep rose — Brand Identity (Organizational Strategy) */
   --c-rr:         #1f3a5f;   /* deep navy — Roadmap (Project Plan) */
@@ -1274,6 +1280,320 @@ em { font-style: italic; color: var(--ink-soft); }
 }
 .iso-panel-mapping .text b { color: var(--gold); font-weight: 600; font-style: normal; }
 
+/* ════════════════════════════════════════════════════════════
+   ⌘  THEATRICAL RUNWAY OVERLAY
+   Velvet curtains, marquee bulbs, stage spotlights, mannequin
+   silhouettes — turns the editorial layout into a fashion show.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Body: deep stage backdrop visible behind everything ──── */
+body {
+  background:
+    /* warm cream main */
+    var(--bg);
+}
+
+/* ── Welcome screen: full theatre — curtains, spotlight, marquee ── */
+#screen-welcome.active {
+  background:
+    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,209,102,0.20) 0%, transparent 70%),
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(184,146,74,0.10) 0%, transparent 60%),
+    linear-gradient(180deg, var(--velvet-deep) 0%, var(--stage-dark) 60%, #08060c 100%);
+  position: relative;
+  overflow: hidden;
+}
+/* Velvet curtains framing left and right */
+#screen-welcome.active::before,
+#screen-welcome.active::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 18vw;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--velvet-deep) 0px,
+      var(--velvet) 18px,
+      var(--velvet-light) 30px,
+      var(--velvet) 42px,
+      var(--velvet-deep) 60px);
+  box-shadow: inset -20px 0 40px rgba(0,0,0,0.4);
+  border-bottom: 4px solid var(--gold);
+}
+#screen-welcome.active::before {
+  left: 0;
+  border-bottom-right-radius: 60% 40px;
+}
+#screen-welcome.active::after {
+  right: 0;
+  transform: scaleX(-1);
+  border-bottom-right-radius: 60% 40px;
+}
+/* Marquee bulb strip across the top of the welcome screen */
+.marquee-strip {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 14px;
+  z-index: 60;
+  background: var(--stage-dark);
+  background-image: radial-gradient(circle 4px at 12px 7px,
+    var(--bulb) 0%, var(--bulb) 30%, transparent 35%);
+  background-size: 28px 14px;
+  background-repeat: repeat-x;
+  box-shadow: 0 4px 16px rgba(255,209,102,0.25);
+  animation: marquee-blink 1.6s ease-in-out infinite;
+}
+@keyframes marquee-blink {
+  0%, 100% { filter: brightness(0.7); }
+  50%      { filter: brightness(1.3); }
+}
+/* Floating sparkles */
+.sparkle {
+  position: absolute;
+  width: 4px; height: 4px;
+  background: var(--bulb);
+  border-radius: 50%;
+  box-shadow: 0 0 8px 2px rgba(255,209,102,0.7);
+  animation: sparkle 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 2;
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.4); }
+  50%      { opacity: 1; transform: scale(1.4); }
+}
+/* Welcome card — looks like a programme on a velvet stage */
+.welcome-card {
+  position: relative;
+  z-index: 5;
+  border: 1px solid rgba(184,146,74,0.35);
+  background:
+    radial-gradient(ellipse at top, rgba(184,146,74,0.06) 0%, transparent 50%),
+    rgba(20,18,26,0.55);
+  backdrop-filter: blur(18px);
+}
+.welcome-card::before {
+  background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);
+  opacity: 0.6;
+}
+
+/* ── Game header: marquee bulbs above ─────────────────────── */
+.gh-header {
+  position: sticky;
+  background:
+    linear-gradient(180deg, #0c0a12 0%, #1a1820 100%);
+  border-bottom: 1px solid var(--gold);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.gh-header::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8px;
+  background-image: radial-gradient(circle 2.5px at 12px 4px,
+    var(--bulb) 0%, var(--bulb) 30%, transparent 38%);
+  background-size: 28px 8px;
+  background-repeat: repeat-x;
+  opacity: 0.85;
+  animation: marquee-blink 1.8s ease-in-out infinite;
+}
+.gh-header { padding-top: 18px; }
+.gh-brand { letter-spacing: 2px; }
+.gh-brand::before, .gh-brand::after {
+  content: '✦';
+  color: var(--gold);
+  margin: 0 8px;
+  font-size: 14px;
+  vertical-align: middle;
+  opacity: 0.7;
+}
+
+/* ── Mat: stage floor with spotlight from above ───────────── */
+.mat {
+  background:
+    /* warm spotlight from top */
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,209,102,0.10) 0%, transparent 70%),
+    /* stage floor wood grain */
+    repeating-linear-gradient(0deg,
+      transparent 0 22px,
+      rgba(115,80,30,0.04) 22px 23px),
+    /* subtle warm gradient */
+    linear-gradient(180deg, #fdf8ed 0%, var(--bg) 100%);
+  position: relative;
+  border-bottom: 2px solid rgba(184,146,74,0.2);
+}
+/* Velvet curtain side panels on the mat (decorative) */
+.mat::before,
+.mat::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: -1px;
+  width: 24px;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--velvet-deep) 0px,
+      var(--velvet) 5px,
+      var(--velvet-light) 10px,
+      var(--velvet) 15px,
+      var(--velvet-deep) 24px);
+  box-shadow: inset -4px 0 8px rgba(0,0,0,0.35);
+  z-index: 1;
+}
+.mat::before { left: 0; border-bottom-right-radius: 30% 16px; }
+.mat::after  { right: 0; transform: scaleX(-1); border-bottom-right-radius: 30% 16px; }
+.mat-row { position: relative; z-index: 2; padding: 0 30px; }
+
+/* ── Hand area: backstage workshop ────────────────────────── */
+.hand {
+  background:
+    /* subtle backstage dusk */
+    linear-gradient(180deg, var(--bg-deep) 0%, #e8dfd0 100%);
+  border-top: 1px dashed var(--gold);
+  position: relative;
+}
+.hand::before {
+  content: 'BACKSTAGE — your hand';
+  position: absolute;
+  top: -10px;
+  left: 32px;
+  background: var(--bg-deep);
+  padding: 0 12px;
+  font-size: 9px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  font-weight: 700;
+  border: 1px solid var(--gold);
+  border-radius: 10px;
+}
+
+/* ── Sidebar: judges' panel ───────────────────────────────── */
+.side-col {
+  background:
+    radial-gradient(ellipse at top, rgba(184,146,74,0.08) 0%, transparent 60%),
+    linear-gradient(180deg, #1a1820 0%, #2a2532 100%);
+  border-left: 2px solid var(--gold);
+}
+.side-col::before {
+  content: 'THE JURY';
+  display: block;
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+  font-size: 13px;
+  letter-spacing: 4px;
+  padding-bottom: 8px;
+  margin-bottom: 8px;
+  border-bottom: 1px solid rgba(184,146,74,0.3);
+}
+.sb-title { display: none; }
+
+/* ── Cards: more decorative (corner ornaments) ─────────────── */
+.card.played {
+  background-image:
+    radial-gradient(ellipse at top right, rgba(255,209,102,0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at bottom left, rgba(184,146,74,0.04) 0%, transparent 50%);
+}
+.card-od.played {
+  background-image:
+    /* dress form silhouette at bottom-right */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 200'><path d='M50 12 C42 12 38 19 38 28 C38 33 41 38 47 40 L42 58 L26 110 L32 116 L42 102 L42 188 L58 188 L58 102 L68 116 L74 110 L58 58 L53 40 C59 38 62 33 62 28 C62 19 58 12 50 12 Z' fill='%236e5d96' opacity='0.07'/></svg>") right -10px bottom -8px / 70px no-repeat,
+    radial-gradient(ellipse at top, rgba(110,93,150,0.02) 0%, transparent 50%);
+}
+.card-bi .deck-icon::before { content: '✦ '; }
+.card-rr .deck-icon { font-size: 16px; }
+.card-ct .deck-icon { font-size: 16px; }
+
+/* Make the played mat cards slightly more theatrical */
+.zone {
+  box-shadow: var(--shadow-1), inset 0 0 0 1px rgba(255,255,255,0.5);
+}
+
+/* ── Execution modal: full runway scene ──────────────────── */
+.modal:has(.runway-strip) {
+  background:
+    linear-gradient(180deg, var(--bg) 0%, #faf3e3 50%, var(--bg) 100%);
+}
+.runway-strip {
+  background:
+    radial-gradient(ellipse at center, rgba(255,209,102,0.30) 0%, transparent 70%),
+    linear-gradient(180deg, var(--velvet-deep) 0%, var(--stage-dark) 100%);
+  margin: 0 -40px 22px -40px;
+  padding: 18px 24px 14px 24px;
+  border-top: 3px solid var(--gold);
+  border-bottom: 3px solid var(--gold);
+  box-shadow: 0 4px 20px rgba(255,209,102,0.15);
+  position: relative;
+}
+.runway-strip::after {
+  content: '';
+  position: absolute;
+  bottom: -16px; left: 0; right: 0;
+  height: 14px;
+  background:
+    /* wooden runway extension */
+    repeating-linear-gradient(0deg,
+      transparent 0 4px,
+      rgba(115,80,30,0.08) 4px 5px),
+    linear-gradient(180deg, #c9a06a 0%, #a07a45 100%);
+  border-bottom: 2px solid var(--ink);
+}
+.spotlight { color: var(--bulb); text-shadow: 0 0 12px rgba(255,209,102,0.5); }
+
+/* ── End screen: final curtain call ──────────────────────── */
+#screen-end.active {
+  background:
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,209,102,0.25) 0%, transparent 60%),
+    linear-gradient(180deg, var(--velvet-deep) 0%, var(--stage-dark) 50%, #08060c 100%);
+  position: relative;
+  overflow-x: hidden;
+}
+#screen-end.active::before,
+#screen-end.active::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 14vw;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--velvet-deep) 0px,
+      var(--velvet) 16px,
+      var(--velvet-light) 26px,
+      var(--velvet) 36px,
+      var(--velvet-deep) 50px);
+  box-shadow: inset -16px 0 32px rgba(0,0,0,0.4);
+  z-index: 1;
+}
+#screen-end.active::before { left: 0; border-bottom-right-radius: 60% 40px; }
+#screen-end.active::after  { right: 0; transform: scaleX(-1); border-bottom-right-radius: 60% 40px; }
+.end-trophy, .end-leaderboard, .end-summaries, .end-actions {
+  position: relative;
+  z-index: 5;
+}
+.end-trophy h1::before, .end-trophy h1::after {
+  content: '✦';
+  color: var(--gold);
+  font-size: 24px;
+  vertical-align: middle;
+  margin: 0 18px;
+  opacity: 0.7;
+}
+
+/* ── Welcome title decorative flourish ──────────────────── */
+.welcome-title { position: relative; }
+.welcome-title::before {
+  content: '✧  ✦  ✧';
+  display: block;
+  font-size: 14px;
+  color: var(--gold);
+  letter-spacing: 6px;
+  margin-bottom: 14px;
+  opacity: 0.8;
+}
+
 /* ── 3D ANIMATED DICE ──────────────────────────────────────── */
 .dice-stage {
   perspective: 700px;
@@ -1592,6 +1912,15 @@ body {
      ====================================================================== -->
 
 <div id="screen-welcome" class="screen active">
+  <div class="marquee-strip"></div>
+  <div class="sparkle" style="top: 12%; left: 28%; animation-delay: 0s;"></div>
+  <div class="sparkle" style="top: 22%; left: 75%; animation-delay: 0.6s;"></div>
+  <div class="sparkle" style="top: 65%; left: 25%; animation-delay: 1.2s;"></div>
+  <div class="sparkle" style="top: 78%; left: 78%; animation-delay: 1.8s;"></div>
+  <div class="sparkle" style="top: 45%; left: 18%; animation-delay: 2.4s;"></div>
+  <div class="sparkle" style="top: 50%; left: 82%; animation-delay: 0.3s;"></div>
+  <div class="sparkle" style="top: 30%; left: 50%; animation-delay: 1.5s;"></div>
+  <div class="sparkle" style="top: 85%; left: 45%; animation-delay: 0.9s;"></div>
   <div class="welcome-card">
     <div class="welcome-eyebrow">Group SunShine · Week 3 Prototype</div>
     <div class="welcome-title">Runway <em>Ready</em></div>
@@ -2843,6 +3172,13 @@ function renderEndScreen() {
   const screen = $('#screen-end');
   screen.innerHTML = '';
   showScreen('screen-end');
+
+  // Decorative sparkles for the end screen
+  for (let i = 0; i < 10; i++) {
+    const sp = el('div', { class: 'sparkle', style:
+      `top: ${10 + Math.random() * 80}%; left: ${15 + Math.random() * 70}%; animation-delay: ${(Math.random() * 3).toFixed(2)}s;` });
+    screen.appendChild(sp);
+  }
 
   const sorted = state.players.slice().sort((a, b) => b.score - a.score);
   const winner = sorted[0];
