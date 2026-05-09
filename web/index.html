@@ -1787,7 +1787,10 @@ body {
   border-radius: 50%;
   box-shadow: inset 0 0 0 2px rgba(184,146,74,0.25), 0 1px 4px rgba(0,0,0,0.1);
 }
-.rr-header .rr-titles { min-width: 0; }
+.rr-header .rr-titles {
+  min-width: 0;
+  padding-right: 70px; /* clear room for the rotated APPROVED stamp */
+}
 .rr-header .card-deck-label {
   font-size: 9px;
   letter-spacing: 2px;
@@ -1896,21 +1899,34 @@ body {
   border-top: 1px dashed rgba(31,58,95,0.3);
   padding-top: 4px;
 }
-/* DRAMATIC VENUE SCENE at the bottom — bigger and more elaborate */
-.rr-venue {
-  position: relative;
-  height: 80px;
-  margin-top: 0;
-  background:
-    /* warm spotlight glow from above */
-    radial-gradient(ellipse 50% 80% at 50% 0%, rgba(255,209,102,0.30) 0%, transparent 70%),
-    /* deep stage backdrop */
-    linear-gradient(180deg, #14121a 0%, #1a1820 100%);
-  border-top: 2px solid var(--gold);
-  overflow: hidden;
-  z-index: 1;
+/* (removed: per-card venue scene — now lives as a fixed game backdrop) */
+
+/* ════════════════════════════════════════════════════════════
+   ⌘  GAME-SCREEN VENUE BACKDROP
+   The runway venue scene (figure-free) lives behind the entire
+   game screen, fixed at the bottom, low opacity, so the player
+   feels they are inside an empty theatre at all times.
+   ═══════════════════════════════════════════════════════════ */
+#screen-game.active::before {
+  content: '';
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 360px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='xMidYMax meet'><path d='M140 0 L168 200 L232 200 L260 0 Z' fill='rgba(255,221,140,0.30)'/><path d='M70 0 L120 200 L156 200 L130 0 Z' fill='rgba(255,221,140,0.18)'/><path d='M330 0 L280 200 L244 200 L270 0 Z' fill='rgba(255,221,140,0.18)'/><path d='M0 0 L0 200 L40 200 Q32 150 40 100 Q32 50 40 0 Z' fill='%235a1a26' opacity='0.7'/><path d='M400 0 L400 200 L360 200 Q368 150 360 100 Q368 50 360 0 Z' fill='%235a1a26' opacity='0.7'/><path d='M115 200 L180 36 L220 36 L285 200 Z' fill='%23d4a872'/><path d='M115 200 L180 36 L220 36 L285 200 Z' fill='none' stroke='%237a5e2c' stroke-width='1'/><path d='M200 36 L200 200' stroke='%23b8924a' stroke-width='1.2' stroke-dasharray='5,3'/><rect x='0' y='170' width='400' height='3' fill='%231f3a5f' opacity='0.5'/><rect x='0' y='180' width='400' height='3' fill='%231f3a5f' opacity='0.4'/><rect x='0' y='190' width='400' height='3' fill='%231f3a5f' opacity='0.3'/><circle cx='30' cy='168' r='2.5' fill='%231a1820' opacity='0.55'/><circle cx='50' cy='168' r='2.5' fill='%231a1820' opacity='0.55'/><circle cx='70' cy='168' r='2.5' fill='%231a1820' opacity='0.55'/><circle cx='340' cy='168' r='2.5' fill='%231a1820' opacity='0.55'/><circle cx='360' cy='168' r='2.5' fill='%231a1820' opacity='0.55'/><circle cx='380' cy='168' r='2.5' fill='%231a1820' opacity='0.55'/><rect x='0' y='0' width='400' height='5' fill='%231a1820'/><circle cx='120' cy='5' r='3' fill='%23b8924a'/><circle cx='200' cy='5' r='4' fill='%23ffd166'/><circle cx='280' cy='5' r='3' fill='%23b8924a'/></svg>"),
+    linear-gradient(180deg, transparent 0%, rgba(20,18,32,0.06) 60%, rgba(20,18,32,0.18) 100%);
+  background-size: 100% 100%, 100% 100%;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+  filter: saturate(0.8);
 }
-.rr-venue svg { width: 100%; height: 100%; display: block; }
+/* Make sure all the in-flow content sits above the backdrop */
+#screen-game.active > * { position: relative; z-index: 1; }
+.help-btn { z-index: 80; }
 
 /* ════════════════════════════════════════════════════════════
    ⌘  THEME CARDS — mood-board paper + palette swatches
@@ -3516,45 +3532,6 @@ function shortSchedule(s) {
   return (m ? m[1] : s).trim();
 }
 
-// Dramatic stage-venue SVG for the bottom of every roadmap card.
-function makeVenueSVG(meta) {
-  return `
-<svg viewBox="0 0 200 80" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
-  <!-- spotlight beams coming down -->
-  <path d="M70 0 L84 80 L116 80 L130 0 Z" fill="rgba(255,221,140,0.20)"/>
-  <path d="M40 0 L60 80 L78 80 L70 0 Z" fill="rgba(255,221,140,0.10)"/>
-  <path d="M160 0 L140 80 L122 80 L130 0 Z" fill="rgba(255,221,140,0.10)"/>
-  <!-- velvet curtains framing each side -->
-  <path d="M0 0 L0 80 L18 80 Q14 60 18 40 Q14 20 18 0 Z" fill="${meta.accent || '#5a1a26'}" opacity="0.55"/>
-  <path d="M200 0 L200 80 L182 80 Q186 60 182 40 Q186 20 182 0 Z" fill="${meta.accent || '#5a1a26'}" opacity="0.55"/>
-  <!-- catwalk perspective trapezoid -->
-  <path d="M55 80 L88 18 L112 18 L145 80 Z" fill="#d4a872" opacity="0.85"/>
-  <path d="M55 80 L88 18 L112 18 L145 80 Z" fill="none" stroke="#7a5e2c" stroke-width="0.6"/>
-  <!-- centre line on catwalk -->
-  <path d="M100 18 L100 80" stroke="#b8924a" stroke-width="0.7" stroke-dasharray="3,2"/>
-  <!-- audience rows (bottom) -->
-  <rect x="0" y="68" width="200" height="2" fill="#1f3a5f" opacity="0.55"/>
-  <rect x="0" y="73" width="200" height="2" fill="#1f3a5f" opacity="0.4"/>
-  <rect x="0" y="77" width="200" height="2" fill="#1f3a5f" opacity="0.3"/>
-  <!-- audience heads suggested as dots -->
-  <circle cx="20" cy="66" r="1.5" fill="#1a1820" opacity="0.5"/>
-  <circle cx="32" cy="66" r="1.5" fill="#1a1820" opacity="0.5"/>
-  <circle cx="172" cy="66" r="1.5" fill="#1a1820" opacity="0.5"/>
-  <circle cx="184" cy="66" r="1.5" fill="#1a1820" opacity="0.5"/>
-  <!-- model walking on catwalk (silhouette mid-walk) -->
-  <ellipse cx="100" cy="32" rx="1.6" ry="2" fill="#1a1820"/>
-  <path d="M99 34 L100 38 L101 34" fill="#1a1820"/>
-  <path d="M97 38 Q100 36 103 38 L102 50 L98 50 Z" fill="#1a1820"/>
-  <path d="M98 50 L96 65 L99 65 L100 52 Z" fill="#1a1820"/>
-  <path d="M102 50 L104 65 L101 65 L100 52 Z" fill="#1a1820"/>
-  <!-- spotlight rig at top -->
-  <rect x="0" y="0" width="200" height="3" fill="#1a1820"/>
-  <circle cx="60" cy="3" r="2" fill="#b8924a"/>
-  <circle cx="100" cy="3" r="2.5" fill="${"#ffd166"}"/>
-  <circle cx="140" cy="3" r="2" fill="#b8924a"/>
-</svg>`;
-}
-
 function renderRRCard(card, played, onclick) {
   const meta = roadmapMeta(card);
   const node = el('div', { class: 'card card-rr ' + (played ? 'played' : 'in-hand') });
@@ -3612,10 +3589,8 @@ function renderRRCard(card, played, onclick) {
   body.appendChild(el('div', { class: 'iso-tag' }, 'Project Test Plan · §6.3'));
   node.appendChild(body);
 
-  // VENUE SCENE
-  const venue = el('div', { class: 'rr-venue' });
-  venue.innerHTML = makeVenueSVG(meta);
-  node.appendChild(venue);
+  // (venue scene removed — it now lives as a fixed game-screen backdrop
+  //  so every roadmap card stays compact and readable)
 
   if (onclick) node.addEventListener('click', onclick);
   return node;
