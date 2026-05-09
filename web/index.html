@@ -492,8 +492,23 @@ em { font-style: italic; color: var(--ink-soft); }
   padding: 24px 32px 32px 32px;
   background: var(--bg-deep);
 }
-.hand-section { margin-bottom: 20px; }
+.hand-section {
+  margin-bottom: 24px;
+  padding: 16px 18px;
+  border-radius: var(--r-md);
+  background: rgba(255,255,255,0.4);
+  transition: background 0.2s;
+}
 .hand-section:last-child { margin-bottom: 0; }
+.hand-section.active-section {
+  background: linear-gradient(180deg, var(--champagne) 0%, rgba(255,255,255,0.6) 100%);
+  box-shadow: 0 0 0 1px var(--gold), var(--shadow-2);
+}
+.hand-section:not(.active-section) {
+  opacity: 0.55;
+  filter: saturate(0.7);
+}
+.hand-section .hand-prompt { margin-bottom: 14px; margin-top: 0; }
 .hand-label {
   font-size: 10px;
   text-transform: uppercase;
@@ -504,6 +519,7 @@ em { font-style: italic; color: var(--ink-soft); }
   padding-bottom: 6px;
   border-bottom: 1px solid var(--rule);
 }
+.hand-section.active-section .hand-label { color: var(--gold); }
 .hand-row {
   display: flex;
   gap: 12px;
@@ -641,17 +657,96 @@ em { font-style: italic; color: var(--ink-soft); }
   align-items: center;
 }
 
-/* ── Inspection modal ────────────────────────────────────────── */
+/* ── Inspection modal — 2-step explainer at top ───────────── */
+.insp-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.insp-step {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--r-md);
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  transition: all 0.2s;
+}
+.insp-step.current {
+  background: linear-gradient(180deg, var(--champagne), var(--surface));
+  border-color: var(--gold);
+  box-shadow: 0 0 0 2px rgba(184,146,74,0.18);
+}
+.insp-step.done { opacity: 0.55; }
+.insp-step.pending { opacity: 0.45; filter: saturate(0.6); }
+.insp-step-num {
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--ink-fade);
+  color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--serif);
+  font-size: 16px;
+  font-weight: 600;
+  flex-shrink: 0;
+}
+.insp-step.current .insp-step-num { background: var(--gold); animation: pulse-num 1.4s ease-in-out infinite; }
+.insp-step.done .insp-step-num { background: var(--c-pass); }
+@keyframes pulse-num { 50% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(184,146,74,0.18); } }
+.insp-step-text { min-width: 0; }
+.insp-step-title {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 2px;
+  line-height: 1.25;
+}
+.insp-step.current .insp-step-title { font-weight: 500; }
+.insp-step-sub {
+  font-size: 11px;
+  color: var(--ink-soft);
+  line-height: 1.4;
+}
+
+.insp-floor-hint {
+  margin-top: 16px;
+  padding: 12px 16px;
+  background: var(--ink);
+  color: white;
+  border-radius: var(--r-md);
+  font-size: 12px;
+  text-align: center;
+  letter-spacing: 0.3px;
+  border-left: 3px solid var(--gold);
+}
+.insp-floor-hint.ready {
+  background: var(--gold-soft);
+  color: var(--ink);
+  border-left-color: var(--gold);
+}
+
+.insp-grid.tap-blocked .insp-card { filter: saturate(0.5); }
+.insp-grid.tap-ready .insp-card { animation: card-tap-ready 0.4s ease; }
+@keyframes card-tap-ready { from { transform: translateY(2px); opacity: 0.85; } }
+
 .insp-flaggers {
   display: flex;
   gap: 12px;
-  margin-bottom: 24px;
-  padding: 16px 20px;
+  margin-bottom: 18px;
+  padding: 14px 18px;
   background: var(--surface);
   border: 1px solid var(--rule);
   border-radius: var(--r-md);
   align-items: center;
   flex-wrap: wrap;
+}
+.insp-flaggers.awaiting-pick {
+  border: 2px dashed var(--gold);
+  background: var(--champagne);
+  animation: gentle-glow 2.4s ease-in-out infinite;
 }
 .insp-flaggers .label {
   font-size: 10px;
@@ -2325,64 +2420,63 @@ function renderHand() {
   const hand = $('#hand');
   hand.innerHTML = '';
 
-  // Big visual prompt directing eyes to the relevant hand row
-  const promptText = {
-    'plan':    { arrow: '↓', label: 'Tap a Roadmap below', sub: 'It becomes your Project Test Plan.' },
-    'design':  { arrow: '↓', label: 'Tap a Theme below',   sub: 'It becomes your Test Design Specification.' },
-    'specify': { arrow: '↓', label: 'Tap an Outfit below', sub: `Each one is a Test Case Spec. ${3 - p.mat.outfits.length} of 3 remaining.` },
-  }[state.phase];
-  if (promptText) {
-    hand.appendChild(el('div', { class: 'hand-prompt' },
-      el('span', { class: 'arrow' }, promptText.arrow),
-      el('div', {},
-        el('div', {}, el('b', {}, promptText.label)),
-        el('div', { style: 'font-size:12px; color:#4a4654; margin-top:2px;' }, promptText.sub))));
-  }
+  // Per-section prompts — placed RIGHT ABOVE each section's cards so they
+  // are always next to where the player has to click, regardless of scroll.
+  const buildSection = (kind, cards, isActive, label, prompt, makeCard) => {
+    if (!cards.length) return;
+    const sec = el('div', { class: 'hand-section' + (isActive ? ' active-section' : '') });
+    if (isActive && prompt) {
+      sec.appendChild(el('div', { class: 'hand-prompt' },
+        el('span', { class: 'arrow' }, '↓'),
+        el('div', {},
+          el('div', {}, el('b', {}, prompt.label)),
+          el('div', { style: 'font-size:12px; color:#4a4654; margin-top:2px;' }, prompt.sub))));
+    }
+    sec.appendChild(el('div', { class: 'hand-label' }, label));
+    const row = el('div', { class: 'hand-row' });
+    cards.forEach((c, i) => {
+      const card = makeCard(c, i);
+      row.appendChild(card);
+    });
+    sec.appendChild(row);
+    hand.appendChild(sec);
+  };
 
   // Roadmaps
-  if (p.hand.roadmaps.length) {
-    const sec = el('div', { class: 'hand-section' });
-    sec.appendChild(el('div', { class: 'hand-label' }, `Roadmaps (${p.hand.roadmaps.length}) · 🗺️ Project Test Plan`));
-    const row = el('div', { class: 'hand-row' });
-    p.hand.roadmaps.forEach((c, i) => {
+  buildSection('roadmaps', p.hand.roadmaps,
+    state.phase === 'plan',
+    `Roadmaps in your hand (${p.hand.roadmaps.length}) · 🗺️ Project Test Plan`,
+    { label: 'Tap a Roadmap below', sub: 'It becomes your Project Test Plan for this round.' },
+    (c, i) => {
       const playable = state.phase === 'plan';
       const card = renderRRCard(c, false, playable ? () => playRoadmap(i) : null);
       if (!playable) card.classList.add('disabled');
-      row.appendChild(card);
+      return card;
     });
-    sec.appendChild(row);
-    hand.appendChild(sec);
-  }
 
   // Themes
-  if (p.hand.themes.length) {
-    const sec = el('div', { class: 'hand-section' });
-    sec.appendChild(el('div', { class: 'hand-label' }, `Themes (${p.hand.themes.length}) · 🎨 Test Design Spec`));
-    const row = el('div', { class: 'hand-row' });
-    p.hand.themes.forEach((c, i) => {
+  buildSection('themes', p.hand.themes,
+    state.phase === 'design',
+    `Themes in your hand (${p.hand.themes.length}) · 🎨 Test Design Spec`,
+    { label: 'Tap a Theme below', sub: 'It becomes your Test Design Specification — the coverage criteria for your Outfits.' },
+    (c, i) => {
       const playable = state.phase === 'design';
       const card = renderCTCard(c, false, playable ? () => playTheme(i) : null);
       if (!playable) card.classList.add('disabled');
-      row.appendChild(card);
+      return card;
     });
-    sec.appendChild(row);
-    hand.appendChild(sec);
-  }
 
   // Outfits
-  if (p.hand.outfits.length) {
-    const sec = el('div', { class: 'hand-section' });
-    sec.appendChild(el('div', { class: 'hand-label' }, `Outfits (${p.hand.outfits.length}) · 👗 Test Case Spec — pick 3`));
-    const row = el('div', { class: 'hand-row' });
-    p.hand.outfits.forEach((c, i) => {
+  buildSection('outfits', p.hand.outfits,
+    state.phase === 'specify',
+    `Outfits in your hand (${p.hand.outfits.length}) · 👗 Test Case Spec — pick 3`,
+    { label: 'Tap an Outfit below', sub: `Each one is a complete Test Case Spec. ${3 - p.mat.outfits.length} of 3 remaining.` },
+    (c, i) => {
       const playable = state.phase === 'specify' && p.mat.outfits.length < 3;
       const card = renderODCard(c, false, playable ? () => playOutfit(i) : null);
       if (!playable) card.classList.add('disabled');
-      row.appendChild(card);
+      return card;
     });
-    sec.appendChild(row);
-    hand.appendChild(sec);
-  }
 }
 
 function renderActionBar() {
@@ -2456,18 +2550,35 @@ function renderInspectionModal() {
   if (state.phase !== 'inspection') return;
   const p = activePlayer();
   const inspectors = state.players.filter(x => x.idx !== state.activePlayerIdx);
+  const hasFlagger = state.inspection.activeFlagger != null;
+  const flaggerName = hasFlagger ? state.players[state.inspection.activeFlagger].name : null;
 
   const root = el('div');
-  root.appendChild(el('div', { class: 'modal-eyebrow' }, 'Phase 4 · Inspection'));
+  root.appendChild(el('div', { class: 'modal-eyebrow' }, 'Phase 4 · Inspection — Peer Review'));
   root.appendChild(el('h2', {}, `Read ${p.name}'s collection`));
   root.appendChild(el('div', { class: 'modal-sub' },
-    `Half of the Outfit deck contains planted ISO/IEC 29119-3 defects. Read each card carefully. ` +
-    `Tap your name to claim a flag, then tap the field you suspect. ` +
-    `A correct catch = +2. A false flag = −1.`));
+    `Half of the Outfit deck contains planted ISO/IEC 29119-3 defects. Read each card. ` +
+    `A correct catch = +2 to you. A false flag = −1.`));
 
-  // Flagger row
-  const flaggerRow = el('div', { class: 'insp-flaggers' });
-  flaggerRow.appendChild(el('span', { class: 'label' }, 'Inspectors'));
+  // Two-step explainer at top — shows current step highlighted
+  const steps = el('div', { class: 'insp-steps' });
+  const step1 = el('div', { class: 'insp-step' + (hasFlagger ? ' done' : ' current') },
+    el('div', { class: 'insp-step-num' }, '1'),
+    el('div', { class: 'insp-step-text' },
+      el('div', { class: 'insp-step-title' }, hasFlagger ? `${flaggerName} is inspecting` : 'Tap YOUR NAME to claim a flag'),
+      el('div', { class: 'insp-step-sub' }, hasFlagger ? 'You can switch to a different inspector below.' : `Each non-active player has 2 flags this round.`)));
+  const step2 = el('div', { class: 'insp-step' + (hasFlagger ? ' current' : ' pending') },
+    el('div', { class: 'insp-step-num' }, '2'),
+    el('div', { class: 'insp-step-text' },
+      el('div', { class: 'insp-step-title' }, hasFlagger ? 'Tap any FIELD that looks wrong ↓' : 'Then tap the suspect ISO field'),
+      el('div', { class: 'insp-step-sub' }, hasFlagger ? `Look for missing values, contradictions, untestable conditions, broken traceability.` : `Once an inspector is selected, fields become tappable.`)));
+  steps.appendChild(step1);
+  steps.appendChild(step2);
+  root.appendChild(steps);
+
+  // Flagger row (Step 1 affordance)
+  const flaggerRow = el('div', { class: 'insp-flaggers' + (hasFlagger ? '' : ' awaiting-pick') });
+  flaggerRow.appendChild(el('span', { class: 'label' }, 'Inspectors:'));
   inspectors.forEach(ins => {
     const remaining = state.inspection.flagsRemaining[ins.idx];
     const btn = el('button', {
@@ -2483,11 +2594,11 @@ function renderInspectionModal() {
   flaggerRow.appendChild(doneBtn);
   root.appendChild(flaggerRow);
 
-  // Outfit grid
-  const grid = el('div', { class: 'insp-grid' });
+  // Outfit grid (Step 2 affordance)
+  const grid = el('div', { class: 'insp-grid' + (hasFlagger ? ' tap-ready' : ' tap-blocked') });
   p.mat.outfits.forEach(outfit => {
     const card = el('div', { class: 'insp-card' });
-    card.appendChild(el('div', { class: 'card-deck-label' }, 'Outfit Detail · Test Case Specification'));
+    card.appendChild(el('div', { class: 'card-deck-label' }, '👗 Outfit Detail · Test Case Spec §7.3'));
     card.appendChild(el('div', { class: 'card-title' }, outfit.cardId));
     OD_FIELDS.forEach(fname => {
       if (fname === 'Identifier') return;
@@ -2495,9 +2606,9 @@ function renderInspectionModal() {
       const flag = state.inspection.results.find(r => r.outfitId === outfit.cardId && r.fieldName === fname);
       let cls = 'field';
       if (flag) cls += flag.correct ? ' flagged-correct' : ' flagged-wrong';
-      else if (state.inspection.activeFlagger == null) cls += ' disabled';
+      else if (!hasFlagger) cls += ' disabled';
       const node = el('div', { class: cls,
-        onclick: () => { if (!flag && state.inspection.activeFlagger != null) flagField(outfit.cardId, fname); }
+        onclick: () => { if (!flag && hasFlagger) flagField(outfit.cardId, fname); }
       },
         el('span', { class: 'name' }, fname + ':'),
         document.createTextNode(' ' + (v || '(empty)')));
@@ -2507,8 +2618,18 @@ function renderInspectionModal() {
   });
   root.appendChild(grid);
 
+  // Bottom hint
+  if (!hasFlagger) {
+    root.appendChild(el('div', { class: 'insp-floor-hint' },
+      '↑ Pick an inspector above to start. ',
+      el('span', { style: 'opacity:0.7;' }, 'No flaws can be tapped until then.')));
+  } else {
+    root.appendChild(el('div', { class: 'insp-floor-hint ready' },
+      `${flaggerName} — tap a suspect field on any of the three Outfits above. `,
+      el('span', { style: 'opacity:0.7;' }, 'Then "Done inspecting" or pick another inspector.')));
+  }
+
   openModal(root);
-  // Re-attach is fine; we re-render on every flag
 }
 
 // ======================================================================
