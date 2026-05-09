@@ -3309,81 +3309,215 @@ function fabricFor(id) {
   return FABRIC_PALETTE[Math.abs(h) % FABRIC_PALETTE.length];
 }
 
-// Build a colored model + dress SVG. The dress uses the fabric color.
-function makeOutfitIllustration(fabric) {
-  const c = fabric.hex;
-  const cd = fabric.dark;
+// Detect outfit type from the Inputs string so the illustration matches
+// what the player actually drafted.
+function detectOutfitType(card) {
+  const i = (card.fields.Inputs || '').toLowerCase();
+  if (i.includes('jumpsuit')) return 'jumpsuit';
+  if (i.includes('parka')) return 'parka';
+  if (i.includes('coat')) return 'coat';
+  if (i.includes('blazer') || i.includes('tweed')) return 'suit';
+  if (i.includes('trouser') || i.includes('pant')) return 'trousers';
+  return 'gown';
+}
+
+// Shared SVG fragments — head, defs, sparkle dots — used by every variant.
+function svgDefs(fabric) {
   return `
-<svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
   <defs>
     <linearGradient id="dr-${fabric.name}" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="${c}"/>
-      <stop offset="100%" stop-color="${cd}"/>
+      <stop offset="0%" stop-color="${fabric.hex}"/>
+      <stop offset="100%" stop-color="${fabric.dark}"/>
     </linearGradient>
     <radialGradient id="hl-${fabric.name}" cx="50%" cy="0%" r="60%">
       <stop offset="0%" stop-color="rgba(255,255,255,0.55)"/>
       <stop offset="100%" stop-color="rgba(255,255,255,0)"/>
     </radialGradient>
-  </defs>
-  <!-- skin tone -->
+  </defs>`;
+}
+function svgHead() {
+  return `
   <ellipse cx="50" cy="14" rx="6.5" ry="8.5" fill="#d4a87e"/>
   <ellipse cx="48" cy="16" rx="0.6" ry="0.8" fill="#1a1820"/>
   <ellipse cx="52" cy="16" rx="0.6" ry="0.8" fill="#1a1820"/>
   <path d="M48 19.5 Q50 20.5 52 19.5" stroke="#8b3a3a" stroke-width="0.6" fill="none"/>
-  <!-- hair flowing back -->
   <path d="M44 9 Q36 8 36 18 Q40 24 45 21 Z" fill="#2a1810"/>
   <path d="M55 11 Q60 9 58 18 Q56 22 53 19 Z" fill="#2a1810"/>
-  <!-- neck -->
-  <rect x="48" y="21.5" width="4" height="3.5" fill="#c89968"/>
-  <!-- arms (skin tone) thin and elegant -->
+  <rect x="48" y="21.5" width="4" height="3.5" fill="#c89968"/>`;
+}
+
+// ─── 1) GOWN — long flowing dress ─────────────────────────────
+function variantGown(fabric) {
+  const c = fabric.hex, cd = fabric.dark;
+  return `
+  <!-- arms hanging beside dress -->
   <path d="M30 30 Q24 50 24 80 L26 80 Q28 52 32 32 Z" fill="#d4a87e"/>
   <path d="M70 30 Q76 50 76 80 L74 80 Q72 52 68 32 Z" fill="#d4a87e"/>
-  <!-- bodice (fabric) -->
+  <!-- bodice -->
   <path d="M30 26 Q50 22 70 26 L72 38 L66 54 L34 54 L28 38 Z" fill="url(#dr-${fabric.name})"/>
-  <!-- bodice highlight (silk shine) -->
   <path d="M32 28 Q50 26 68 28 L66 40 L34 40 Z" fill="url(#hl-${fabric.name})" opacity="0.6"/>
-  <!-- decorative jewels on bodice -->
   <circle cx="42" cy="38" r="0.9" fill="white" opacity="0.9"/>
   <circle cx="50" cy="34" r="1.1" fill="white"/>
   <circle cx="58" cy="38" r="0.9" fill="white" opacity="0.9"/>
-  <circle cx="46" cy="44" r="0.7" fill="${c}" stroke="white" stroke-width="0.3"/>
-  <circle cx="54" cy="44" r="0.7" fill="${c}" stroke="white" stroke-width="0.3"/>
-  <!-- waist + belt with gold buckle -->
+  <!-- belt -->
   <path d="M34 54 L36 64 L64 64 L66 54 Z" fill="${cd}"/>
   <rect x="36" y="62" width="28" height="3" fill="#1a1820"/>
-  <rect x="48" y="61" width="4" height="5" fill="#b8924a" stroke="#7a5e2c" stroke-width="0.3"/>
-  <circle cx="50" cy="63.5" r="1" fill="#7a5e2c"/>
-  <!-- A-line skirt (fabric) -->
+  <rect x="48" y="61" width="4" height="5" fill="#b8924a"/>
+  <!-- A-line skirt -->
   <path d="M36 65 L8 195 L92 195 L64 65 Z" fill="url(#dr-${fabric.name})"/>
-  <!-- skirt top highlight -->
   <path d="M36 65 L34 90 L66 90 L64 65 Z" fill="url(#hl-${fabric.name})" opacity="0.4"/>
-  <!-- skirt fabric pleats / folds -->
   <path d="M36 66 L20 195" stroke="${cd}" stroke-width="0.8" fill="none" opacity="0.6"/>
-  <path d="M44 66 L36 195" stroke="${cd}" stroke-width="0.6" fill="none" opacity="0.45"/>
   <path d="M50 66 L50 195" stroke="white" stroke-width="0.6" fill="none" opacity="0.4"/>
-  <path d="M56 66 L64 195" stroke="${cd}" stroke-width="0.6" fill="none" opacity="0.45"/>
   <path d="M64 66 L80 195" stroke="${cd}" stroke-width="0.8" fill="none" opacity="0.6"/>
-  <!-- glitter on skirt -->
-  <circle cx="28" cy="110" r="0.9" fill="white" opacity="0.95"/>
-  <circle cx="72" cy="105" r="0.7" fill="white" opacity="0.85"/>
-  <circle cx="48" cy="125" r="0.8" fill="white" opacity="0.9"/>
-  <circle cx="60" cy="140" r="0.6" fill="white" opacity="0.8"/>
-  <circle cx="40" cy="155" r="0.7" fill="white" opacity="0.85"/>
-  <circle cx="68" cy="170" r="0.9" fill="white" opacity="0.9"/>
-  <circle cx="32" cy="180" r="0.6" fill="white" opacity="0.75"/>
-  <circle cx="55" cy="185" r="0.8" fill="white" opacity="0.85"/>
-  <!-- shoes -->
+  <circle cx="30" cy="110" r="0.9" fill="white" opacity="0.9"/>
+  <circle cx="70" cy="125" r="0.7" fill="white" opacity="0.85"/>
+  <circle cx="50" cy="155" r="0.8" fill="white" opacity="0.9"/>
+  <circle cx="40" cy="175" r="0.7" fill="white" opacity="0.8"/>
   <ellipse cx="42" cy="195" rx="4" ry="2" fill="#1a1820"/>
-  <ellipse cx="58" cy="195" rx="4" ry="2" fill="#1a1820"/>
+  <ellipse cx="58" cy="195" rx="4" ry="2" fill="#1a1820"/>`;
+}
+
+// ─── 2) SUIT — tailored blazer + trousers ──────────────────────
+function variantSuit(fabric) {
+  const c = fabric.hex, cd = fabric.dark;
+  return `
+  <!-- arms -->
+  <path d="M28 32 Q22 60 22 95 L26 95 Q30 62 32 34 Z" fill="url(#dr-${fabric.name})"/>
+  <path d="M72 32 Q78 60 78 95 L74 95 Q70 62 68 34 Z" fill="url(#dr-${fabric.name})"/>
+  <!-- shirt collar (white) -->
+  <path d="M44 26 L50 36 L56 26 L52 24 L50 28 L48 24 Z" fill="#fafafa"/>
+  <!-- blazer body with V-neck and lapels -->
+  <path d="M30 28 L36 78 L64 78 L70 28 L62 26 L56 28 L50 38 L44 28 L38 26 Z" fill="url(#dr-${fabric.name})"/>
+  <path d="M62 26 L60 50 L52 38" stroke="${cd}" stroke-width="0.6" fill="none"/>
+  <path d="M38 26 L40 50 L48 38" stroke="${cd}" stroke-width="0.6" fill="none"/>
+  <!-- buttons -->
+  <circle cx="50" cy="58" r="1" fill="#1a1820"/>
+  <circle cx="50" cy="68" r="1" fill="#1a1820"/>
+  <!-- waist seam + tailored trousers -->
+  <rect x="36" y="78" width="28" height="2" fill="${cd}"/>
+  <path d="M36 80 L34 195 L48 195 L49 80 Z" fill="url(#dr-${fabric.name})"/>
+  <path d="M64 80 L66 195 L52 195 L51 80 Z" fill="url(#dr-${fabric.name})"/>
+  <!-- creases -->
+  <line x1="42" y1="90" x2="41" y2="190" stroke="${cd}" stroke-width="0.4" opacity="0.55"/>
+  <line x1="58" y1="90" x2="59" y2="190" stroke="${cd}" stroke-width="0.4" opacity="0.55"/>
+  <!-- heels -->
+  <ellipse cx="42" cy="195" rx="4" ry="2" fill="#1a1820"/>
+  <ellipse cx="58" cy="195" rx="4" ry="2" fill="#1a1820"/>`;
+}
+
+// ─── 3) TROUSERS — sleeveless camisole + wide-leg trousers ─────
+function variantTrousers(fabric) {
+  const c = fabric.hex, cd = fabric.dark;
+  return `
+  <!-- bare arms -->
+  <path d="M30 30 Q24 50 24 90 L26 90 Q28 52 32 32 Z" fill="#d4a87e"/>
+  <path d="M70 30 Q76 50 76 90 L74 90 Q72 52 68 32 Z" fill="#d4a87e"/>
+  <!-- camisole top (silk) -->
+  <path d="M36 26 L40 28 L42 28 L42 26 L48 26 L48 30 L52 30 L52 26 L58 26 L58 28 L60 28 L64 26 L66 60 L34 60 Z" fill="#fafafa"/>
+  <path d="M36 28 Q50 24 64 28 L62 36 L38 36 Z" fill="url(#hl-${fabric.name})" opacity="0.5"/>
+  <!-- waist (slightly visible skin) -->
+  <rect x="38" y="60" width="24" height="3" fill="#d4a87e"/>
+  <!-- high-waist wide-leg trousers (fabric color) -->
+  <path d="M34 63 L26 195 L48 195 L49 63 Z" fill="url(#dr-${fabric.name})"/>
+  <path d="M66 63 L74 195 L52 195 L51 63 Z" fill="url(#dr-${fabric.name})"/>
+  <!-- waistband -->
+  <rect x="34" y="63" width="32" height="3" fill="${cd}"/>
+  <!-- crease lines -->
+  <line x1="40" y1="70" x2="34" y2="195" stroke="${cd}" stroke-width="0.4" opacity="0.5"/>
+  <line x1="60" y1="70" x2="66" y2="195" stroke="${cd}" stroke-width="0.4" opacity="0.5"/>
+  <!-- scarf draped on shoulder (loose) -->
+  <path d="M64 28 L68 50 L70 70 L66 50 Z" fill="${cd}" opacity="0.55"/>
+  <!-- delicate sandals -->
+  <ellipse cx="38" cy="195" rx="4" ry="2" fill="#1a1820"/>
+  <ellipse cx="62" cy="195" rx="4" ry="2" fill="#1a1820"/>`;
+}
+
+// ─── 4) PARKA — long outerwear with layers underneath ──────────
+function variantParka(fabric) {
+  const c = fabric.hex, cd = fabric.dark;
+  return `
+  <!-- base layer (cream) at neck -->
+  <path d="M40 26 L60 26 L60 36 L40 36 Z" fill="#f0e4cc"/>
+  <!-- arms inside parka -->
+  <path d="M22 32 Q18 70 20 130 L28 130 Q32 70 32 34 Z" fill="url(#dr-${fabric.name})"/>
+  <path d="M78 32 Q82 70 80 130 L72 130 Q68 70 68 34 Z" fill="url(#dr-${fabric.name})"/>
+  <!-- main parka body -->
+  <path d="M28 30 Q50 28 72 30 L76 80 L74 165 L26 165 L24 80 Z" fill="url(#dr-${fabric.name})"/>
+  <path d="M32 32 Q50 30 68 32 L70 70 L30 70 Z" fill="url(#hl-${fabric.name})" opacity="0.4"/>
+  <!-- center zipper -->
+  <line x1="50" y1="30" x2="50" y2="160" stroke="${cd}" stroke-width="1.2"/>
+  <circle cx="50" cy="40" r="1.2" fill="#b8924a"/>
+  <circle cx="50" cy="80" r="0.7" fill="#1a1820"/>
+  <circle cx="50" cy="120" r="0.7" fill="#1a1820"/>
+  <!-- hood collar -->
+  <path d="M30 32 Q50 22 70 32 L66 38 Q50 32 34 38 Z" fill="${cd}" opacity="0.85"/>
+  <!-- pockets -->
+  <rect x="32" y="100" width="14" height="14" fill="${cd}" opacity="0.6"/>
+  <rect x="54" y="100" width="14" height="14" fill="${cd}" opacity="0.6"/>
+  <!-- pants visible at the bottom (darker) -->
+  <path d="M34 165 L32 195 L48 195 L48 165 Z" fill="#3a3540"/>
+  <path d="M66 165 L68 195 L52 195 L52 165 Z" fill="#3a3540"/>
+  <!-- chunky boots -->
+  <ellipse cx="40" cy="196" rx="6" ry="3" fill="#1a1820"/>
+  <ellipse cx="60" cy="196" rx="6" ry="3" fill="#1a1820"/>`;
+}
+
+// ─── 5) JUMPSUIT — one-piece bodice + trouser legs ─────────────
+function variantJumpsuit(fabric) {
+  const c = fabric.hex, cd = fabric.dark;
+  return `
+  <!-- bare arms -->
+  <path d="M30 30 Q24 50 24 95 L26 95 Q28 52 32 32 Z" fill="#d4a87e"/>
+  <path d="M70 30 Q76 50 76 95 L74 95 Q72 52 68 32 Z" fill="#d4a87e"/>
+  <!-- jumpsuit bodice (fabric) -->
+  <path d="M32 26 Q50 22 68 26 L70 60 L30 60 Z" fill="url(#dr-${fabric.name})"/>
+  <path d="M34 28 Q50 26 66 28 L64 40 L36 40 Z" fill="url(#hl-${fabric.name})" opacity="0.6"/>
+  <!-- belt with metal buckle -->
+  <rect x="32" y="60" width="36" height="4" fill="${cd}"/>
+  <rect x="46" y="58" width="8" height="8" fill="#b8924a" stroke="#7a5e2c" stroke-width="0.3"/>
+  <circle cx="50" cy="62" r="1.2" fill="#7a5e2c"/>
+  <!-- straight-leg trousers (fabric, continuous from bodice) -->
+  <path d="M30 64 L30 190 L48 190 L49 64 Z" fill="url(#dr-${fabric.name})"/>
+  <path d="M70 64 L70 190 L52 190 L51 64 Z" fill="url(#dr-${fabric.name})"/>
+  <!-- pockets -->
+  <path d="M34 80 L30 90 L40 95 L42 80 Z" fill="${cd}" opacity="0.5"/>
+  <path d="M66 80 L70 90 L60 95 L58 80 Z" fill="${cd}" opacity="0.5"/>
+  <path d="M36 130 L40 145 L44 130 Z" fill="${cd}" opacity="0.4"/>
+  <path d="M64 130 L60 145 L56 130 Z" fill="${cd}" opacity="0.4"/>
+  <!-- crease lines -->
+  <line x1="40" y1="70" x2="38" y2="190" stroke="${cd}" stroke-width="0.4" opacity="0.5"/>
+  <line x1="60" y1="70" x2="62" y2="190" stroke="${cd}" stroke-width="0.4" opacity="0.5"/>
+  <!-- chunky boots -->
+  <ellipse cx="40" cy="194" rx="6" ry="3.5" fill="#1a1820"/>
+  <ellipse cx="60" cy="194" rx="6" ry="3.5" fill="#1a1820"/>`;
+}
+
+// Build the colored model + outfit SVG for the given outfit type.
+function makeOutfitIllustration(fabric, type) {
+  const variants = {
+    gown:     variantGown,
+    suit:     variantSuit,
+    coat:     variantSuit,        // tailored coat similar shape to suit
+    trousers: variantTrousers,
+    parka:    variantParka,
+    jumpsuit: variantJumpsuit,
+  };
+  const drawBody = variants[type] || variantGown;
+  return `
+<svg viewBox="0 0 100 200" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMax meet">
+  ${svgDefs(fabric)}
+  ${svgHead()}
+  ${drawBody(fabric)}
 </svg>`;
 }
 
-// Reusable: returns the .outfit-illu element with the colored model SVG +
-// fabric ribbon + LOOK badge + sparkles. Used in mat / inspection / resolution.
+// Reusable: returns the .outfit-illu element with the colored model SVG
+// (matched to the outfit type) + fabric ribbon + LOOK badge + sparkles.
 function buildOutfitIlluContainer(card) {
   const fabric = fabricFor(card.cardId);
-  const illu = el('div', { class: 'outfit-illu' });
-  illu.innerHTML = makeOutfitIllustration(fabric);
+  const type = detectOutfitType(card);
+  const illu = el('div', { class: 'outfit-illu outfit-' + type });
+  illu.innerHTML = makeOutfitIllustration(fabric, type);
 
   const swatch = el('div', { class: 'fabric-swatch' });
   const dot = el('div', { class: 'dot' });
@@ -3392,7 +3526,9 @@ function buildOutfitIlluContainer(card) {
   swatch.appendChild(document.createTextNode(fabric.name));
   illu.appendChild(swatch);
 
-  const lookNum = (card.cardId.match(/\d+/) || ['—'])[0];
+  // LOOK number = trailing digits of the card ID (SS26-001 -> 001, not 26)
+  const parts = card.cardId.split('-');
+  const lookNum = parts[parts.length - 1];
   illu.appendChild(el('div', { class: 'look-badge' }, 'Look ' + lookNum));
 
   ['s1','s2','s3','s4','s5','s6'].forEach(c => illu.appendChild(el('div', { class: 'sequin ' + c })));
