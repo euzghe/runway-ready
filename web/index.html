@@ -1080,6 +1080,383 @@ em { font-style: italic; color: var(--ink-soft); }
   letter-spacing: 1px;
 }
 
+/* ── ISO CONTEXT PANEL — persistent teaching strip ─────────── */
+.iso-panel {
+  background: linear-gradient(180deg, #faf3e3 0%, #fff 100%);
+  border-bottom: 1px solid var(--rule);
+  padding: 14px 32px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 24px;
+  align-items: center;
+}
+.iso-panel-badge {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px 18px;
+  background: var(--ink);
+  color: var(--gold);
+  border-radius: var(--r-md);
+  min-width: 140px;
+}
+.iso-panel-badge .iso-std {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.75;
+  font-weight: 600;
+}
+.iso-panel-badge .iso-clause {
+  font-family: var(--mono);
+  font-size: 12px;
+  margin-top: 3px;
+  letter-spacing: 0.3px;
+}
+.iso-panel-body { min-width: 0; }
+.iso-panel-doc {
+  font-family: var(--serif);
+  font-size: 19px;
+  color: var(--ink);
+  margin-bottom: 4px;
+  line-height: 1.2;
+}
+.iso-panel-doc .doc-tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-soft);
+  padding: 3px 8px;
+  border-radius: var(--r-sm);
+  margin-right: 10px;
+  font-family: var(--sans);
+  font-weight: 600;
+  vertical-align: middle;
+}
+.iso-panel-desc {
+  font-size: 12px;
+  color: var(--ink-soft);
+  line-height: 1.45;
+  font-style: italic;
+}
+.iso-panel-fields {
+  margin-top: 7px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+}
+.iso-panel-fields .iso-field-chip {
+  font-size: 10px;
+  padding: 3px 8px;
+  background: white;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  color: var(--ink-soft);
+  font-family: var(--mono);
+}
+.iso-panel-mapping {
+  text-align: right;
+  border-left: 1px solid var(--rule);
+  padding-left: 22px;
+  max-width: 280px;
+}
+.iso-panel-mapping .label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-fade);
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+.iso-panel-mapping .text {
+  font-size: 12px;
+  color: var(--ink);
+  line-height: 1.4;
+  font-style: italic;
+}
+.iso-panel-mapping .text b { color: var(--gold); font-weight: 600; font-style: normal; }
+
+/* ── 3D ANIMATED DICE ──────────────────────────────────────── */
+.dice-stage {
+  perspective: 700px;
+  width: 90px;
+  height: 90px;
+  margin: 14px auto 6px auto;
+}
+.dice-cube {
+  width: 90px;
+  height: 90px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 1.6s cubic-bezier(.45, .05, .25, .95);
+  transform: rotateX(-25deg) rotateY(-30deg);
+}
+.dice-cube.rolling {
+  animation: dice-spin 0.45s linear infinite;
+}
+@keyframes dice-spin {
+  0%   { transform: rotateX(0deg)   rotateY(0deg)   rotateZ(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg) rotateZ(180deg); }
+}
+.dice-face {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+  background: linear-gradient(145deg, #ffffff 0%, #f5efdf 100%);
+  border: 1.5px solid var(--ink);
+  border-radius: 14px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  padding: 12px;
+  gap: 4px;
+  box-shadow: inset 0 0 16px rgba(0,0,0,0.06);
+  backface-visibility: visible;
+}
+.dice-face .pip {
+  background: var(--ink);
+  border-radius: 50%;
+  width: 14px;
+  height: 14px;
+  align-self: center;
+  justify-self: center;
+}
+.dice-face.f1 { transform: translateZ(45px); }
+.dice-face.f2 { transform: rotateY(180deg) translateZ(45px); }
+.dice-face.f3 { transform: rotateY(90deg)  translateZ(45px); }
+.dice-face.f4 { transform: rotateY(-90deg) translateZ(45px); }
+.dice-face.f5 { transform: rotateX(90deg)  translateZ(45px); }
+.dice-face.f6 { transform: rotateX(-90deg) translateZ(45px); }
+
+/* Land-on transforms (final resting position per face value) */
+.dice-cube.land-1 { transform: rotateX(720deg)  rotateY(720deg); }
+.dice-cube.land-2 { transform: rotateX(720deg)  rotateY(900deg); }
+.dice-cube.land-3 { transform: rotateX(720deg)  rotateY(630deg); }
+.dice-cube.land-4 { transform: rotateX(720deg)  rotateY(810deg); }
+.dice-cube.land-5 { transform: rotateX(630deg)  rotateY(720deg); }
+.dice-cube.land-6 { transform: rotateX(810deg)  rotateY(720deg); }
+
+/* ── RUNWAY STRIP for execution modal ──────────────────────── */
+.runway-strip {
+  background: linear-gradient(180deg, #1a1820 0%, #2a2532 100%);
+  padding: 12px 24px 8px 24px;
+  margin: 0 -40px 18px -40px;
+  border-top: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
+  position: relative;
+}
+.runway-strip::before {
+  content: '';
+  position: absolute;
+  top: 4px; left: 0; right: 0;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--gold) 0 12px, transparent 12px 36px);
+  opacity: 0.5;
+}
+.runway-spotlights {
+  display: flex;
+  justify-content: space-around;
+  gap: 18px;
+}
+.spotlight {
+  flex: 1;
+  text-align: center;
+  color: var(--gold);
+  font-family: var(--serif);
+  font-size: 12px;
+  font-style: italic;
+  letter-spacing: 0.3px;
+  opacity: 0.85;
+}
+.spotlight::before {
+  content: '✦';
+  display: block;
+  font-size: 18px;
+  margin-bottom: 2px;
+  animation: twinkle 2.5s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%      { opacity: 1; transform: scale(1.15); }
+}
+
+/* ── HELP BUTTON (always visible) ──────────────────────────── */
+.help-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--ink);
+  font-family: var(--serif);
+  font-size: 26px;
+  font-weight: 600;
+  font-style: italic;
+  box-shadow: var(--shadow-3);
+  z-index: 80;
+  transition: transform 0.15s, background 0.15s;
+}
+.help-btn:hover { background: #d4ad5e; transform: scale(1.1); }
+
+/* ── TUTORIAL OVERLAY ──────────────────────────────────────── */
+.tutorial-veil {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 18, 28, 0.85);
+  backdrop-filter: blur(6px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fade-in 0.2s ease;
+}
+.tutorial-card {
+  background: var(--bg);
+  border-radius: var(--r-lg);
+  max-width: 580px;
+  width: 100%;
+  padding: 36px 40px 32px 40px;
+  box-shadow: var(--shadow-modal);
+  position: relative;
+}
+.tutorial-card::before {
+  content: '';
+  position: absolute;
+  top: 16px; left: 40px; right: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.4;
+}
+.tutorial-step-of {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.tutorial-card h2 {
+  font-family: var(--serif);
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.3px;
+  margin-bottom: 12px;
+  line-height: 1.15;
+}
+.tutorial-card h2 em { font-style: italic; color: var(--gold); }
+.tutorial-card p {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+  margin-bottom: 10px;
+}
+.tutorial-card p strong { color: var(--ink); font-weight: 600; }
+.tutorial-illu {
+  background: var(--gold-soft);
+  border-left: 3px solid var(--gold);
+  padding: 12px 16px;
+  margin: 14px 0;
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  font-size: 13px;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.tutorial-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 22px;
+}
+.tutorial-dots { display: flex; gap: 6px; }
+.tutorial-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--rule);
+  transition: all 0.2s;
+}
+.tutorial-dot.active { background: var(--gold); width: 22px; border-radius: 4px; }
+.tutorial-skip {
+  font-size: 12px;
+  color: var(--ink-fade);
+  text-decoration: underline;
+  background: none;
+  padding: 8px 4px;
+}
+.tutorial-next {
+  padding: 12px 24px;
+  background: var(--ink);
+  color: var(--gold);
+  border-radius: var(--r-sm);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+.tutorial-next:hover { background: #2a2632; }
+
+/* ── DECK FASHION ICONS ────────────────────────────────────── */
+.deck-icon {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: 18px;
+  opacity: 0.55;
+  filter: grayscale(0.3);
+  pointer-events: none;
+}
+
+/* ── FABRIC TEXTURE — subtle background pattern ────────────── */
+body {
+  background-image:
+    repeating-linear-gradient(45deg, transparent 0 14px, rgba(184,146,74,0.025) 14px 15px),
+    repeating-linear-gradient(-45deg, transparent 0 14px, rgba(139,40,72,0.018) 14px 15px);
+  background-attachment: fixed;
+}
+
+/* ── SCORE COUNT-UP animation ──────────────────────────────── */
+.sb-score.bump { animation: score-bump 0.5s ease; }
+@keyframes score-bump {
+  0%   { transform: scale(1);    color: var(--gold); }
+  35%  { transform: scale(1.25); color: #ffd166; }
+  100% { transform: scale(1);    color: var(--gold); }
+}
+
+/* ── HAND PROMPT — animated arrow drawing the eye to hand ── */
+.hand-prompt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: linear-gradient(90deg, var(--gold-soft) 0%, transparent 80%);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--ink);
+}
+.hand-prompt .arrow {
+  font-size: 24px;
+  color: var(--gold);
+  animation: bounce-down 1.2s ease-in-out infinite;
+  display: inline-block;
+}
+@keyframes bounce-down {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+.hand-prompt b { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 15px; color: var(--ink); }
+
+/* ── EXEC CELL adapted for dice stage ─────────────────────── */
+.exec-cell .exec-die-text { display: none; }
+
 /* ── Animations ─────────────────────────────────────────────── */
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-3px)} 75%{transform:translateX(3px)} }
 .shake { animation: shake 0.3s; }
@@ -1161,6 +1538,7 @@ em { font-style: italic; color: var(--ink-soft); }
   </div>
 
   <div class="main-col">
+    <div class="iso-panel" id="iso-panel"></div>
     <div class="mat" id="mat"></div>
     <div class="action-bar">
       <div class="action-text" id="action-text">&nbsp;</div>
@@ -1174,6 +1552,8 @@ em { font-style: italic; color: var(--ink-soft); }
     <div id="scoreboard"></div>
   </div>
 </div>
+
+<button class="help-btn" id="help-btn" title="How to play">?</button>
 
 
 <div id="screen-end" class="screen"></div>
@@ -1280,6 +1660,70 @@ const CARDS = {
 
 // ISO field display order (for outfit cards)
 const OD_FIELDS = ['Identifier','Objective','Pre-conditions','Inputs','Expected Result','Post-conditions','Traceability ID'];
+
+// ======================================================================
+// ISO/IEC 29119-3 CONTEXT — what the player is *actually* producing
+// at each phase. Shown in the persistent panel above the mat so the
+// playtester always knows which standard document the game is teaching.
+// ======================================================================
+const ISO_CONTEXT = {
+  'plan': {
+    docTag: 'PHASE 1',
+    docName: 'Project Test Plan',
+    clause: 'ISO/IEC 29119-3 §6.3',
+    description: 'Defines the scope, schedule, resources and approach of testing for a specific project. The game equivalent: a Runway Roadmap for this season\'s show.',
+    fields: ['Scope', 'Schedule', 'Resources', 'Risks', 'Approach', 'References'],
+    inGame: 'Pick a <b>Runway Roadmap</b> from your hand. It declares how many outfits this round, the schedule, and resource limits.',
+  },
+  'design': {
+    docTag: 'PHASE 2',
+    docName: 'Test Design Specification',
+    clause: 'ISO/IEC 29119-3 §7.2',
+    description: 'Identifies test conditions for a feature set and the test cases that exercise them, with explicit traceability to requirements.',
+    fields: ['Feature ID', 'Test Conditions', 'Coverage Criteria', 'Traceability'],
+    inGame: 'Pick a <b>Collection Theme</b>. It groups your Outfits under shared test conditions and coverage criteria.',
+  },
+  'specify': {
+    docTag: 'PHASE 3',
+    docName: 'Test Case Specification',
+    clause: 'ISO/IEC 29119-3 §7.3',
+    description: 'Defines the inputs, expected results and execution conditions for a single test case. The atomic unit of testable evidence.',
+    fields: ['Identifier', 'Objective', 'Pre-conditions', 'Inputs', 'Expected Result', 'Post-conditions', 'Traceability'],
+    inGame: 'Draft 3 <b>Outfit Detail</b> cards. Each card is a complete Test Case Spec. <b>Half the deck has planted ISO defects.</b>',
+  },
+  'inspection': {
+    docTag: 'PHASE 4',
+    docName: 'Peer Review (Static Test)',
+    clause: 'ISO/IEC 29119-3 §6.5',
+    description: 'Formal evaluation of a documentation artefact by reviewers who did not produce it. Catches defects before execution — much cheaper than catching them on the runway.',
+    fields: ['Reviewer', 'Suspect Field', 'Severity'],
+    inGame: 'Other players read your Outfits and tap suspect ISO fields. Catch a real flaw → <b>+2</b>. False flag → <b>−1</b>.',
+  },
+  'execution': {
+    docTag: 'PHASE 5',
+    docName: 'Test Execution',
+    clause: 'ISO/IEC 29119-3 §6.6',
+    description: 'Running the specified test cases on the system under test. Outcomes are recorded as pass / fail / blocked.',
+    fields: ['Outcome', 'Actual Result', 'Defects Raised'],
+    inGame: 'A d6 is rolled per Outfit. 1–2 = fail. Any unflagged planted flaw triggers an automatic fail — <b>lucky dice cannot save bad documentation</b>.',
+  },
+  'resolution': {
+    docTag: 'PHASE 6',
+    docName: 'Defect Report (Incident Report)',
+    clause: 'ISO/IEC 29119-3 §7.4',
+    description: 'Records the existence of a defect and links it to the originating documentation artefact whose flaw caused it. Drives root-cause analysis.',
+    fields: ['Defect ID', 'Severity', 'Description', 'Impact', 'Originating Field'],
+    inGame: 'Identify which ISO field on your Outfit caused the defect. Correct = <b>+2</b>. Wrong / timeout = <b>−4</b>.',
+  },
+  'turn-end': {
+    docTag: 'CLOSE',
+    docName: 'Test Status / Completion Report',
+    clause: 'ISO/IEC 29119-3 §7.5',
+    description: 'Summarises the test activities of an iteration: cases run, outcomes, outstanding defects, and traceability to plan.',
+    fields: ['Outfit ID', 'Result', 'Originating Field'],
+    inGame: 'Read the Rehearsal Summary. Notice which ISO fields produced your failures — that is the lesson for Week 4.',
+  },
+};
 
 // ======================================================================
 // STATE
@@ -1710,11 +2154,44 @@ function stopTimer() {
 function render() {
   if (state.phase === 'welcome') return;
   renderHeader();
+  renderIsoContext();
   renderMat();
   renderHand();
   renderActionBar();
   renderScoreboard();
   renderLog();
+}
+
+// ─── ISO context panel: persistent teaching strip ──────────────
+function renderIsoContext() {
+  const panel = $('#iso-panel');
+  if (!panel) return;
+  const ctx = ISO_CONTEXT[state.phase];
+  if (!ctx) { panel.style.display = 'none'; return; }
+  panel.style.display = 'grid';
+  panel.innerHTML = '';
+
+  const badge = el('div', { class: 'iso-panel-badge' },
+    el('div', { class: 'iso-std' }, 'ISO/IEC 29119-3'),
+    el('div', { class: 'iso-clause' }, ctx.clause.replace('ISO/IEC 29119-3 ', '')));
+  panel.appendChild(badge);
+
+  const body = el('div', { class: 'iso-panel-body' });
+  body.appendChild(el('div', { class: 'iso-panel-doc' },
+    el('span', { class: 'doc-tag' }, ctx.docTag),
+    document.createTextNode(ctx.docName)));
+  body.appendChild(el('div', { class: 'iso-panel-desc' }, ctx.description));
+  if (ctx.fields && ctx.fields.length) {
+    const fieldsRow = el('div', { class: 'iso-panel-fields' });
+    ctx.fields.forEach(f => fieldsRow.appendChild(el('span', { class: 'iso-field-chip' }, f)));
+    body.appendChild(fieldsRow);
+  }
+  panel.appendChild(body);
+
+  const mapping = el('div', { class: 'iso-panel-mapping' });
+  mapping.appendChild(el('div', { class: 'label' }, 'In this game'));
+  mapping.appendChild(el('div', { class: 'text', html: ctx.inGame }));
+  panel.appendChild(mapping);
 }
 
 function renderHeader() {
@@ -1787,23 +2264,25 @@ function zoneOD(p, i) {
 function renderBICard(card, played) {
   return el('div', { class: 'card card-bi ' + (played ? 'played' : 'in-hand') },
     el('div', { class: 'card-stripe' }),
+    el('div', { class: 'deck-icon' }, '✦'),
     el('div', { class: 'card-deck-label' }, 'Brand Identity'),
     el('div', { class: 'card-title' }, card.name),
     el('div', { class: 'field' }, el('span', { class: 'name' }, 'Test policy ref:'), document.createTextNode(' ' + card.policyRef)),
     el('div', { class: 'field' }, el('span', { class: 'name' }, 'Scope:'), document.createTextNode(' ' + card.scope)),
     el('div', { class: 'card-rule' }, el('b', {}, 'Global rule. '), document.createTextNode(card.globalRule)),
-    el('div', { class: 'iso-tag' }, 'Organizational Test Strategy')
+    el('div', { class: 'iso-tag' }, 'Organizational Test Strategy · §6.2')
   );
 }
 function renderRRCard(card, played, onclick) {
   const node = el('div', { class: 'card card-rr ' + (played ? 'played' : 'in-hand') },
     el('div', { class: 'card-stripe' }),
+    el('div', { class: 'deck-icon' }, '🗺️'),
     el('div', { class: 'card-deck-label' }, 'Runway Roadmap'),
     el('div', { class: 'card-title' }, card.name),
     el('div', { class: 'field' }, el('span', { class: 'name' }, 'Scope:'), document.createTextNode(' ' + card.scope)),
     el('div', { class: 'field' }, el('span', { class: 'name' }, 'Schedule:'), document.createTextNode(' ' + card.schedule)),
     el('div', { class: 'field' }, el('span', { class: 'name' }, 'Resources:'), document.createTextNode(' ' + card.resources)),
-    el('div', { class: 'iso-tag' }, 'Project Test Plan')
+    el('div', { class: 'iso-tag' }, 'Project Test Plan · §6.3')
   );
   if (onclick) node.addEventListener('click', onclick);
   return node;
@@ -1811,12 +2290,13 @@ function renderRRCard(card, played, onclick) {
 function renderCTCard(card, played, onclick) {
   const node = el('div', { class: 'card card-ct ' + (played ? 'played' : 'in-hand') },
     el('div', { class: 'card-stripe' }),
+    el('div', { class: 'deck-icon' }, '🎨'),
     el('div', { class: 'card-deck-label' }, 'Collection Theme'),
     el('div', { class: 'card-title' }, card.name),
     el('div', { class: 'field' }, el('span', { class: 'name' }, 'Feature ID:'), document.createTextNode(' ' + card.featureId)),
     el('div', { class: 'field' }, el('span', { class: 'name' }, 'Test conditions:'), document.createTextNode(' ' + card.conditions)),
     el('div', { class: 'field' }, el('span', { class: 'name' }, 'Coverage:'), document.createTextNode(' ' + card.coverage)),
-    el('div', { class: 'iso-tag' }, 'Test Design Specification')
+    el('div', { class: 'iso-tag' }, 'Test Design Specification · §7.2')
   );
   if (onclick) node.addEventListener('click', onclick);
   return node;
@@ -1824,6 +2304,7 @@ function renderCTCard(card, played, onclick) {
 function renderODCard(card, played, onclick) {
   const node = el('div', { class: 'card card-od ' + (played ? 'played' : 'in-hand') },
     el('div', { class: 'card-stripe' }),
+    el('div', { class: 'deck-icon' }, '👗'),
     el('div', { class: 'card-deck-label' }, 'Outfit Detail'),
     el('div', { class: 'card-title' }, card.cardId)
   );
@@ -1834,7 +2315,7 @@ function renderODCard(card, played, onclick) {
       el('span', { class: 'name' }, fname + ':'),
       document.createTextNode(' ' + (v || ' '))));
   }
-  node.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification'));
+  node.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification · §7.3'));
   if (onclick) node.addEventListener('click', onclick);
   return node;
 }
@@ -1844,10 +2325,24 @@ function renderHand() {
   const hand = $('#hand');
   hand.innerHTML = '';
 
+  // Big visual prompt directing eyes to the relevant hand row
+  const promptText = {
+    'plan':    { arrow: '↓', label: 'Tap a Roadmap below', sub: 'It becomes your Project Test Plan.' },
+    'design':  { arrow: '↓', label: 'Tap a Theme below',   sub: 'It becomes your Test Design Specification.' },
+    'specify': { arrow: '↓', label: 'Tap an Outfit below', sub: `Each one is a Test Case Spec. ${3 - p.mat.outfits.length} of 3 remaining.` },
+  }[state.phase];
+  if (promptText) {
+    hand.appendChild(el('div', { class: 'hand-prompt' },
+      el('span', { class: 'arrow' }, promptText.arrow),
+      el('div', {},
+        el('div', {}, el('b', {}, promptText.label)),
+        el('div', { style: 'font-size:12px; color:#4a4654; margin-top:2px;' }, promptText.sub))));
+  }
+
   // Roadmaps
   if (p.hand.roadmaps.length) {
     const sec = el('div', { class: 'hand-section' });
-    sec.appendChild(el('div', { class: 'hand-label' }, `Roadmaps (${p.hand.roadmaps.length})`));
+    sec.appendChild(el('div', { class: 'hand-label' }, `Roadmaps (${p.hand.roadmaps.length}) · 🗺️ Project Test Plan`));
     const row = el('div', { class: 'hand-row' });
     p.hand.roadmaps.forEach((c, i) => {
       const playable = state.phase === 'plan';
@@ -1862,7 +2357,7 @@ function renderHand() {
   // Themes
   if (p.hand.themes.length) {
     const sec = el('div', { class: 'hand-section' });
-    sec.appendChild(el('div', { class: 'hand-label' }, `Themes (${p.hand.themes.length})`));
+    sec.appendChild(el('div', { class: 'hand-label' }, `Themes (${p.hand.themes.length}) · 🎨 Test Design Spec`));
     const row = el('div', { class: 'hand-row' });
     p.hand.themes.forEach((c, i) => {
       const playable = state.phase === 'design';
@@ -1877,7 +2372,7 @@ function renderHand() {
   // Outfits
   if (p.hand.outfits.length) {
     const sec = el('div', { class: 'hand-section' });
-    sec.appendChild(el('div', { class: 'hand-label' }, `Outfits (${p.hand.outfits.length}) — pick 3`));
+    sec.appendChild(el('div', { class: 'hand-label' }, `Outfits (${p.hand.outfits.length}) · 👗 Test Case Spec — pick 3`));
     const row = el('div', { class: 'hand-row' });
     p.hand.outfits.forEach((c, i) => {
       const playable = state.phase === 'specify' && p.mat.outfits.length < 3;
@@ -1912,16 +2407,22 @@ function renderActionBar() {
 function renderScoreboard() {
   const sb = $('#scoreboard');
   if (!sb) return;
+  // Track previous scores to animate bumps
+  const prev = sb._prevScores || {};
   sb.innerHTML = '';
+  const next = {};
   state.players.forEach(p => {
     const row = el('div', { class: 'sb-player' + (p.idx === state.activePlayerIdx ? ' active' : '') });
     row.appendChild(el('div', { class: 'sb-name' }, p.name));
     row.appendChild(el('div', { class: 'sb-bi' }, p.brandIdentity.name));
-    const scoreLine = el('div', { class: 'sb-score' }, String(p.score),
+    const changed = (prev[p.idx] != null && prev[p.idx] !== p.score);
+    const scoreLine = el('div', { class: 'sb-score' + (changed ? ' bump' : '') }, String(p.score),
       el('span', { class: 'sb-score-unit' }, ' pts'));
     row.appendChild(scoreLine);
     sb.appendChild(row);
+    next[p.idx] = p.score;
   });
+  sb._prevScores = next;
 }
 
 function renderLog() {
@@ -2013,30 +2514,101 @@ function renderInspectionModal() {
 // ======================================================================
 // EXECUTION MODAL
 // ======================================================================
+// Build a single die face DOM (1-6) with the right pip layout
+function makeDieFace(value) {
+  // pips at positions 1..9 (3x3 grid). Each face uses a subset.
+  const layouts = {
+    1: [5],
+    2: [1, 9],
+    3: [1, 5, 9],
+    4: [1, 3, 7, 9],
+    5: [1, 3, 5, 7, 9],
+    6: [1, 3, 4, 6, 7, 9],
+  };
+  const positions = layouts[value] || [];
+  const face = el('div', { class: 'dice-face f' + value });
+  for (let i = 1; i <= 9; i++) {
+    if (positions.includes(i)) face.appendChild(el('div', { class: 'pip' }));
+    else face.appendChild(el('div'));
+  }
+  return face;
+}
+
+function makeDiceCube() {
+  const stage = el('div', { class: 'dice-stage' });
+  const cube = el('div', { class: 'dice-cube rolling' });
+  for (let i = 1; i <= 6; i++) cube.appendChild(makeDieFace(i));
+  stage.appendChild(cube);
+  return { stage, cube };
+}
+
 function renderExecutionModal() {
   const root = el('div');
-  root.appendChild(el('div', { class: 'modal-eyebrow' }, 'Phase 5 · Execution'));
-  root.appendChild(el('h2', {}, 'The Rehearsal'));
+  root.appendChild(el('div', { class: 'modal-eyebrow' }, 'Phase 5 · Execution — The Rehearsal'));
+  root.appendChild(el('h2', {}, 'Models walk the runway'));
   root.appendChild(el('div', { class: 'modal-sub' },
     'Each Outfit rolls a d6. 1–2 = fail. A planted flaw that escaped Inspection always fails — bad documentation cannot be saved by lucky dice.'));
 
+  // Runway "spotlights" strip
+  const strip = el('div', { class: 'runway-strip' });
+  const lights = el('div', { class: 'runway-spotlights' });
+  state.execution.results.forEach((r, i) => {
+    lights.appendChild(el('div', { class: 'spotlight' }, `Look ${i + 1}`));
+  });
+  strip.appendChild(lights);
+  root.appendChild(strip);
+
   const grid = el('div', { class: 'exec-grid' });
+  const cubes = []; // store for animation
   state.execution.results.forEach(r => {
     const cell = el('div', { class: 'exec-cell' });
     cell.appendChild(el('div', { class: 'exec-id' }, r.outfit.cardId));
-    cell.appendChild(el('div', { class: 'exec-die-label' }, 'd6'));
-    cell.appendChild(el('div', { class: 'exec-die' }, String(r.dieRoll)));
-    cell.appendChild(el('div', { class: 'exec-result ' + (r.pass ? 'pass' : 'fail') }, r.pass ? 'walks' : 'fails'));
-    cell.appendChild(el('div', { class: 'exec-note' }, r.note));
+    cell.appendChild(el('div', { class: 'exec-die-label' }, 'rolling…'));
+    const dice = makeDiceCube();
+    cell.appendChild(dice.stage);
+    const resultEl = el('div', { class: 'exec-result', style: 'visibility:hidden;' }, '—');
+    cell.appendChild(resultEl);
+    const noteEl = el('div', { class: 'exec-note', style: 'visibility:hidden;' }, '');
+    cell.appendChild(noteEl);
     grid.appendChild(cell);
+    cubes.push({ cube: dice.cube, label: cell.querySelector('.exec-die-label'), resultEl, noteEl, r });
   });
   root.appendChild(grid);
 
   const actions = el('div', { class: 'modal-actions' });
-  actions.appendChild(el('button', { class: 'action-btn', onclick: continueToResolution }, 'Continue'));
+  const continueBtn = el('button', {
+    class: 'action-btn',
+    onclick: continueToResolution,
+    style: 'visibility:hidden;'
+  }, 'Continue');
+  actions.appendChild(continueBtn);
   root.appendChild(actions);
 
   openModal(root);
+
+  // Sequential dice animation — each die rolls and lands in turn
+  cubes.forEach((c, i) => {
+    setTimeout(() => {
+      c.cube.classList.remove('rolling');
+      // Force reflow so the transform transition kicks in
+      void c.cube.offsetWidth;
+      c.cube.classList.add('land-' + c.r.dieRoll);
+      // Reveal the result label after the cube settles
+      setTimeout(() => {
+        c.label.textContent = 'd6';
+        c.resultEl.textContent = c.r.pass ? '✓ walks' : '✗ fails';
+        c.resultEl.className = 'exec-result ' + (c.r.pass ? 'pass' : 'fail');
+        c.resultEl.style.visibility = 'visible';
+        c.noteEl.textContent = c.r.note;
+        c.noteEl.style.visibility = 'visible';
+      }, 1600);
+    }, 700 + i * 700);
+  });
+
+  // Reveal Continue button after all dice settle
+  setTimeout(() => {
+    continueBtn.style.visibility = 'visible';
+  }, 700 + cubes.length * 700 + 1700);
 }
 
 // ======================================================================
@@ -2213,9 +2785,106 @@ function renderEndScreen() {
 }
 
 // ======================================================================
+// TUTORIAL — multi-step onboarding overlay. Shows automatically on the
+// very first time, then accessible from the persistent "?" help button.
+// ======================================================================
+const TUTORIAL_STEPS = [
+  {
+    title: 'Welcome to <em>Runway Ready</em>',
+    body: '<p>You are about to play a <strong>10-minute card game that teaches ISO/IEC 29119-3</strong> — the international standard for software test documentation.</p><p>Every card on the table is <strong>a real ISO document type</strong> dressed as a fashion-house artefact. The hot-pink "Brand Identity" card is actually an <em>Organizational Test Strategy</em>. Each Outfit you draft is a <em>Test Case Specification</em> with all seven required ISO fields.</p>',
+    illu: 'The dice cannot save bad documentation — only paper trails that survive Inspection win the runway.',
+  },
+  {
+    title: 'A turn = <em>five phases</em>, in order',
+    body: '<p>On each turn you move through five phases automatically. The screen tells you exactly what to do at each step:</p><p style="margin-top:8px;"><strong>1. Plan</strong> — pick a Roadmap (Project Test Plan)<br><strong>2. Design</strong> — pick a Theme (Test Design Spec)<br><strong>3. Specify</strong> — draft 3 Outfits (Test Case Specs)<br><strong>4. Inspection</strong> — rivals hunt for ISO defects in your cards<br><strong>5. Rehearsal</strong> — dice roll, defects resolve</p>',
+    illu: 'You cannot skip a phase. Skipping is the misconception this game refuses to let you have.',
+  },
+  {
+    title: 'The <em>ISO panel</em> tells you what you are doing',
+    body: '<p>Above the playing area there is always a <strong>persistent strip</strong> showing:</p><ul style="margin-left:18px; margin-bottom:10px;"><li>Which ISO/IEC 29119-3 document you are producing right now</li><li>The exact clause reference (e.g. §7.3)</li><li>The required ISO fields</li><li>What action that means in the game</li></ul><p>If you ever wonder "wait, what am I doing?" — look there.</p>',
+    illu: 'No abstract concepts. Every move maps to a real ISO document with a clause number.',
+  },
+  {
+    title: 'Half the deck is <em>flawed</em>',
+    body: '<p>During the <strong>Inspection phase</strong> all your Outfits get blown up on screen. Half the deck has <strong>planted ISO defects</strong>: missing Expected Result, contradictory Pre-conditions, broken Traceability ID, etc.</p><p>Other players tap the <em>field</em> they think is wrong. Catching a real flaw scores <strong>+2</strong>. Tapping a clean field costs <strong>−1</strong>.</p>',
+    illu: 'Reading critically is rewarded. Spamming flags is punished. Just like a real peer review.',
+  },
+  {
+    title: 'Defects are <em>traceable</em>, never random',
+    body: '<p>If an Outfit fails on the runway, a <strong>Wardrobe Malfunction</strong> card appears. It always names the <strong>originating ISO field</strong> — the doc field whose flaw caused the failure.</p><p>You must tap the right field on your own Outfit within 30 sec.</p><p style="margin-top:8px;">Correct → <strong>+2</strong>. Wrong / timeout → <strong>−4</strong>.</p>',
+    illu: 'The game does not punish bad luck. It punishes bad documentation.',
+  },
+  {
+    title: 'Ready when you are',
+    body: '<p>You can re-open this tour anytime via the <strong>"?"</strong> button at the bottom-right.</p><p>3–4 players gather around one screen. Pass the laptop or huddle close — Inspection is a peer activity.</p>',
+    illu: 'Tap "Open the Show" when ready. Total play time: ≈10 minutes.',
+  },
+];
+
+let tutorialIdx = 0;
+
+function openTutorial(startIdx) {
+  tutorialIdx = startIdx || 0;
+  closeTutorial();
+  const veil = el('div', { class: 'tutorial-veil', id: 'tutorial-veil' });
+  const card = el('div', { class: 'tutorial-card', id: 'tutorial-card' });
+  veil.appendChild(card);
+  document.body.appendChild(veil);
+  renderTutorialStep();
+}
+
+function closeTutorial() {
+  const v = document.getElementById('tutorial-veil');
+  if (v) v.remove();
+}
+
+function renderTutorialStep() {
+  const step = TUTORIAL_STEPS[tutorialIdx];
+  const card = document.getElementById('tutorial-card');
+  if (!card || !step) return;
+  card.innerHTML = '';
+  card.appendChild(el('div', { class: 'tutorial-step-of' }, `Step ${tutorialIdx + 1} of ${TUTORIAL_STEPS.length}`));
+  card.appendChild(el('h2', { html: step.title }));
+  card.appendChild(el('div', { html: step.body }));
+  if (step.illu) card.appendChild(el('div', { class: 'tutorial-illu' }, step.illu));
+
+  const dots = el('div', { class: 'tutorial-dots' });
+  for (let i = 0; i < TUTORIAL_STEPS.length; i++) {
+    dots.appendChild(el('div', { class: 'tutorial-dot' + (i === tutorialIdx ? ' active' : '') }));
+  }
+
+  const isLast = tutorialIdx === TUTORIAL_STEPS.length - 1;
+  const actions = el('div', { class: 'tutorial-actions' });
+  actions.appendChild(el('button', {
+    class: 'tutorial-skip',
+    onclick: closeTutorial,
+  }, isLast ? 'Close' : 'Skip tutorial'));
+  actions.appendChild(dots);
+  actions.appendChild(el('button', {
+    class: 'tutorial-next',
+    onclick: () => {
+      if (isLast) closeTutorial();
+      else { tutorialIdx++; renderTutorialStep(); }
+    },
+  }, isLast ? 'Got it' : 'Next →'));
+  card.appendChild(actions);
+}
+
+// ======================================================================
 // INIT
 // ======================================================================
 setupWelcome();
+
+// Help button — always available
+document.getElementById('help-btn').addEventListener('click', () => openTutorial(0));
+
+// Auto-show tutorial on first visit (uses localStorage; no-op if blocked)
+try {
+  if (!localStorage.getItem('runway-ready-tutorial-seen')) {
+    openTutorial(0);
+    localStorage.setItem('runway-ready-tutorial-seen', '1');
+  }
+} catch (e) { /* private mode etc. — ignore */ }
 </script>
 </body>
 </html>
