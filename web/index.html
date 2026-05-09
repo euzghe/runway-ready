@@ -1472,15 +1472,13 @@ body {
   opacity: 0.7;
 }
 
-/* ── Mat: transparent so the body atelier+venue shows through ─ */
+/* ── Mat: cream stage spotlit against the dark velvet body ──── */
 .mat {
   background:
-    /* warm spotlight from top — only this remains, no stripes */
-    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,209,102,0.18) 0%, transparent 70%),
-    /* very faint cream wash so cards still read against it */
-    linear-gradient(180deg, rgba(253,248,237,0.45) 0%, rgba(245,235,216,0.30) 100%);
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,209,102,0.30) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(253,248,237,0.92) 0%, rgba(245,235,216,0.88) 100%);
   position: relative;
-  border-bottom: 2px solid rgba(184,146,74,0.2);
+  border-bottom: 2px solid rgba(184,146,74,0.35);
 }
 /* Velvet curtain side panels on the mat (decorative) */
 .mat::before,
@@ -1504,11 +1502,9 @@ body {
 .mat::after  { right: 0; transform: scaleX(-1); border-bottom-right-radius: 30% 16px; }
 .mat-row { position: relative; z-index: 2; padding: 0 30px; }
 
-/* ── Hand area: backstage workshop, transparent backdrop ──── */
+/* ── Hand area: backstage parchment lit against the velvet ──── */
 .hand {
-  background:
-    /* very faint cream tint — most of body backdrop shows through */
-    linear-gradient(180deg, rgba(239,232,219,0.40) 0%, rgba(232,223,208,0.55) 100%);
+  background: linear-gradient(180deg, rgba(239,232,219,0.92) 0%, rgba(232,223,208,0.92) 100%);
   border-top: 1px dashed var(--gold);
   position: relative;
 }
@@ -1745,6 +1741,148 @@ body {
 .card-bi .deck-icon::before { content: '✦ '; }
 .card-rr .deck-icon { font-size: 16px; }
 .card-ct .deck-icon { font-size: 16px; }
+
+/* ════════════════════════════════════════════════════════════
+   ⌘  BRAND IDENTITY — fashion-house plaque
+   Monogram circle, gold trim, star ornaments, est. line.
+   Reads like a luxury label.
+   ═══════════════════════════════════════════════════════════ */
+.card-bi.played, .card-bi.in-hand {
+  background:
+    radial-gradient(ellipse at top, rgba(184,146,74,0.06) 0%, transparent 60%),
+    linear-gradient(180deg, #fdfaf3 0%, #f5ead2 100%);
+  border: 1px solid rgba(139,40,72,0.25);
+  border-top-width: 4px;
+  border-top-color: var(--c-bi);
+  box-shadow: inset 0 0 0 1px rgba(184,146,74,0.20), var(--shadow-2);
+  position: relative;
+  padding-top: 14px;
+}
+/* gold inner trim */
+.card-bi.played::before, .card-bi.in-hand::before {
+  content: '';
+  position: absolute;
+  inset: 6px;
+  border: 1px solid rgba(184,146,74,0.4);
+  border-radius: var(--r-sm);
+  pointer-events: none;
+  z-index: 0;
+}
+.card-bi .card-stripe { display: none; }
+.card-bi .deck-icon { display: none; }
+
+/* Star-bracketed deck label */
+.card-bi .bi-eyebrow {
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--c-bi);
+  font-weight: 700;
+  margin: 4px 0 6px 0;
+  position: relative;
+  z-index: 2;
+}
+.card-bi .bi-eyebrow::before,
+.card-bi .bi-eyebrow::after {
+  content: '✦';
+  margin: 0 8px;
+  color: var(--gold);
+  font-size: 10px;
+  vertical-align: middle;
+}
+
+/* MONOGRAM BADGE — large, central */
+.card-bi .bi-monogram {
+  display: block;
+  width: 64px;
+  height: 64px;
+  margin: 4px auto 8px auto;
+  border-radius: 50%;
+  background: linear-gradient(140deg, var(--c-bi) 0%, #6a1c36 100%);
+  color: var(--gold);
+  text-align: center;
+  line-height: 64px;
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  border: 2px solid #fff;
+  box-shadow:
+    0 0 0 2px var(--gold),
+    inset 0 0 0 2px rgba(184,146,74,0.4),
+    0 3px 8px rgba(0,0,0,0.18);
+  position: relative;
+  z-index: 2;
+}
+
+/* House name in serif */
+.card-bi .card-title {
+  text-align: center;
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 400;
+  color: var(--ink);
+  margin: 0 0 2px 0;
+  letter-spacing: 0.4px;
+  position: relative;
+  z-index: 2;
+}
+
+/* "est. couture house" line */
+.card-bi .bi-est {
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--c-bi);
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 2;
+}
+.card-bi .bi-est::before { content: '— '; opacity: 0.6; }
+.card-bi .bi-est::after  { content: ' —'; opacity: 0.6; }
+
+/* Field rows — soft white panels */
+.card-bi .field {
+  background: rgba(255,255,255,0.6);
+  padding: 4px 8px;
+  border-radius: 3px;
+  border-left: 2px solid var(--c-bi);
+  margin-bottom: 4px;
+  font-size: 11px;
+  position: relative;
+  z-index: 2;
+}
+.card-bi .field .name {
+  color: var(--c-bi);
+  font-weight: 600;
+  font-size: 10px;
+  letter-spacing: 0.3px;
+}
+
+/* Global rule callout */
+.card-bi .card-rule {
+  margin-top: 10px;
+  background: linear-gradient(180deg, rgba(255,245,214,0.95), rgba(244,234,200,0.85));
+  border-left: 3px solid var(--gold);
+  border-right: 1px solid rgba(184,146,74,0.25);
+  padding: 8px 10px 8px 12px;
+  border-radius: 0 4px 4px 0;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 1px 0 rgba(184,146,74,0.15);
+}
+.card-bi .iso-tag {
+  text-align: center;
+  color: var(--c-bi);
+  border-top: 1px dashed rgba(139,40,72,0.3);
+  margin-top: 10px;
+  padding-top: 6px;
+  position: relative;
+  z-index: 2;
+}
 
 /* ════════════════════════════════════════════════════════════
    ⌘  ROADMAP CARDS — designer atelier brief sheet
@@ -2226,11 +2364,11 @@ body {
   border-left: none; border-top: none;
 }
 
-/* ── ISO PANEL — semi-transparent so backdrop shows through ─ */
+/* ── ISO PANEL — parchment band lit against the velvet ────── */
 .iso-panel {
   background:
-    radial-gradient(ellipse at center top, rgba(255,209,102,0.15) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(250,243,227,0.85) 0%, rgba(255,255,255,0.78) 100%);
+    radial-gradient(ellipse at center top, rgba(255,209,102,0.20) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(250,243,227,0.96) 0%, rgba(255,255,255,0.94) 100%);
   border-bottom: 2px solid var(--gold);
 }
 
@@ -2587,38 +2725,39 @@ body {
   pointer-events: none;
 }
 
-/* ── ATELIER + RUNWAY backdrop — single layered body bg ─────
-   Five layers, all background-attachment: fixed so they stay in
-   the viewport while content scrolls on top. From back to front:
-   1. Warm cream gradient base
-   2. Soft top-centre gold spotlight glow
-   3. Rose haze in the bottom-left corner
-   4. Faint figure-free runway VENUE silhouette anchored to the
-      bottom of the viewport (curtains, catwalk, audience, lights)
-   5. A small repeating tile of atelier icons (mannequin, hanger,
-      scissors, thread, dress, sketch) for studio texture
+/* ── DEEP VELVET THEATRE BACKDROP ─────────────────────────────
+   Body becomes the inside of a darkened auditorium. Cream cards
+   and panels now glow against it like spotlit pieces on the
+   stage. From back to front:
+   1. Deep aubergine-velvet base (gradient)
+   2. Soft warm spotlight pouring from above (brighter than
+      before so it actually reaches the centre of the page)
+   3. Rose-glow vignette in the bottom-left
+   4. Figure-free runway VENUE silhouette (gold catwalk + curtains
+      + audience + rigged lights) anchored to viewport bottom
+   5. A scattered watermark of atelier icons in GOLD ink, large
+      enough to actually read against the velvet ground
 */
 body {
-  background-color: #f3e9d4;
+  background-color: #2a1820;
   background-image:
-    /* atelier icon watermark — repeating tile */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 280 280'><g fill='none' stroke='%231a1820' stroke-width='0.8' stroke-linecap='round' opacity='0.08'><path d='M30 30 L26 38 L34 38 Z'/><path d='M28 38 L24 60 L36 60 L32 38'/><circle cx='30' cy='25' r='2'/><path d='M150 60 L150 65 M150 65 L138 72 L162 72 L150 65 Z'/><circle cx='80' cy='130' r='3'/><circle cx='86' cy='130' r='3'/><line x1='80' y1='130' x2='100' y2='145'/><line x1='86' y1='130' x2='102' y2='141'/><rect x='40' y='180' width='6' height='14' rx='1'/><line x1='40' y1='184' x2='46' y2='184'/><line x1='40' y1='188' x2='46' y2='188'/><line x1='40' y1='192' x2='46' y2='192'/><path d='M180 30 Q186 26 190 36 Q194 46 188 56 L196 60'/><circle cx='220' cy='195' r='3'/><circle cx='220' cy='195' r='1'/><path d='M115 220 L130 220 L132 240 L113 240 Z'/><path d='M115 220 L120 215 L125 215 L130 220'/><path d='M260 130 L255 140 L265 140 Z'/></g></svg>"),
-    /* runway venue silhouette anchored to the BOTTOM of the viewport
-       — figure-free, much fainter than before so it doesn't fight content */
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 200' preserveAspectRatio='xMidYMax meet'><path d='M140 0 L168 200 L232 200 L260 0 Z' fill='rgba(255,221,140,0.18)'/><path d='M70 0 L120 200 L156 200 L130 0 Z' fill='rgba(255,221,140,0.10)'/><path d='M330 0 L280 200 L244 200 L270 0 Z' fill='rgba(255,221,140,0.10)'/><path d='M0 60 L0 200 L36 200 Q30 150 36 100 Q30 70 36 60 Z' fill='%235a1a26' opacity='0.45'/><path d='M400 60 L400 200 L364 200 Q370 150 364 100 Q370 70 364 60 Z' fill='%235a1a26' opacity='0.45'/><path d='M115 200 L180 36 L220 36 L285 200 Z' fill='%23d4a872' opacity='0.55'/><path d='M115 200 L180 36 L220 36 L285 200 Z' fill='none' stroke='%237a5e2c' stroke-width='0.8' opacity='0.7'/><path d='M200 36 L200 200' stroke='%23b8924a' stroke-width='1' stroke-dasharray='4,3' opacity='0.7'/><rect x='0' y='170' width='400' height='2' fill='%231f3a5f' opacity='0.35'/><rect x='0' y='180' width='400' height='2' fill='%231f3a5f' opacity='0.25'/><rect x='0' y='190' width='400' height='2' fill='%231f3a5f' opacity='0.20'/><circle cx='30' cy='168' r='2' fill='%231a1820' opacity='0.35'/><circle cx='50' cy='168' r='2' fill='%231a1820' opacity='0.35'/><circle cx='370' cy='168' r='2' fill='%231a1820' opacity='0.35'/><circle cx='350' cy='168' r='2' fill='%231a1820' opacity='0.35'/><rect x='0' y='0' width='400' height='3' fill='%231a1820' opacity='0.55'/><circle cx='120' cy='3' r='2' fill='%23b8924a' opacity='0.7'/><circle cx='200' cy='3' r='3' fill='%23ffd166' opacity='0.85'/><circle cx='280' cy='3' r='2' fill='%23b8924a' opacity='0.7'/></svg>"),
-    /* warm spotlight from the top-centre */
-    radial-gradient(ellipse 60% 30% at 50% 0%, rgba(255,209,102,0.18) 0%, transparent 60%),
+    /* atelier icon watermark — gold ink on velvet */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 320'><g fill='none' stroke='%23b8924a' stroke-width='1.2' stroke-linecap='round' opacity='0.20'><path d='M40 30 L34 42 L46 42 Z'/><path d='M36 42 L30 70 L50 70 L44 42'/><circle cx='40' cy='25' r='3'/><path d='M170 70 L170 76 M170 76 L155 84 L185 84 L170 76 Z'/><circle cx='100' cy='150' r='4'/><circle cx='108' cy='150' r='4'/><line x1='100' y1='150' x2='124' y2='168'/><line x1='108' y1='150' x2='128' y2='162'/><rect x='50' y='210' width='8' height='18' rx='1'/><line x1='50' y1='216' x2='58' y2='216'/><line x1='50' y1='221' x2='58' y2='221'/><line x1='50' y1='226' x2='58' y2='226'/><path d='M210 30 Q218 26 222 38 Q226 50 220 60 L228 64'/><circle cx='250' cy='225' r='4'/><circle cx='250' cy='225' r='1.5'/><path d='M130 250 L150 250 L152 275 L128 275 Z'/><path d='M130 250 L136 244 L142 244 L150 250'/><path d='M295 150 L289 162 L301 162 Z'/><circle cx='80' cy='65' r='2'/><circle cx='80' cy='75' r='1'/><line x1='80' y1='65' x2='80' y2='75'/><path d='M280 70 Q286 65 290 75 Q284 80 280 80 Z'/></g></svg>"),
+    /* runway venue silhouette anchored to viewport bottom */
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 220' preserveAspectRatio='xMidYMax meet'><path d='M140 0 L168 220 L232 220 L260 0 Z' fill='rgba(255,221,140,0.25)'/><path d='M70 0 L120 220 L156 220 L130 0 Z' fill='rgba(255,221,140,0.16)'/><path d='M330 0 L280 220 L244 220 L270 0 Z' fill='rgba(255,221,140,0.16)'/><path d='M0 60 L0 220 L42 220 Q34 160 42 110 Q34 70 42 60 Z' fill='%237d1e2d' opacity='0.85'/><path d='M400 60 L400 220 L358 220 Q366 160 358 110 Q366 70 358 60 Z' fill='%237d1e2d' opacity='0.85'/><path d='M115 220 L180 36 L220 36 L285 220 Z' fill='%23d4a872' opacity='0.75'/><path d='M115 220 L180 36 L220 36 L285 220 Z' fill='none' stroke='%237a5e2c' stroke-width='1' opacity='0.8'/><path d='M200 36 L200 220' stroke='%23b8924a' stroke-width='1.2' stroke-dasharray='5,3' opacity='0.85'/><rect x='0' y='190' width='400' height='3' fill='%231f3a5f' opacity='0.55'/><rect x='0' y='200' width='400' height='3' fill='%231f3a5f' opacity='0.45'/><rect x='0' y='210' width='400' height='3' fill='%231f3a5f' opacity='0.35'/><circle cx='30' cy='188' r='2.5' fill='%231a1820' opacity='0.55'/><circle cx='50' cy='188' r='2.5' fill='%231a1820' opacity='0.55'/><circle cx='370' cy='188' r='2.5' fill='%231a1820' opacity='0.55'/><circle cx='350' cy='188' r='2.5' fill='%231a1820' opacity='0.55'/><rect x='0' y='0' width='400' height='4' fill='%231a1820'/><circle cx='120' cy='4' r='2.5' fill='%23b8924a'/><circle cx='200' cy='4' r='3.5' fill='%23ffd166'/><circle cx='280' cy='4' r='2.5' fill='%23b8924a'/></svg>"),
+    /* warm spotlight pouring from the top-centre */
+    radial-gradient(ellipse 70% 60% at 50% 0%, rgba(255,209,102,0.25) 0%, transparent 65%),
     /* deep rose haze in the bottom-left corner */
-    radial-gradient(ellipse 40% 40% at 0% 100%, rgba(139,40,72,0.08) 0%, transparent 60%),
-    /* soft cream gradient base */
-    linear-gradient(180deg, #f5ebd8 0%, #ecdfc6 100%);
+    radial-gradient(ellipse 50% 50% at 0% 100%, rgba(139,40,72,0.30) 0%, transparent 60%),
+    /* deep velvet base gradient */
+    linear-gradient(180deg, #2a1820 0%, #1a0e16 100%);
   background-attachment: fixed, fixed, fixed, fixed, fixed;
   background-size:
-    280px 280px,            /* atelier tile */
-    100vw 320px,            /* venue silhouette */
+    320px 320px,            /* atelier tile */
+    100vw 380px,            /* venue silhouette */
     100% 100%,              /* spotlight */
     100% 100%,              /* rose haze */
-    100% 100%;              /* cream gradient */
+    100% 100%;              /* velvet base */
   background-position:
     0 0,                    /* atelier tile starts top-left, repeats */
     bottom center,          /* venue anchored to viewport bottom */
@@ -3501,17 +3640,36 @@ function zoneOD(p, i) {
   return addZoneCorners(zone);
 }
 
+// Brand monogram from the house name: "Atelier Bruté" -> "AB",
+// "Maison Solère" -> "MS", "Studio Heliograph" -> "SH", etc.
+function brandMonogram(name) {
+  const initials = (name || '').split(/[\s-]+/).filter(Boolean).map(w => w[0].toUpperCase()).join('');
+  return initials.slice(0, 3);
+}
+
 function renderBICard(card, played) {
-  return el('div', { class: 'card card-bi ' + (played ? 'played' : 'in-hand') },
-    el('div', { class: 'card-stripe' }),
-    el('div', { class: 'deck-icon' }, '✦'),
-    el('div', { class: 'card-deck-label' }, 'Brand Identity'),
-    el('div', { class: 'card-title' }, card.name),
-    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Test policy ref:'), document.createTextNode(' ' + card.policyRef)),
-    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Scope:'), document.createTextNode(' ' + card.scope)),
-    el('div', { class: 'card-rule' }, el('b', {}, 'Global rule. '), document.createTextNode(card.globalRule)),
-    el('div', { class: 'iso-tag' }, 'Organizational Test Strategy · §6.2')
-  );
+  const node = el('div', { class: 'card card-bi ' + (played ? 'played' : 'in-hand') });
+  // Star-bracketed eyebrow
+  node.appendChild(el('div', { class: 'bi-eyebrow' }, 'Brand Identity'));
+  // Monogram badge
+  node.appendChild(el('div', { class: 'bi-monogram' }, brandMonogram(card.name)));
+  // House name
+  node.appendChild(el('div', { class: 'card-title' }, card.name));
+  // Italic est. line
+  node.appendChild(el('div', { class: 'bi-est' }, 'couture house'));
+  // Test policy + scope
+  node.appendChild(el('div', { class: 'field' },
+    el('span', { class: 'name' }, 'Test policy ref:'),
+    document.createTextNode(' ' + card.policyRef)));
+  node.appendChild(el('div', { class: 'field' },
+    el('span', { class: 'name' }, 'Scope:'),
+    document.createTextNode(' ' + card.scope)));
+  // Global rule callout
+  node.appendChild(el('div', { class: 'card-rule' },
+    el('b', {}, 'Global rule. '),
+    document.createTextNode(card.globalRule)));
+  node.appendChild(el('div', { class: 'iso-tag' }, 'Organizational Test Strategy · §6.2'));
+  return node;
 }
 // Per-roadmap character: a representative emoji + accent colour + tint
 const ROADMAP_META = {
