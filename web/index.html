@@ -1472,13 +1472,13 @@ body {
   opacity: 0.7;
 }
 
-/* ── Mat: cream stage spotlit against the dark velvet body ──── */
+/* ── Mat: cream stage glowing on the velvet, half-transparent ── */
 .mat {
   background:
-    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,209,102,0.30) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(253,248,237,0.92) 0%, rgba(245,235,216,0.88) 100%);
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(255,209,102,0.35) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(253,248,237,0.62) 0%, rgba(245,235,216,0.55) 100%);
   position: relative;
-  border-bottom: 2px solid rgba(184,146,74,0.35);
+  border-bottom: 2px solid rgba(184,146,74,0.45);
 }
 /* Velvet curtain side panels on the mat (decorative) */
 .mat::before,
@@ -1502,9 +1502,9 @@ body {
 .mat::after  { right: 0; transform: scaleX(-1); border-bottom-right-radius: 30% 16px; }
 .mat-row { position: relative; z-index: 2; padding: 0 30px; }
 
-/* ── Hand area: backstage parchment lit against the velvet ──── */
+/* ── Hand area: backstage parchment, velvet visible behind ──── */
 .hand {
-  background: linear-gradient(180deg, rgba(239,232,219,0.92) 0%, rgba(232,223,208,0.92) 100%);
+  background: linear-gradient(180deg, rgba(239,232,219,0.50) 0%, rgba(232,223,208,0.50) 100%);
   border-top: 1px dashed var(--gold);
   position: relative;
 }
@@ -2368,7 +2368,7 @@ body {
 .iso-panel {
   background:
     radial-gradient(ellipse at center top, rgba(255,209,102,0.20) 0%, transparent 70%),
-    linear-gradient(180deg, rgba(250,243,227,0.96) 0%, rgba(255,255,255,0.94) 100%);
+    linear-gradient(180deg, rgba(250,243,227,0.85) 0%, rgba(255,255,255,0.78) 100%);
   border-bottom: 2px solid var(--gold);
 }
 
@@ -2807,6 +2807,124 @@ body {
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-3px)} 75%{transform:translateX(3px)} }
 .shake { animation: shake 0.3s; }
 
+/* ════════════════════════════════════════════════════════════
+   ⌘  TRANSITION OVERLAYS — feels like a real game
+   - Curtain rise when the welcome → game transition fires
+   - Full-screen banner when a player's turn begins
+   - Subtle phase-tag pulse when the phase changes
+   ═══════════════════════════════════════════════════════════ */
+
+/* CURTAIN RISE — used when transitioning into the game screen */
+.curtain-rise {
+  position: fixed;
+  inset: 0;
+  z-index: 280;
+  pointer-events: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.curtain-rise .curtain-l,
+.curtain-rise .curtain-r {
+  background:
+    repeating-linear-gradient(90deg,
+      var(--velvet-deep) 0px, var(--velvet) 18px,
+      var(--velvet-light) 30px, var(--velvet) 42px,
+      var(--velvet-deep) 60px);
+  box-shadow: inset -20px 0 40px rgba(0,0,0,0.4);
+  border-bottom: 4px solid var(--gold);
+}
+.curtain-rise .curtain-r { transform: scaleX(-1); }
+.curtain-rise.opening .curtain-l { animation: curtain-l 1.2s cubic-bezier(.5,.0,.3,1) forwards; }
+.curtain-rise.opening .curtain-r { animation: curtain-r 1.2s cubic-bezier(.5,.0,.3,1) forwards; }
+@keyframes curtain-l {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+@keyframes curtain-r {
+  0%   { transform: scaleX(-1) translateX(0); }
+  100% { transform: scaleX(-1) translateX(-100%); }
+}
+
+/* FULL-SCREEN TURN BANNER */
+.turn-banner {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20, 18, 28, 0.82);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+  animation: tb-fade 1.8s ease forwards;
+}
+.turn-banner-content {
+  text-align: center;
+  color: #f5f0e8;
+  padding: 0 24px;
+}
+.turn-banner .eyebrow {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 16px;
+  font-weight: 700;
+}
+.turn-banner .eyebrow::before,
+.turn-banner .eyebrow::after {
+  content: '✦';
+  margin: 0 12px;
+  opacity: 0.8;
+}
+.turn-banner h2 {
+  font-family: var(--serif);
+  font-size: 64px;
+  font-weight: 400;
+  letter-spacing: -1.5px;
+  line-height: 1;
+  margin: 0 0 12px 0;
+}
+.turn-banner h2 em {
+  font-style: italic;
+  color: var(--gold);
+}
+.turn-banner .sub {
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  opacity: 0.7;
+  letter-spacing: 0.5px;
+}
+@keyframes tb-fade {
+  0%, 75% { opacity: 1; }
+  100%    { opacity: 0; }
+}
+.turn-banner-content {
+  animation: tb-slide 1.8s ease forwards;
+}
+@keyframes tb-slide {
+  0%   { transform: translateY(20px); opacity: 0; }
+  18%  { transform: translateY(0);    opacity: 1; }
+  78%  { transform: translateY(0);    opacity: 1; }
+  100% { transform: translateY(-20px); opacity: 0; }
+}
+
+/* PHASE-CHANGE PULSE on the header phase label */
+.gh-phase.flash {
+  animation: phase-flash 0.9s ease;
+}
+@keyframes phase-flash {
+  0%   { color: var(--gold); transform: scale(1); }
+  20%  { color: var(--bulb); transform: scale(1.18); text-shadow: 0 0 12px rgba(255,209,102,0.7); }
+  100% { color: var(--gold); transform: scale(1); }
+}
+
+/* Game screen fade-in */
+#screen-game.active.fading-in { animation: screen-fade 0.6s ease; }
+#screen-end.active.fading-in  { animation: screen-fade 0.6s ease; }
+@keyframes screen-fade { from { opacity: 0; } to { opacity: 1; } }
+
 @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
 .modal { animation: fade-in 0.18s ease; }
 .modal-veil { animation: fade-in 0.18s ease; }
@@ -3130,8 +3248,46 @@ function logSay(msg) {
   renderLog();
 }
 function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  $('#' + id).classList.add('active');
+  document.querySelectorAll('.screen').forEach(s => { s.classList.remove('active', 'fading-in'); });
+  const s = $('#' + id);
+  s.classList.add('active', 'fading-in');
+  setTimeout(() => s.classList.remove('fading-in'), 700);
+}
+
+// ── TRANSITION HELPERS ────────────────────────────────────────
+function showCurtainRise() {
+  const curtain = el('div', { class: 'curtain-rise' });
+  curtain.appendChild(el('div', { class: 'curtain-l' }));
+  curtain.appendChild(el('div', { class: 'curtain-r' }));
+  document.body.appendChild(curtain);
+  // Trigger animation on next frame
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => curtain.classList.add('opening'));
+  });
+  setTimeout(() => curtain.remove(), 1300);
+}
+
+function showTurnBanner(eyebrow, name, sub) {
+  // Avoid stacking — clear any existing banner first
+  document.querySelectorAll('.turn-banner').forEach(b => b.remove());
+  const banner = el('div', { class: 'turn-banner' });
+  const content = el('div', { class: 'turn-banner-content' });
+  content.appendChild(el('div', { class: 'eyebrow' }, eyebrow));
+  const h = el('h2', {});
+  h.appendChild(document.createTextNode(name + " "));
+  if (sub) h.appendChild(el('em', {}, sub));
+  content.appendChild(h);
+  banner.appendChild(content);
+  document.body.appendChild(banner);
+  setTimeout(() => banner.remove(), 1800);
+}
+
+function flashPhaseLabel() {
+  const lbl = $('#phase-label');
+  if (!lbl) return;
+  lbl.classList.remove('flash');
+  void lbl.offsetWidth;
+  lbl.classList.add('flash');
 }
 
 // ======================================================================
@@ -3213,6 +3369,7 @@ function startGame() {
   }
 
   state.activePlayerIdx = 0;
+  showCurtainRise();           // velvet curtains opening
   showScreen('screen-game');
 
   // Sprinkle subtle ambient sparkles in the game viewport (one-time)
@@ -3241,7 +3398,13 @@ function startTurn() {
   const p = activePlayer();
   state.phase = 'plan';
   logSay(`▶ Turn of ${p.name} begins. Brand Identity: ${p.brandIdentity.name}.`);
+  showTurnBanner(
+    `Turn ${state.activePlayerIdx + 1} of ${state.players.length}`,
+    p.name,
+    "takes the runway"
+  );
   render();
+  flashPhaseLabel();
 }
 
 function playRoadmap(idx) {
@@ -3251,6 +3414,7 @@ function playRoadmap(idx) {
   state.phase = 'design';
   logSay(`${p.name} placed Runway Roadmap: "${p.mat.roadmap.name}". (Project Test Plan)`);
   render();
+  flashPhaseLabel();
 }
 
 function playTheme(idx) {
@@ -3260,6 +3424,7 @@ function playTheme(idx) {
   state.phase = 'specify';
   logSay(`${p.name} placed Collection Theme: "${p.mat.theme.name}". (Test Design Spec)`);
   render();
+  flashPhaseLabel();
 }
 
 function playOutfit(idx) {
@@ -3281,6 +3446,7 @@ function playOutfit(idx) {
 // ======================================================================
 function startInspection() {
   state.phase = 'inspection';
+  flashPhaseLabel();
   state.inspection.activeFlagger = null;
   state.inspection.results = [];
   state.inspection.flagsRemaining = {};
@@ -3342,6 +3508,7 @@ function endInspection() {
 // ======================================================================
 function startExecution() {
   state.phase = 'execution';
+  flashPhaseLabel();
   const p = activePlayer();
   state.execution.results = p.mat.outfits.map(outfit => {
     const flaggedFields = state.inspection.results
@@ -3398,6 +3565,7 @@ function continueToResolution() {
 
   state.resolution.queue = queue;
   state.phase = 'resolution';
+  flashPhaseLabel();
   showNextResolution();
 }
 
