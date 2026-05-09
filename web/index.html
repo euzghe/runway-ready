@@ -1750,6 +1750,132 @@ body {
 .card-rr .deck-icon { font-size: 16px; }
 .card-ct .deck-icon { font-size: 16px; }
 
+/* ════════════════════════════════════════════════════════════
+   ⌘  ROADMAP CARDS — blueprint sheet aesthetic
+   ═══════════════════════════════════════════════════════════ */
+.card-rr {
+  background-image:
+    repeating-linear-gradient(0deg,  transparent 0 14px, rgba(31,58,95,0.07) 14px 15px),
+    repeating-linear-gradient(90deg, transparent 0 14px, rgba(31,58,95,0.07) 14px 15px),
+    radial-gradient(ellipse at top right, rgba(31,58,95,0.04), transparent 60%);
+  background-color: #fbf6e8;
+  position: relative;
+  overflow: hidden;
+}
+/* APPROVED stamp top-right */
+.card-rr .approved-stamp {
+  position: absolute;
+  top: 14px;
+  right: 12px;
+  background: transparent;
+  color: #1f3a5f;
+  padding: 4px 8px;
+  font-size: 7.5px;
+  letter-spacing: 2px;
+  font-weight: 800;
+  border: 1.5px solid #1f3a5f;
+  border-radius: 3px;
+  transform: rotate(-8deg);
+  text-align: center;
+  text-transform: uppercase;
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 3;
+  line-height: 1.15;
+  font-family: var(--mono);
+}
+.card-rr .approved-stamp small {
+  display: block;
+  font-size: 6px;
+  letter-spacing: 1px;
+  margin-top: 1px;
+  font-weight: 600;
+}
+/* Runway venue silhouette at bottom (perspective trapezoid) */
+.card-rr::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 50px;
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50' preserveAspectRatio='xMidYMax meet'><path d='M22 50 L40 6 L60 6 L78 50 Z' fill='%231f3a5f' opacity='0.10'/><path d='M40 6 L60 6' stroke='%23b8924a' stroke-width='0.6' opacity='0.5'/><path d='M40 6 L42 50 M58 50 L60 6' stroke='%231f3a5f' stroke-width='0.4' opacity='0.4' fill='none'/><path d='M50 6 L50 50' stroke='%23b8924a' stroke-width='0.4' opacity='0.35' stroke-dasharray='2,2'/><circle cx='50' cy='14' r='1.5' fill='%23b8924a' opacity='0.6'/><rect x='0' y='44' width='100' height='1' fill='%231f3a5f' opacity='0.07'/><rect x='0' y='47' width='100' height='1' fill='%231f3a5f' opacity='0.07'/></svg>");
+  background-size: 100% 50px;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  pointer-events: none;
+}
+/* Played (full-width) RR cards get more breathing room for the venue */
+.card-rr.played { padding-bottom: 56px; }
+.card-rr.in-hand { padding-bottom: 50px; }
+
+/* ════════════════════════════════════════════════════════════
+   ⌘  THEME CARDS — mood-board paper + palette swatches
+   ═══════════════════════════════════════════════════════════ */
+.card-ct {
+  background-image:
+    /* paper grain */
+    repeating-linear-gradient(0deg, transparent 0 18px, rgba(91,122,79,0.025) 18px 19px),
+    /* warm cream gradient */
+    radial-gradient(ellipse at top right, rgba(91,122,79,0.06), transparent 70%);
+  background-color: #f6f0d8;
+  position: relative;
+  overflow: hidden;
+}
+/* Washi tape pieces in two corners */
+.card-ct::before,
+.card-ct::after {
+  content: '';
+  position: absolute;
+  width: 36px;
+  height: 14px;
+  background: linear-gradient(180deg, rgba(184,146,74,0.55), rgba(184,146,74,0.35));
+  border-left: 1px dashed rgba(122,94,44,0.4);
+  border-right: 1px dashed rgba(122,94,44,0.4);
+  pointer-events: none;
+  z-index: 4;
+}
+.card-ct::before { top: -4px; left: -8px; transform: rotate(-12deg); }
+.card-ct::after  { top: -4px; right: -8px; transform: rotate(8deg); }
+.card-ct .card-stripe { z-index: 2; }
+
+/* Palette swatch row */
+.theme-palette {
+  display: flex;
+  gap: 5px;
+  margin: 8px 0 10px 0;
+  padding: 6px 8px;
+  background: rgba(255,255,255,0.55);
+  border-radius: 4px;
+  border-left: 2.5px solid var(--c-ct);
+  align-items: center;
+  position: relative;
+  z-index: 3;
+}
+.theme-palette-label {
+  font-size: 8.5px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--c-ct);
+  font-weight: 700;
+  margin-right: 6px;
+}
+.palette-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1.5px solid white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.18);
+  flex-shrink: 0;
+}
+/* Stitching detail at the bottom of theme card */
+.card-ct .stitch-line {
+  display: block;
+  height: 1px;
+  margin-top: 8px;
+  background: repeating-linear-gradient(90deg, var(--c-ct) 0 4px, transparent 4px 8px);
+  opacity: 0.6;
+}
+
 /* Make the played mat cards slightly more theatrical */
 .zone {
   box-shadow: var(--shadow-1), inset 0 0 0 1px rgba(255,255,255,0.5);
@@ -3260,31 +3386,68 @@ function renderBICard(card, played) {
     el('div', { class: 'iso-tag' }, 'Organizational Test Strategy · §6.2')
   );
 }
+// Try to derive a season label (SS26, AW26, etc.) from a roadmap name; fallback to "ROUND 1"
+function roadmapSeason(card) {
+  const m = (card.name || '').match(/(SS|AW|PF|CR)\d{2}/);
+  return m ? m[0] : 'ROUND 1';
+}
+
 function renderRRCard(card, played, onclick) {
   const node = el('div', { class: 'card card-rr ' + (played ? 'played' : 'in-hand') },
     el('div', { class: 'card-stripe' }),
     el('div', { class: 'deck-icon' }, '🗺️'),
     el('div', { class: 'card-deck-label' }, 'Runway Roadmap'),
-    el('div', { class: 'card-title' }, card.name),
-    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Scope:'), document.createTextNode(' ' + card.scope)),
-    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Schedule:'), document.createTextNode(' ' + card.schedule)),
-    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Resources:'), document.createTextNode(' ' + card.resources)),
-    el('div', { class: 'iso-tag' }, 'Project Test Plan · §6.3')
+    el('div', { class: 'card-title' }, card.name)
   );
+  // APPROVED blueprint stamp
+  const stamp = el('div', { class: 'approved-stamp' },
+    document.createTextNode('APPROVED'),
+    el('small', {}, roadmapSeason(card)));
+  node.appendChild(stamp);
+
+  node.appendChild(el('div', { class: 'field' }, el('span', { class: 'name' }, 'Scope:'), document.createTextNode(' ' + card.scope)));
+  node.appendChild(el('div', { class: 'field' }, el('span', { class: 'name' }, 'Schedule:'), document.createTextNode(' ' + card.schedule)));
+  node.appendChild(el('div', { class: 'field' }, el('span', { class: 'name' }, 'Resources:'), document.createTextNode(' ' + card.resources)));
+  node.appendChild(el('div', { class: 'iso-tag' }, 'Project Test Plan · §6.3'));
   if (onclick) node.addEventListener('click', onclick);
   return node;
 }
+// Per-theme colour palettes — drives the swatch dots on each Theme card.
+const THEME_PALETTES = {
+  'CT-01': ['#ddc9a1', '#e7837f', '#f4ead8', '#bdb09a'], // Mediterranean Breeze: sand, coral, off-white, taupe
+  'CT-02': ['#3a3540', '#888a90', '#f4f1ec', '#1a1820'], // Concrete Geometry: graphite, grey, white, black
+  'CT-03': ['#f5c6c6', '#c8b3e2', '#4a4654', '#fafafa'], // Soft Rebellion: pastel pink, lavender, charcoal, cream
+  'CT-04': ['#8a6e4f', '#2a3a5f', '#f4ead8', '#5a4528'], // Heritage Reframed: tweed, deep navy, cream, walnut
+  'CT-05': ['#6b7553', '#5f6b7a', '#6e4a3a', '#a09080'], // Atmospheric Layers: olive, slate, brown, taupe
+  'CT-06': ['#c0c0c0', '#d4ad5e', '#f4f1ec', '#8a8694'], // Liquid Light: silver, champagne, white, grey
+  'CT-07': ['#6b7553', '#ddc9a1', '#4a4654', '#a07a45'], // Off-Grid: olive, sand, charcoal, amber
+  'CT-08': ['#5a1a26', '#b8924a', '#f4ead8', '#3a2a30'], // Theatre of Memory: burgundy, gold, cream, ink
+};
+
 function renderCTCard(card, played, onclick) {
   const node = el('div', { class: 'card card-ct ' + (played ? 'played' : 'in-hand') },
     el('div', { class: 'card-stripe' }),
     el('div', { class: 'deck-icon' }, '🎨'),
     el('div', { class: 'card-deck-label' }, 'Collection Theme'),
-    el('div', { class: 'card-title' }, card.name),
-    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Feature ID:'), document.createTextNode(' ' + card.featureId)),
-    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Test conditions:'), document.createTextNode(' ' + card.conditions)),
-    el('div', { class: 'field' }, el('span', { class: 'name' }, 'Coverage:'), document.createTextNode(' ' + card.coverage)),
-    el('div', { class: 'iso-tag' }, 'Test Design Specification · §7.2')
+    el('div', { class: 'card-title' }, card.name)
   );
+
+  // Palette swatches — the visual mood of this theme
+  const palette = THEME_PALETTES[card.id] || ['#888','#aaa','#ccc','#eee'];
+  const paletteRow = el('div', { class: 'theme-palette' });
+  paletteRow.appendChild(el('span', { class: 'theme-palette-label' }, 'Palette'));
+  palette.forEach(c => {
+    const dot = el('div', { class: 'palette-dot' });
+    dot.style.background = c;
+    paletteRow.appendChild(dot);
+  });
+  node.appendChild(paletteRow);
+
+  node.appendChild(el('div', { class: 'field' }, el('span', { class: 'name' }, 'Feature ID:'), document.createTextNode(' ' + card.featureId)));
+  node.appendChild(el('div', { class: 'field' }, el('span', { class: 'name' }, 'Test conditions:'), document.createTextNode(' ' + card.conditions)));
+  node.appendChild(el('div', { class: 'field' }, el('span', { class: 'name' }, 'Coverage:'), document.createTextNode(' ' + card.coverage)));
+  node.appendChild(el('span', { class: 'stitch-line' }));
+  node.appendChild(el('div', { class: 'iso-tag' }, 'Test Design Specification · §7.2'));
   if (onclick) node.addEventListener('click', onclick);
   return node;
 }
