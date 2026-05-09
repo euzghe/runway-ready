@@ -2840,6 +2840,42 @@ body {
   100% { transform: scale(1);    color: var(--gold); }
 }
 
+/* ── PLAYER FASHION-SILHOUETTE in scoreboard ─────────────── */
+.sb-player {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 10px;
+  align-items: center;
+}
+.sb-fig {
+  width: 28px;
+  height: 36px;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 36'><ellipse cx='14' cy='5' rx='3' ry='4' fill='%23b8924a'/><path d='M14 9 L14 12' stroke='%23b8924a' stroke-width='1'/><path d='M9 13 Q14 11 19 13 L20 17 Q15 19 8 17 Z' fill='%23b8924a'/><path d='M9 17 L7 32 L21 32 L19 17 Z' fill='%23b8924a'/></svg>");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.7;
+}
+.sb-player.active .sb-fig { opacity: 1; }
+.sb-player.active .sb-fig {
+  filter: drop-shadow(0 0 6px rgba(255,209,102,0.7));
+}
+.sb-fig-content { min-width: 0; }
+
+/* ── CONFETTI BURST when score goes up ─────────────────────── */
+.confetti-piece {
+  position: fixed;
+  width: 7px;
+  height: 12px;
+  pointer-events: none;
+  z-index: 220;
+  animation: confetti-fall 1.6s ease-out forwards;
+}
+@keyframes confetti-fall {
+  0%   { transform: translate(0, 0) rotate(0deg);    opacity: 1; }
+  100% { transform: translate(var(--cx, 0px), var(--cy, 200px)) rotate(var(--cr, 720deg)); opacity: 0; }
+}
+
 /* ── HAND PROMPT — animated arrow drawing the eye to hand ── */
 .hand-prompt {
   display: flex;
@@ -4516,16 +4552,46 @@ function renderScoreboard() {
   const next = {};
   state.players.forEach(p => {
     const row = el('div', { class: 'sb-player' + (p.idx === state.activePlayerIdx ? ' active' : '') });
-    row.appendChild(el('div', { class: 'sb-name' }, p.name));
-    row.appendChild(el('div', { class: 'sb-bi' }, p.brandIdentity.name));
+    // Fashion silhouette icon
+    row.appendChild(el('div', { class: 'sb-fig' }));
+    // Right column with name + brand + score
+    const content = el('div', { class: 'sb-fig-content' });
+    content.appendChild(el('div', { class: 'sb-name' }, p.name));
+    content.appendChild(el('div', { class: 'sb-bi' }, p.brandIdentity.name));
     const changed = (prev[p.idx] != null && prev[p.idx] !== p.score);
     const scoreLine = el('div', { class: 'sb-score' + (changed ? ' bump' : '') }, String(p.score),
       el('span', { class: 'sb-score-unit' }, ' pts'));
-    row.appendChild(scoreLine);
+    content.appendChild(scoreLine);
+    row.appendChild(content);
     sb.appendChild(row);
+    // Confetti when this player's score went UP
+    if (prev[p.idx] != null && p.score > prev[p.idx]) {
+      setTimeout(() => burstConfetti(row), 80);
+    }
     next[p.idx] = p.score;
   });
   sb._prevScores = next;
+}
+
+// Tiny gold/magenta/lavender confetti burst from an element's centre
+function burstConfetti(anchor) {
+  const rect = anchor.getBoundingClientRect();
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  const colors = ['#ffd166', '#b8924a', '#d4ad5e', '#9d8bd9', '#e7837f'];
+  for (let i = 0; i < 14; i++) {
+    const piece = el('div', { class: 'confetti-piece' });
+    piece.style.left = cx + 'px';
+    piece.style.top = cy + 'px';
+    piece.style.background = colors[i % colors.length];
+    const angle = (Math.PI * 2 * i) / 14 + Math.random() * 0.4;
+    const distance = 80 + Math.random() * 80;
+    piece.style.setProperty('--cx', Math.cos(angle) * distance + 'px');
+    piece.style.setProperty('--cy', Math.sin(angle) * distance + 80 + 'px');
+    piece.style.setProperty('--cr', (Math.random() * 720 + 360) + 'deg');
+    document.body.appendChild(piece);
+    setTimeout(() => piece.remove(), 1700);
+  }
 }
 
 function renderLog() {
