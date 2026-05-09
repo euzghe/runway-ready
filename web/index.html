@@ -1472,17 +1472,13 @@ body {
   opacity: 0.7;
 }
 
-/* ── Mat: stage floor with spotlight from above ───────────── */
+/* ── Mat: transparent so the body atelier+venue shows through ─ */
 .mat {
   background:
-    /* warm spotlight from top */
-    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,209,102,0.10) 0%, transparent 70%),
-    /* stage floor wood grain */
-    repeating-linear-gradient(0deg,
-      transparent 0 22px,
-      rgba(115,80,30,0.04) 22px 23px),
-    /* subtle warm gradient */
-    linear-gradient(180deg, #fdf8ed 0%, var(--bg) 100%);
+    /* warm spotlight from top — only this remains, no stripes */
+    radial-gradient(ellipse 70% 40% at 50% 0%, rgba(255,209,102,0.18) 0%, transparent 70%),
+    /* very faint cream wash so cards still read against it */
+    linear-gradient(180deg, rgba(253,248,237,0.45) 0%, rgba(245,235,216,0.30) 100%);
   position: relative;
   border-bottom: 2px solid rgba(184,146,74,0.2);
 }
@@ -1508,11 +1504,11 @@ body {
 .mat::after  { right: 0; transform: scaleX(-1); border-bottom-right-radius: 30% 16px; }
 .mat-row { position: relative; z-index: 2; padding: 0 30px; }
 
-/* ── Hand area: backstage workshop ────────────────────────── */
+/* ── Hand area: backstage workshop, transparent backdrop ──── */
 .hand {
   background:
-    /* subtle backstage dusk */
-    linear-gradient(180deg, var(--bg-deep) 0%, #e8dfd0 100%);
+    /* very faint cream tint — most of body backdrop shows through */
+    linear-gradient(180deg, rgba(239,232,219,0.40) 0%, rgba(232,223,208,0.55) 100%);
   border-top: 1px dashed var(--gold);
   position: relative;
 }
@@ -2230,11 +2226,11 @@ body {
   border-left: none; border-top: none;
 }
 
-/* ── ISO PANEL gets a touch of theatrical warmth ──────── */
+/* ── ISO PANEL — semi-transparent so backdrop shows through ─ */
 .iso-panel {
   background:
-    radial-gradient(ellipse at center top, rgba(255,209,102,0.10) 0%, transparent 70%),
-    linear-gradient(180deg, #faf3e3 0%, #fff 100%);
+    radial-gradient(ellipse at center top, rgba(255,209,102,0.15) 0%, transparent 70%),
+    linear-gradient(180deg, rgba(250,243,227,0.85) 0%, rgba(255,255,255,0.78) 100%);
   border-bottom: 2px solid var(--gold);
 }
 
