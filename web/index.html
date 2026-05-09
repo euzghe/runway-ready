@@ -1751,21 +1751,63 @@ body {
 .card-ct .deck-icon { font-size: 16px; }
 
 /* ════════════════════════════════════════════════════════════
-   ⌘  ROADMAP CARDS — blueprint sheet aesthetic
+   ⌘  ROADMAP CARDS — designer atelier brief sheet
+   Each roadmap gets its own type-specific tint + icon, plus a
+   header banner, visualized stats row, and dramatic venue scene.
    ═══════════════════════════════════════════════════════════ */
 .card-rr {
   background-image:
     repeating-linear-gradient(0deg,  transparent 0 14px, rgba(31,58,95,0.07) 14px 15px),
     repeating-linear-gradient(90deg, transparent 0 14px, rgba(31,58,95,0.07) 14px 15px),
-    radial-gradient(ellipse at top right, rgba(31,58,95,0.04), transparent 60%);
+    var(--rr-tint, radial-gradient(ellipse at top right, rgba(31,58,95,0.04), transparent 60%));
   background-color: #fbf6e8;
   position: relative;
   overflow: hidden;
+  padding: 0 !important;
 }
-/* APPROVED stamp top-right */
+/* HEADER BANNER — tinted strip with big icon + name + APPROVED stamp */
+.rr-header {
+  position: relative;
+  background:
+    linear-gradient(180deg, var(--rr-accent, #1f3a5f) 0%, transparent 100%);
+  padding: 14px 16px 12px 16px;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  align-items: center;
+  border-bottom: 1px dashed rgba(31,58,95,0.35);
+  z-index: 2;
+}
+.rr-header .rr-icon {
+  font-size: 32px;
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.65);
+  border: 1.5px solid rgba(31,58,95,0.45);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 2px rgba(184,146,74,0.25), 0 1px 4px rgba(0,0,0,0.1);
+}
+.rr-header .rr-titles { min-width: 0; }
+.rr-header .card-deck-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #1f3a5f;
+  font-weight: 700;
+  margin: 0;
+}
+.rr-header .card-title {
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: 16px;
+  color: #1a1820;
+  line-height: 1.15;
+  margin-top: 2px;
+}
+/* APPROVED stamp — moved into header right */
 .card-rr .approved-stamp {
   position: absolute;
-  top: 14px;
+  top: 16px;
   right: 12px;
   background: transparent;
   color: #1f3a5f;
@@ -1778,11 +1820,12 @@ body {
   transform: rotate(-8deg);
   text-align: center;
   text-transform: uppercase;
-  opacity: 0.55;
+  opacity: 0.6;
   pointer-events: none;
-  z-index: 3;
+  z-index: 4;
   line-height: 1.15;
   font-family: var(--mono);
+  background: rgba(255,255,255,0.55);
 }
 .card-rr .approved-stamp small {
   display: block;
@@ -1791,22 +1834,83 @@ body {
   margin-top: 1px;
   font-weight: 600;
 }
-/* Runway venue silhouette at bottom (perspective trapezoid) */
-.card-rr::after {
-  content: '';
-  position: absolute;
-  left: 0; right: 0; bottom: 0;
-  height: 50px;
-  background-image:
-    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50' preserveAspectRatio='xMidYMax meet'><path d='M22 50 L40 6 L60 6 L78 50 Z' fill='%231f3a5f' opacity='0.10'/><path d='M40 6 L60 6' stroke='%23b8924a' stroke-width='0.6' opacity='0.5'/><path d='M40 6 L42 50 M58 50 L60 6' stroke='%231f3a5f' stroke-width='0.4' opacity='0.4' fill='none'/><path d='M50 6 L50 50' stroke='%23b8924a' stroke-width='0.4' opacity='0.35' stroke-dasharray='2,2'/><circle cx='50' cy='14' r='1.5' fill='%23b8924a' opacity='0.6'/><rect x='0' y='44' width='100' height='1' fill='%231f3a5f' opacity='0.07'/><rect x='0' y='47' width='100' height='1' fill='%231f3a5f' opacity='0.07'/></svg>");
-  background-size: 100% 50px;
-  background-repeat: no-repeat;
-  background-position: bottom;
-  pointer-events: none;
+/* Visualized stats row — dress count, schedule, resources */
+.rr-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 6px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.45);
+  border-bottom: 1px dashed rgba(31,58,95,0.2);
+  position: relative;
+  z-index: 2;
 }
-/* Played (full-width) RR cards get more breathing room for the venue */
-.card-rr.played { padding-bottom: 56px; }
-.card-rr.in-hand { padding-bottom: 50px; }
+.rr-stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+.rr-stat-label {
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #1f3a5f;
+  font-weight: 700;
+  opacity: 0.75;
+}
+.rr-stat-value {
+  font-size: 13px;
+  font-family: var(--serif);
+  color: #1a1820;
+  line-height: 1.1;
+}
+.rr-stat-icons {
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-top: 1px;
+}
+/* Body section — fields */
+.rr-body {
+  padding: 10px 14px;
+  position: relative;
+  z-index: 2;
+}
+.rr-body .field {
+  font-size: 11.5px;
+  margin-bottom: 4px;
+  background: rgba(255,255,255,0.5);
+  padding: 3px 7px;
+  border-radius: 3px;
+  border-left: 2px solid rgba(31,58,95,0.4);
+}
+.rr-body .field .name {
+  font-style: italic;
+  color: #1f3a5f;
+  font-size: 10.5px;
+  font-weight: 600;
+}
+.rr-body .iso-tag {
+  margin-top: 6px;
+  color: #1f3a5f;
+  border-top: 1px dashed rgba(31,58,95,0.3);
+  padding-top: 4px;
+}
+/* DRAMATIC VENUE SCENE at the bottom — bigger and more elaborate */
+.rr-venue {
+  position: relative;
+  height: 80px;
+  margin-top: 0;
+  background:
+    /* warm spotlight glow from above */
+    radial-gradient(ellipse 50% 80% at 50% 0%, rgba(255,209,102,0.30) 0%, transparent 70%),
+    /* deep stage backdrop */
+    linear-gradient(180deg, #14121a 0%, #1a1820 100%);
+  border-top: 2px solid var(--gold);
+  overflow: hidden;
+  z-index: 1;
+}
+.rr-venue svg { width: 100%; height: 100%; display: block; }
 
 /* ════════════════════════════════════════════════════════════
    ⌘  THEME CARDS — mood-board paper + palette swatches
@@ -3386,29 +3490,133 @@ function renderBICard(card, played) {
     el('div', { class: 'iso-tag' }, 'Organizational Test Strategy · §6.2')
   );
 }
-// Try to derive a season label (SS26, AW26, etc.) from a roadmap name; fallback to "ROUND 1"
+// Per-roadmap character: a representative emoji + accent colour + tint
+const ROADMAP_META = {
+  'RR-01': { icon: '☀️', accent: '#f4d8a8', resourceIcon: '✦' },  // SS26 Capsule Drop — sunny, minimal
+  'RR-03': { icon: '🏝️', accent: '#a8d4c8', resourceIcon: '🌊' },  // Resort Pop-Up — beach
+  'RR-04': { icon: '📸', accent: '#e0d8e8', resourceIcon: '⚡' },  // Industry Press Show — flashbulb
+  'RR-05': { icon: '🎓', accent: '#c8b8d8', resourceIcon: '◐' },  // Student Showcase
+  'RR-07': { icon: '🌿', accent: '#a8d4a8', resourceIcon: '♻' },  // Sustainability — eco
+  'RR-09': { icon: '🛹', accent: '#d8d8d8', resourceIcon: '✕' },  // Streetwear
+  'RR-10': { icon: '🍂', accent: '#d4b888', resourceIcon: '❄' },  // Pre-Fall Lookbook
+  'RR-12': { icon: '👥', accent: '#d4b8a8', resourceIcon: '◯' },  // Inclusive Sizing
+};
+function roadmapMeta(card) {
+  return ROADMAP_META[card.id] || { icon: '🗺️', accent: '#d8d2c4', resourceIcon: '◆' };
+}
 function roadmapSeason(card) {
   const m = (card.name || '').match(/(SS|AW|PF|CR)\d{2}/);
   return m ? m[0] : 'ROUND 1';
 }
+// Extract first integer from a string (for outfit count)
+function firstInt(s) { const m = (s || '').match(/\d+/); return m ? parseInt(m[0]) : 4; }
+// Quick schedule simplifier — e.g. "1 round (10 min)" -> "1 round"
+function shortSchedule(s) {
+  const m = (s || '').match(/^([^(,]+)/);
+  return (m ? m[1] : s).trim();
+}
+
+// Dramatic stage-venue SVG for the bottom of every roadmap card.
+function makeVenueSVG(meta) {
+  return `
+<svg viewBox="0 0 200 80" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+  <!-- spotlight beams coming down -->
+  <path d="M70 0 L84 80 L116 80 L130 0 Z" fill="rgba(255,221,140,0.20)"/>
+  <path d="M40 0 L60 80 L78 80 L70 0 Z" fill="rgba(255,221,140,0.10)"/>
+  <path d="M160 0 L140 80 L122 80 L130 0 Z" fill="rgba(255,221,140,0.10)"/>
+  <!-- velvet curtains framing each side -->
+  <path d="M0 0 L0 80 L18 80 Q14 60 18 40 Q14 20 18 0 Z" fill="${meta.accent || '#5a1a26'}" opacity="0.55"/>
+  <path d="M200 0 L200 80 L182 80 Q186 60 182 40 Q186 20 182 0 Z" fill="${meta.accent || '#5a1a26'}" opacity="0.55"/>
+  <!-- catwalk perspective trapezoid -->
+  <path d="M55 80 L88 18 L112 18 L145 80 Z" fill="#d4a872" opacity="0.85"/>
+  <path d="M55 80 L88 18 L112 18 L145 80 Z" fill="none" stroke="#7a5e2c" stroke-width="0.6"/>
+  <!-- centre line on catwalk -->
+  <path d="M100 18 L100 80" stroke="#b8924a" stroke-width="0.7" stroke-dasharray="3,2"/>
+  <!-- audience rows (bottom) -->
+  <rect x="0" y="68" width="200" height="2" fill="#1f3a5f" opacity="0.55"/>
+  <rect x="0" y="73" width="200" height="2" fill="#1f3a5f" opacity="0.4"/>
+  <rect x="0" y="77" width="200" height="2" fill="#1f3a5f" opacity="0.3"/>
+  <!-- audience heads suggested as dots -->
+  <circle cx="20" cy="66" r="1.5" fill="#1a1820" opacity="0.5"/>
+  <circle cx="32" cy="66" r="1.5" fill="#1a1820" opacity="0.5"/>
+  <circle cx="172" cy="66" r="1.5" fill="#1a1820" opacity="0.5"/>
+  <circle cx="184" cy="66" r="1.5" fill="#1a1820" opacity="0.5"/>
+  <!-- model walking on catwalk (silhouette mid-walk) -->
+  <ellipse cx="100" cy="32" rx="1.6" ry="2" fill="#1a1820"/>
+  <path d="M99 34 L100 38 L101 34" fill="#1a1820"/>
+  <path d="M97 38 Q100 36 103 38 L102 50 L98 50 Z" fill="#1a1820"/>
+  <path d="M98 50 L96 65 L99 65 L100 52 Z" fill="#1a1820"/>
+  <path d="M102 50 L104 65 L101 65 L100 52 Z" fill="#1a1820"/>
+  <!-- spotlight rig at top -->
+  <rect x="0" y="0" width="200" height="3" fill="#1a1820"/>
+  <circle cx="60" cy="3" r="2" fill="#b8924a"/>
+  <circle cx="100" cy="3" r="2.5" fill="${"#ffd166"}"/>
+  <circle cx="140" cy="3" r="2" fill="#b8924a"/>
+</svg>`;
+}
 
 function renderRRCard(card, played, onclick) {
-  const node = el('div', { class: 'card card-rr ' + (played ? 'played' : 'in-hand') },
-    el('div', { class: 'card-stripe' }),
-    el('div', { class: 'deck-icon' }, '🗺️'),
-    el('div', { class: 'card-deck-label' }, 'Runway Roadmap'),
-    el('div', { class: 'card-title' }, card.name)
-  );
-  // APPROVED blueprint stamp
-  const stamp = el('div', { class: 'approved-stamp' },
-    document.createTextNode('APPROVED'),
-    el('small', {}, roadmapSeason(card)));
-  node.appendChild(stamp);
+  const meta = roadmapMeta(card);
+  const node = el('div', { class: 'card card-rr ' + (played ? 'played' : 'in-hand') });
+  node.style.setProperty('--rr-accent', meta.accent);
+  // Tint background based on accent
+  node.style.setProperty('--rr-tint', `radial-gradient(ellipse at top right, ${meta.accent}55, transparent 60%)`);
 
-  node.appendChild(el('div', { class: 'field' }, el('span', { class: 'name' }, 'Scope:'), document.createTextNode(' ' + card.scope)));
-  node.appendChild(el('div', { class: 'field' }, el('span', { class: 'name' }, 'Schedule:'), document.createTextNode(' ' + card.schedule)));
-  node.appendChild(el('div', { class: 'field' }, el('span', { class: 'name' }, 'Resources:'), document.createTextNode(' ' + card.resources)));
-  node.appendChild(el('div', { class: 'iso-tag' }, 'Project Test Plan · §6.3'));
+  // HEADER BANNER
+  const header = el('div', { class: 'rr-header' });
+  header.appendChild(el('div', { class: 'rr-icon' }, meta.icon));
+  const titles = el('div', { class: 'rr-titles' });
+  titles.appendChild(el('div', { class: 'card-deck-label' }, 'Runway Roadmap'));
+  titles.appendChild(el('div', { class: 'card-title' }, card.name));
+  header.appendChild(titles);
+  // APPROVED stamp positioned absolutely inside header (visible above)
+  header.appendChild(el('div', { class: 'approved-stamp' },
+    document.createTextNode('APPROVED'),
+    el('small', {}, roadmapSeason(card))));
+  node.appendChild(header);
+
+  // VISUALIZED STATS ROW
+  const outfitCount = firstInt(card.scope);
+  const dressIcons = '👗'.repeat(Math.min(outfitCount, 5));
+  const stats = el('div', { class: 'rr-stats' });
+  // Stat 1 — outfit count
+  const s1 = el('div', { class: 'rr-stat' });
+  s1.appendChild(el('div', { class: 'rr-stat-label' }, 'Outfits'));
+  s1.appendChild(el('div', { class: 'rr-stat-value' }, String(outfitCount)));
+  s1.appendChild(el('div', { class: 'rr-stat-icons' }, dressIcons));
+  stats.appendChild(s1);
+  // Stat 2 — schedule
+  const s2 = el('div', { class: 'rr-stat' });
+  s2.appendChild(el('div', { class: 'rr-stat-label' }, 'Schedule'));
+  s2.appendChild(el('div', { class: 'rr-stat-value' }, shortSchedule(card.schedule)));
+  s2.appendChild(el('div', { class: 'rr-stat-icons' }, '⏱'));
+  stats.appendChild(s2);
+  // Stat 3 — resources brief
+  const s3 = el('div', { class: 'rr-stat' });
+  s3.appendChild(el('div', { class: 'rr-stat-label' }, 'Resources'));
+  // truncate resources to ~16 chars for the badge
+  const shortRes = (card.resources || '').split(/[,;]/)[0].trim().slice(0, 18);
+  s3.appendChild(el('div', { class: 'rr-stat-value', style: 'font-size:11px;' }, shortRes));
+  s3.appendChild(el('div', { class: 'rr-stat-icons' }, meta.resourceIcon));
+  stats.appendChild(s3);
+  node.appendChild(stats);
+
+  // BODY
+  const body = el('div', { class: 'rr-body' });
+  body.appendChild(el('div', { class: 'field' },
+    el('span', { class: 'name' }, 'Full scope:'),
+    document.createTextNode(' ' + card.scope)));
+  body.appendChild(el('div', { class: 'field' },
+    el('span', { class: 'name' }, 'Approach:'),
+    document.createTextNode(' ' + (card.approach || '—'))));
+  body.appendChild(el('div', { class: 'iso-tag' }, 'Project Test Plan · §6.3'));
+  node.appendChild(body);
+
+  // VENUE SCENE
+  const venue = el('div', { class: 'rr-venue' });
+  venue.innerHTML = makeVenueSVG(meta);
+  node.appendChild(venue);
+
   if (onclick) node.addEventListener('click', onclick);
   return node;
 }
