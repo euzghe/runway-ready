@@ -430,7 +430,7 @@ em { font-style: italic; color: var(--ink-soft); }
 
 /* In-hand cards: tighter and clickable */
 .card.in-hand {
-  width: 200px;
+  width: 220px;
   cursor: pointer;
   transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s;
   border-color: var(--rule);
@@ -451,6 +451,32 @@ em { font-style: italic; color: var(--ink-soft); }
   border-color: var(--rule);
 }
 .card.played { width: 100%; }
+
+/* In-hand outfit cards: compact illustration variant */
+.card-od.in-hand {
+  padding: 0 !important;
+  overflow: hidden;
+}
+.card-od.in-hand .outfit-illu { height: 160px; }
+.card-od.in-hand .outfit-illu .look-badge {
+  padding: 3px 8px;
+  font-size: 8.5px;
+  letter-spacing: 1.2px;
+}
+.card-od.in-hand .outfit-illu .fabric-swatch {
+  padding: 3px 8px 3px 4px;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+.card-od.in-hand .outfit-illu .fabric-swatch .dot { width: 11px; height: 11px; }
+.card-od.in-hand .outfit-illu .sequin { width: 4px; height: 4px; }
+.card-od.in-hand .outfit-brief {
+  padding: 10px 12px 12px 12px;
+  font-size: 10.5px;
+}
+.card-od.in-hand .outfit-brief .card-title { font-size: 12px; }
+.card-od.in-hand .outfit-brief .field { font-size: 10.5px; padding: 3px 6px; }
+.card-od.in-hand .outfit-brief .field .name { font-size: 9.5px; }
 
 /* ── Action bar (between mat and hand) ─────────────────────────── */
 .action-bar {
@@ -3375,22 +3401,22 @@ function buildOutfitIlluContainer(card) {
 }
 
 function renderODCard(card, played, onclick) {
-  // HAND version stays compact
+  // HAND version: same illustration as played, compact size
   if (!played) {
-    const node = el('div', { class: 'card card-od in-hand' },
-      el('div', { class: 'card-stripe' }),
-      el('div', { class: 'deck-icon' }, '👗'),
-      el('div', { class: 'card-deck-label' }, 'Outfit Detail'),
-      el('div', { class: 'card-title' }, card.cardId)
-    );
+    const node = el('div', { class: 'card card-od in-hand' });
+    node.appendChild(buildOutfitIlluContainer(card));
+    const brief = el('div', { class: 'outfit-brief' });
+    brief.appendChild(el('div', { class: 'card-deck-label' }, 'Designer\'s Brief'));
+    brief.appendChild(el('div', { class: 'card-title' }, card.cardId));
     for (const fname of OD_FIELDS) {
       if (fname === 'Identifier') continue;
       const v = card.fields[fname];
-      node.appendChild(el('div', { class: 'field' },
+      brief.appendChild(el('div', { class: 'field' },
         el('span', { class: 'name' }, fname + ':'),
         document.createTextNode(' ' + (v || ' '))));
     }
-    node.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification · §7.3'));
+    brief.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification · §7.3'));
+    node.appendChild(brief);
     if (onclick) node.addEventListener('click', onclick);
     return node;
   }
