@@ -790,17 +790,56 @@ em { font-style: italic; color: var(--ink-soft); }
 .insp-card {
   background: var(--surface);
   border-radius: var(--r-md);
-  padding: 18px;
-  border-top: 3px solid var(--c-od);
+  padding: 0; /* the outfit-illu + outfit-brief manage their own padding */
+  border: 1px solid rgba(110,93,150,0.25);
   box-shadow: var(--shadow-2);
+  overflow: hidden;
 }
-.insp-card .card-title {
-  font-family: var(--mono);
-  font-size: 13px;
-  letter-spacing: 0.5px;
-  margin-bottom: 4px;
+/* Slightly shorter illustration for the inspection grid (3 in a row) */
+.insp-card .outfit-illu { height: 170px; }
+/* Field overrides scoped to inspection cards — higher specificity than .outfit-brief .field */
+.insp-card .outfit-brief .field {
+  cursor: pointer;
+  transition: background 0.12s, border-left-color 0.12s;
 }
-.insp-card .card-deck-label { color: var(--c-od); margin-bottom: 12px; }
+.insp-card .outfit-brief .field:hover {
+  background: var(--gold-soft);
+  border-left-color: var(--gold);
+}
+.insp-card .outfit-brief .field.flagged-correct {
+  background: #e8f1ea;
+  border-left: 3px solid var(--c-pass);
+  cursor: default;
+}
+.insp-card .outfit-brief .field.flagged-correct::after {
+  content: ' ✓ caught';
+  font-size: 10px;
+  color: var(--c-pass);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.insp-card .outfit-brief .field.flagged-wrong {
+  background: #f3e2e2;
+  border-left: 3px solid var(--c-fail);
+  cursor: default;
+}
+.insp-card .outfit-brief .field.flagged-wrong::after {
+  content: ' ✗ no flaw';
+  font-size: 10px;
+  color: var(--c-fail);
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.insp-card .outfit-brief .field.disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+.insp-card .outfit-brief .field.disabled:hover {
+  background: rgba(255,255,255,0.6);
+  border-left-color: rgba(110,93,150,0.25);
+}
 .insp-card .field {
   padding: 8px 10px;
   border-radius: var(--r-sm);
@@ -952,32 +991,30 @@ em { font-style: italic; color: var(--ink-soft); }
 .res-card {
   background: var(--surface);
   border-radius: var(--r-md);
-  padding: 22px;
-  border-top: 3px solid var(--c-od);
+  padding: 0;
+  border: 1px solid rgba(110,93,150,0.25);
   box-shadow: var(--shadow-2);
+  overflow: hidden;
+  max-width: 460px;
+  margin: 0 auto;
 }
-.res-card .card-title {
-  font-family: var(--mono);
-  font-size: 14px;
-}
-.res-card .card-deck-label { color: var(--c-od); margin-bottom: 14px; }
-.res-card .field {
-  padding: 10px 12px;
-  border-radius: var(--r-sm);
+/* Field overrides scoped to resolution card — higher specificity */
+.res-card .outfit-brief .field {
   cursor: pointer;
-  transition: background 0.12s;
-  margin: 4px 0;
-  border-left: 2px solid transparent;
+  transition: background 0.12s, border-left-color 0.12s;
 }
-.res-card .field:hover { background: var(--gold-soft); border-left-color: var(--gold); }
-.res-card .field.correct {
+.res-card .outfit-brief .field:hover {
+  background: var(--gold-soft);
+  border-left-color: var(--gold);
+}
+.res-card .outfit-brief .field.correct {
   background: #e8f1ea;
-  border-left-color: var(--c-pass);
+  border-left: 3px solid var(--c-pass);
   cursor: default;
 }
-.res-card .field.wrong {
+.res-card .outfit-brief .field.wrong {
   background: #f3e2e2;
-  border-left-color: var(--c-fail);
+  border-left: 3px solid var(--c-fail);
   cursor: default;
 }
 .insp-feedback {
@@ -3315,6 +3352,28 @@ function makeOutfitIllustration(fabric) {
 </svg>`;
 }
 
+// Reusable: returns the .outfit-illu element with the colored model SVG +
+// fabric ribbon + LOOK badge + sparkles. Used in mat / inspection / resolution.
+function buildOutfitIlluContainer(card) {
+  const fabric = fabricFor(card.cardId);
+  const illu = el('div', { class: 'outfit-illu' });
+  illu.innerHTML = makeOutfitIllustration(fabric);
+
+  const swatch = el('div', { class: 'fabric-swatch' });
+  const dot = el('div', { class: 'dot' });
+  dot.style.background = fabric.hex;
+  swatch.appendChild(dot);
+  swatch.appendChild(document.createTextNode(fabric.name));
+  illu.appendChild(swatch);
+
+  const lookNum = (card.cardId.match(/\d+/) || ['—'])[0];
+  illu.appendChild(el('div', { class: 'look-badge' }, 'Look ' + lookNum));
+
+  ['s1','s2','s3','s4','s5','s6'].forEach(c => illu.appendChild(el('div', { class: 'sequin ' + c })));
+
+  return illu;
+}
+
 function renderODCard(card, played, onclick) {
   // HAND version stays compact
   if (!played) {
@@ -3338,30 +3397,8 @@ function renderODCard(card, played, onclick) {
 
   // PLAYED version: full theatrical card with illustration header + brief
   const node = el('div', { class: 'card card-od played' });
-  const fabric = fabricFor(card.cardId);
+  node.appendChild(buildOutfitIlluContainer(card));
 
-  // ─── Illustrated runway header ───
-  const illu = el('div', { class: 'outfit-illu' });
-  illu.innerHTML = makeOutfitIllustration(fabric);
-
-  // Fabric swatch ribbon (top-left)
-  const swatch = el('div', { class: 'fabric-swatch' });
-  const dot = el('div', { class: 'dot' });
-  dot.style.background = fabric.hex;
-  swatch.appendChild(dot);
-  swatch.appendChild(document.createTextNode(fabric.name));
-  illu.appendChild(swatch);
-
-  // LOOK badge (top-right)
-  const lookNum = (card.cardId.match(/\d+/) || ['—'])[0];
-  illu.appendChild(el('div', { class: 'look-badge' }, 'Look ' + lookNum));
-
-  // Sparkles overlay
-  ['s1','s2','s3','s4','s5','s6'].forEach(c => illu.appendChild(el('div', { class: 'sequin ' + c })));
-
-  node.appendChild(illu);
-
-  // ─── Designer's brief (text) ───
   const brief = el('div', { class: 'outfit-brief' });
   brief.appendChild(el('div', { class: 'card-deck-label' }, 'Designer\'s Brief'));
   brief.appendChild(el('div', { class: 'card-title' }, card.cardId));
@@ -3561,8 +3598,12 @@ function renderInspectionModal() {
   const grid = el('div', { class: 'insp-grid' + (hasFlagger ? ' tap-ready' : ' tap-blocked') });
   p.mat.outfits.forEach(outfit => {
     const card = el('div', { class: 'insp-card' });
-    card.appendChild(el('div', { class: 'card-deck-label' }, '👗 Outfit Detail · Test Case Spec §7.3'));
-    card.appendChild(el('div', { class: 'card-title' }, outfit.cardId));
+    // Illustrated runway header (same one as on the mat)
+    card.appendChild(buildOutfitIlluContainer(outfit));
+    // Designer's brief with TAPPABLE fields
+    const brief = el('div', { class: 'outfit-brief' });
+    brief.appendChild(el('div', { class: 'card-deck-label' }, 'Designer\'s Brief — tap suspect field'));
+    brief.appendChild(el('div', { class: 'card-title' }, outfit.cardId));
     OD_FIELDS.forEach(fname => {
       if (fname === 'Identifier') return;
       const v = outfit.fields[fname];
@@ -3575,8 +3616,10 @@ function renderInspectionModal() {
       },
         el('span', { class: 'name' }, fname + ':'),
         document.createTextNode(' ' + (v || '(empty)')));
-      card.appendChild(node);
+      brief.appendChild(node);
     });
+    brief.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification · §7.3'));
+    card.appendChild(brief);
     grid.appendChild(card);
   });
   root.appendChild(grid);
@@ -3718,10 +3761,12 @@ function renderResolutionModal(clickedField, wasCorrect) {
   root.appendChild(el('div', { class: 'res-prompt' },
     'Tap the field on YOUR Outfit that produced this defect.'));
 
-  // The outfit, with clickable fields
+  // The outfit, with clickable fields — same illustrated header as on the mat
   const card = el('div', { class: 'res-card' });
-  card.appendChild(el('div', { class: 'card-deck-label' }, 'Outfit Detail · Test Case Specification'));
-  card.appendChild(el('div', { class: 'card-title' }, cur.outfit.cardId));
+  card.appendChild(buildOutfitIlluContainer(cur.outfit));
+  const brief = el('div', { class: 'outfit-brief' });
+  brief.appendChild(el('div', { class: 'card-deck-label' }, 'Designer\'s Brief — tap originating field'));
+  brief.appendChild(el('div', { class: 'card-title' }, cur.outfit.cardId));
   OD_FIELDS.forEach(fname => {
     if (fname === 'Identifier') return;
     const v = cur.outfit.fields[fname];
@@ -3733,8 +3778,10 @@ function renderResolutionModal(clickedField, wasCorrect) {
     },
       el('span', { class: 'name' }, fname + ':'),
       document.createTextNode(' ' + (v || '(empty)')));
-    card.appendChild(node);
+    brief.appendChild(node);
   });
+  brief.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification · §7.3'));
+  card.appendChild(brief);
   root.appendChild(card);
 
   if (clickedField && !wasCorrect) {
