@@ -3183,30 +3183,77 @@ body {
   100% { transform: translate(var(--cx, 0px), var(--cy, 200px)) rotate(var(--cr, 720deg)); opacity: 0; }
 }
 
-/* ── HAND PROMPT — animated arrow drawing the eye to hand ── */
+/* ── HAND PROMPT — phase tag + designer name on top, arrow + label below ── */
 .hand-prompt {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 18px;
-  background: linear-gradient(90deg, var(--gold-soft) 0%, transparent 80%);
-  border-left: 3px solid var(--gold);
-  border-radius: 0 var(--r-md) var(--r-md) 0;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px 18px;
+  background: linear-gradient(90deg, var(--gold-soft) 0%, rgba(255,255,255,0.6) 100%);
+  border: 1px solid var(--gold);
+  border-left: 4px solid var(--gold);
+  border-radius: var(--r-md);
   margin-bottom: 16px;
   font-size: 13px;
   color: var(--ink);
+  box-shadow: 0 2px 8px rgba(184,146,74,0.18);
+}
+.hand-prompt .hp-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hand-prompt .hp-phase-tag {
+  background: var(--ink);
+  color: var(--bulb);
+  padding: 5px 12px;
+  font-family: var(--sans);
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  font-weight: 700;
+  border-radius: 14px;
+  border: 1.5px solid var(--gold);
+  text-transform: uppercase;
+}
+.hand-prompt .hp-designer {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--ink);
+  font-style: italic;
+}
+.hand-prompt .hp-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 .hand-prompt .arrow {
-  font-size: 24px;
+  font-size: 26px;
   color: var(--gold);
   animation: bounce-down 1.2s ease-in-out infinite;
   display: inline-block;
+  flex-shrink: 0;
+  width: 26px;
+  text-align: center;
+}
+.hand-prompt .hp-text { flex: 1; min-width: 0; }
+.hand-prompt .hp-label {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--ink);
+  line-height: 1.2;
+}
+.hand-prompt .hp-sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin-top: 3px;
+  line-height: 1.4;
 }
 @keyframes bounce-down {
   0%, 100% { transform: translateY(0); }
   50%      { transform: translateY(6px); }
 }
-.hand-prompt b { font-family: var(--serif); font-style: italic; font-weight: 400; font-size: 15px; color: var(--ink); }
 
 /* ── EXEC CELL adapted for dice stage ─────────────────────── */
 .exec-cell .exec-die-text { display: none; }
@@ -3421,10 +3468,6 @@ body {
   <div class="main-col">
     <div class="iso-panel" id="iso-panel"></div>
     <div class="mat" id="mat"></div>
-    <div class="action-bar">
-      <div class="action-text" id="action-text">&nbsp;</div>
-      <button class="action-btn" id="action-btn" style="display:none;" disabled>Continue</button>
-    </div>
     <div class="hand" id="hand"></div>
     <div class="log" id="log"></div>
   </div>
@@ -4927,11 +4970,21 @@ function renderHand() {
     if (!cards.length) return;
     const sec = el('div', { class: 'hand-section' + (isActive ? ' active-section' : '') });
     if (isActive && prompt) {
-      sec.appendChild(el('div', { class: 'hand-prompt' },
-        el('span', { class: 'arrow' }, '↓'),
-        el('div', {},
-          el('div', {}, el('b', {}, prompt.label)),
-          el('div', { style: 'font-size:12px; color:#4a4654; margin-top:2px;' }, prompt.sub))));
+      const promptDiv = el('div', { class: 'hand-prompt' });
+      // Phase tag (PLAN / DESIGN / SPECIFY) + designer name on top row
+      const head = el('div', { class: 'hp-head' });
+      head.appendChild(el('span', { class: 'hp-phase-tag' }, prompt.phase));
+      head.appendChild(el('span', { class: 'hp-designer' }, p.name));
+      promptDiv.appendChild(head);
+      // Bouncing arrow + label + sub
+      const body = el('div', { class: 'hp-body' });
+      body.appendChild(el('span', { class: 'arrow' }, '↓'));
+      const text = el('div', { class: 'hp-text' });
+      text.appendChild(el('div', { class: 'hp-label' }, prompt.label));
+      text.appendChild(el('div', { class: 'hp-sub' }, prompt.sub));
+      body.appendChild(text);
+      promptDiv.appendChild(body);
+      sec.appendChild(promptDiv);
     }
     sec.appendChild(el('div', { class: 'hand-label' }, label));
     const row = el('div', { class: 'hand-row' });
@@ -4947,7 +5000,7 @@ function renderHand() {
   buildSection('roadmaps', p.hand.roadmaps,
     state.phase === 'plan',
     `Roadmaps in your hand (${p.hand.roadmaps.length}) · 🗺️ Project Test Plan`,
-    { label: 'Tap a Roadmap below', sub: 'It becomes your Project Test Plan for this round.' },
+    { phase: 'PLAN', label: 'Tap a Roadmap below', sub: 'It becomes your Project Test Plan for this round.' },
     (c, i) => {
       const playable = state.phase === 'plan';
       const card = renderRRCard(c, false, playable ? () => playRoadmap(i) : null);
@@ -4959,7 +5012,7 @@ function renderHand() {
   buildSection('themes', p.hand.themes,
     state.phase === 'design',
     `Themes in your hand (${p.hand.themes.length}) · 🎨 Test Design Spec`,
-    { label: 'Tap a Theme below', sub: 'It becomes your Test Design Specification — the coverage criteria for your Outfits.' },
+    { phase: 'DESIGN', label: 'Tap a Theme below', sub: 'It becomes your Test Design Specification — the coverage criteria for your Outfits.' },
     (c, i) => {
       const playable = state.phase === 'design';
       const card = renderCTCard(c, false, playable ? () => playTheme(i) : null);
@@ -4971,7 +5024,7 @@ function renderHand() {
   buildSection('outfits', p.hand.outfits,
     state.phase === 'specify',
     `Outfits in your hand (${p.hand.outfits.length}) · 👗 Test Case Spec — pick 3`,
-    { label: 'Tap an Outfit below', sub: `Each one is a complete Test Case Spec. ${3 - p.mat.outfits.length} of 3 remaining.` },
+    { phase: 'SPECIFY', label: 'Tap an Outfit below', sub: `Each one is a complete Test Case Spec. ${3 - p.mat.outfits.length} of 3 remaining.` },
     (c, i) => {
       const playable = state.phase === 'specify' && p.mat.outfits.length < 3;
       const card = renderODCard(c, false, playable ? () => playOutfit(i) : null);
@@ -4981,22 +5034,9 @@ function renderHand() {
 }
 
 function renderActionBar() {
-  const p = activePlayer();
-  const txt = $('#action-text');
-  const btn = $('#action-btn');
-  btn.disabled = true; btn.style.display = 'none';
-  const tag = (label) => `<span class="phase-tag">${label}</span>`;
-  if (state.phase === 'plan') {
-    txt.innerHTML = `${tag('Plan')}<b>${p.name}</b> · pick a <em>Runway Roadmap</em> from your hand to define this season's Project Test Plan.`;
-  } else if (state.phase === 'design') {
-    txt.innerHTML = `${tag('Design')}<b>${p.name}</b> · pick a <em>Collection Theme</em> to declare your Test Design Specification.`;
-  } else if (state.phase === 'specify') {
-    txt.innerHTML = `${tag('Specify')}<b>${p.name}</b> · draft three <em>Outfit Detail</em> cards (${p.mat.outfits.length}/3) — your Test Case Specifications.`;
-  } else if (state.phase === 'inspection') {
-    txt.innerHTML = `${tag('Inspect')}<b>Inspectors</b>: read each Outfit out loud. Tap a field you suspect. Catching a real flaw = +2. False flag = −1.`;
-  } else {
-    txt.innerHTML = '&nbsp;';
-  }
+  // The action bar was removed — phase prompts are now embedded in the
+  // hand sections themselves (right above the cards the player must tap).
+  // Function kept as a no-op so render() can still call it safely.
 }
 
 function renderScoreboard() {
