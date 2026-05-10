@@ -2582,25 +2582,31 @@ body {
   position: absolute;
   width: 90px;
   height: 90px;
-  background: linear-gradient(145deg, #ffffff 0%, #f5efdf 100%);
-  border: 1.5px solid var(--ink);
+  background: linear-gradient(145deg, #7d1e2d 0%, #5a1a26 100%);
+  border: 1.5px solid #2d0a14;
   border-radius: 14px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   grid-template-rows: 1fr 1fr 1fr;
   padding: 12px;
   gap: 4px;
-  box-shadow: inset 0 0 16px rgba(0,0,0,0.06);
+  box-shadow: inset 0 0 18px rgba(0,0,0,0.30), inset 0 2px 4px rgba(255,255,255,0.10);
   backface-visibility: visible;
 }
 .dice-face .pip {
-  background: var(--ink);
-  border-radius: 50%;
-  width: 14px;
-  height: 14px;
   align-self: center;
   justify-self: center;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  color: #fff5e6;
+  filter: drop-shadow(0 0 3px rgba(255,209,102,0.5));
 }
+.dice-face .pip::before { content: '♥'; }
 .dice-face.f1 { transform: translateZ(45px); }
 .dice-face.f2 { transform: rotateY(180deg) translateZ(45px); }
 .dice-face.f3 { transform: rotateY(90deg)  translateZ(45px); }
@@ -2861,6 +2867,135 @@ body {
   filter: drop-shadow(0 0 6px rgba(255,209,102,0.7));
 }
 .sb-fig-content { min-width: 0; }
+
+/* ════════════════════════════════════════════════════════════
+   ⌘  DEFECT TYPE CHOOSER — the in-play ISO learning mechanic
+   The player must pick which class of ISO defect they spotted.
+   By repeating these choices the player learns ISO defect
+   taxonomy WITHOUT ever reading a tutorial.
+   ═══════════════════════════════════════════════════════════ */
+.defect-chooser-veil {
+  position: fixed;
+  inset: 0;
+  background: rgba(20,18,28,0.65);
+  backdrop-filter: blur(4px);
+  z-index: 320;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fade-in 0.16s ease;
+}
+.defect-chooser-card {
+  background: var(--bg);
+  border: 2px solid var(--gold);
+  border-radius: var(--r-lg);
+  padding: 24px 28px;
+  max-width: 540px;
+  width: 100%;
+  box-shadow: var(--shadow-modal);
+  position: relative;
+}
+.defect-chooser-card::before {
+  content: '';
+  position: absolute;
+  top: 14px; left: 28px; right: 28px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.4;
+}
+.dc-eyebrow {
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.dc-title {
+  font-family: var(--serif);
+  font-size: 20px;
+  font-weight: 400;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+.dc-subtitle {
+  font-size: 12px;
+  color: var(--ink-soft);
+  font-style: italic;
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+.dc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.dc-btn {
+  text-align: left;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--rule);
+  border-left: 3px solid var(--c-od);
+  border-radius: var(--r-sm);
+  transition: all 0.15s;
+  cursor: pointer;
+}
+.dc-btn:hover {
+  border-color: var(--gold);
+  border-left-color: var(--gold);
+  background: var(--gold-soft);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-2);
+}
+.dc-btn-label {
+  font-family: var(--serif);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--ink);
+  margin-bottom: 2px;
+}
+.dc-btn-sub {
+  font-size: 10.5px;
+  color: var(--ink-soft);
+  letter-spacing: 0.2px;
+}
+.dc-cancel {
+  margin-top: 14px;
+  padding: 8px 14px;
+  background: none;
+  color: var(--ink-fade);
+  font-size: 11px;
+  text-decoration: underline;
+  width: 100%;
+  text-align: center;
+}
+
+/* Result feedback chip after a classification choice */
+.dc-result {
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: var(--r-md);
+  font-size: 12px;
+  line-height: 1.45;
+  text-align: center;
+}
+.dc-result.jackpot {
+  background: #e8f1ea;
+  color: var(--c-pass);
+  border-left: 3px solid var(--c-pass);
+  font-weight: 600;
+}
+.dc-result.partial {
+  background: var(--gold-soft);
+  color: #7a5e2c;
+  border-left: 3px solid var(--gold);
+}
+.dc-result.wrong {
+  background: #f3e2e2;
+  color: var(--c-fail);
+  border-left: 3px solid var(--c-fail);
+}
 
 /* ── CONFETTI BURST when score goes up ─────────────────────── */
 .confetti-piece {
@@ -3195,30 +3330,43 @@ const CARDS = {
       fields: { 'Identifier': 'CR26-001', 'Objective': 'Show heritage tailoring reframed for modern silhouette.', 'Pre-conditions': 'Model size 38; oxfords; updo.', 'Inputs': 'Tweed jacket; contemporary cropped trousers; silk blouse.', 'Expected Result': 'Jacket buttons remain closed throughout walk; trouser hem grazes ankle.', 'Post-conditions': 'Heritage jacket undamaged.', 'Traceability ID': 'REQ-FASHION-HR-01' } },
 
     // Flawed (8) — moderatorNote is shown post-game only
-    { internalId: 'OD-F-01', season: 'SS26', flaws: ['Expected Result'],
+    { internalId: 'OD-F-01', season: 'SS26', flaws: ['Expected Result'], defectType: 'missing',
       moderatorNote: 'Expected Result is blank — the test case is not falsifiable.',
       fields: { 'Identifier': 'SS26-101', 'Objective': 'Open Mediterranean Breeze evening segment.', 'Pre-conditions': 'Model size 38; gold sandals; loose waves.', 'Inputs': 'Coral linen gown; gold cuff bracelet.', 'Expected Result': '', 'Post-conditions': 'Gown returned to wardrobe.', 'Traceability ID': 'REQ-FASHION-MB-04' } },
-    { internalId: 'OD-F-02', season: 'AW26', flaws: ['Pre-conditions'],
+    { internalId: 'OD-F-02', season: 'AW26', flaws: ['Pre-conditions'], defectType: 'contradictory',
       moderatorNote: 'Pre-condition declares size 36 but Inputs list size-40 garments.',
       fields: { 'Identifier': 'AW26-101', 'Objective': 'Anchor Concrete Geometry evening look.', 'Pre-conditions': 'Model size 36; ankle boots; sleek hair.', 'Inputs': 'Charcoal wool blazer in size 40; matching trousers in size 40.', 'Expected Result': 'Shoulders maintain structured line.', 'Post-conditions': 'Blazer returned undamaged.', 'Traceability ID': 'REQ-FASHION-CG-04' } },
-    { internalId: 'OD-F-05', season: 'PF26', flaws: ['Expected Result'],
+    { internalId: 'OD-F-05', season: 'PF26', flaws: ['Expected Result'], defectType: 'ambiguous',
       moderatorNote: 'Expected Result is non-measurable ("Looks good"). Ambiguous, non-falsifiable.',
       fields: { 'Identifier': 'PF26-101', 'Objective': 'Open Soft Rebellion evening segment.', 'Pre-conditions': 'Model size 36; lace-up boots.', 'Inputs': 'Pink slip dress; vegan-leather jacket; chain belt.', 'Expected Result': 'Looks good.', 'Post-conditions': 'Returned undamaged.', 'Traceability ID': 'REQ-FASHION-SR-02' } },
-    { internalId: 'OD-F-08', season: 'AW26', flaws: ['Post-conditions'],
+    { internalId: 'OD-F-08', season: 'AW26', flaws: ['Post-conditions'], defectType: 'contradictory',
       moderatorNote: 'Post-conditions directly contradict Expected Result (six accessible pockets vs three sealed shut).',
       fields: { 'Identifier': 'AW26-103', 'Objective': 'Demonstrate the Off-Grid jumpsuit.', 'Pre-conditions': 'Model size 42; hiking boots.', 'Inputs': 'Canvas jumpsuit (six pockets); vegan-leather belt.', 'Expected Result': 'All six pockets are visibly accessible.', 'Post-conditions': 'Jumpsuit returned with three pockets sealed shut.', 'Traceability ID': 'REQ-FASHION-OG-03' } },
-    { internalId: 'OD-F-09', season: 'PF26', flaws: ['Inputs'],
+    { internalId: 'OD-F-09', season: 'PF26', flaws: ['Inputs'], defectType: 'insufficient',
       moderatorNote: 'Inputs declare only one garment but the Expected Result references three layers — insufficient inputs.',
       fields: { 'Identifier': 'PF26-102', 'Objective': 'Layered Atmospheric Layers look.', 'Pre-conditions': 'Model size 40; chunky boots.', 'Inputs': 'Olive parka.', 'Expected Result': 'All three layers visible from front and side.', 'Post-conditions': 'Layers separable without snags.', 'Traceability ID': 'REQ-FASHION-AL-02' } },
-    { internalId: 'OD-F-11', season: 'AW26', flaws: ['Expected Result'],
+    { internalId: 'OD-F-11', season: 'AW26', flaws: ['Expected Result'], defectType: 'self-referential',
       moderatorNote: 'Self-referential / tautological Expected Result — cannot fail by definition.',
       fields: { 'Identifier': 'AW26-104', 'Objective': 'Concrete Geometry silhouette study.', 'Pre-conditions': 'Model size 38; closed-toe shoes.', 'Inputs': 'Asymmetric coat; turtleneck; tapered trousers.', 'Expected Result': 'The expected result is whatever happens during the rehearsal.', 'Post-conditions': 'Coat hangs without creases.', 'Traceability ID': 'REQ-FASHION-CG-05' } },
-    { internalId: 'OD-F-06', season: 'CR26', flaws: ['Traceability ID'],
+    { internalId: 'OD-F-06', season: 'CR26', flaws: ['Traceability ID'], defectType: 'missing',
       moderatorNote: 'Traceability ID is blank — the case cannot be tied back to the Theme\'s coverage criteria.',
       fields: { 'Identifier': 'CR26-101', 'Objective': 'Bridal heritage reframed look.', 'Pre-conditions': 'Model size 38; satin pumps.', 'Inputs': 'Ivory silk gown with lace overlay; pearl earrings.', 'Expected Result': 'Train follows model without dragging.', 'Post-conditions': 'Lace returned undamaged.', 'Traceability ID': '' } },
-    { internalId: 'OD-F-07', season: 'SS26', flaws: ['Pre-conditions'],
+    { internalId: 'OD-F-07', season: 'SS26', flaws: ['Pre-conditions'], defectType: 'untestable',
       moderatorNote: 'Pre-condition is subjective and unverifiable ("Model is in a good mood").',
       fields: { 'Identifier': 'SS26-103', 'Objective': 'Open the Liquid Light segment.', 'Pre-conditions': 'Model is in a good mood.', 'Inputs': 'Silver foil dress; bracelet.', 'Expected Result': 'Dress reflects spotlight at three points.', 'Post-conditions': 'Returned undamaged.', 'Traceability ID': 'REQ-FASHION-LL-03' } },
+  ],
+
+  // ── DEFECT CLASSIFICATION TAXONOMY ─────────────────────────
+  // The 6 ISO/IEC 29119-3 defect classes a player picks from
+  // when flagging a flaw. Repetition of these choices across
+  // gameplay teaches the taxonomy by use, not by lecture.
+  defectTypes: [
+    { id: 'missing',         label: 'Missing',          sub: 'required field is empty' },
+    { id: 'ambiguous',       label: 'Ambiguous',        sub: 'too vague to verify' },
+    { id: 'contradictory',   label: 'Contradictory',    sub: 'conflicts with another field' },
+    { id: 'self-referential',label: 'Self-referential', sub: 'circular / tautological' },
+    { id: 'insufficient',    label: 'Insufficient',     sub: "doesn't cover what's expected" },
+    { id: 'untestable',      label: 'Untestable',       sub: 'cannot be objectively verified' },
   ],
 
   // Wardrobe Malfunction lookup (keyed by originating field)
@@ -3389,6 +3537,69 @@ function flashPhaseLabel() {
   lbl.classList.remove('flash');
   void lbl.offsetWidth;
   lbl.classList.add('flash');
+}
+
+// ─── DEFECT-TYPE CHOOSER OVERLAY ─────────────────────────────
+// Shown after the player taps a suspect field. Pure mechanic
+// for in-play ISO learning — by repeating these classification
+// choices, the player internalises ISO 29119-3 defect taxonomy.
+function showDefectChooser({ eyebrow, title, subtitle, onPick, onCancel }) {
+  closeDefectChooser();
+  const veil = el('div', { class: 'defect-chooser-veil', id: 'defect-chooser' });
+  const card = el('div', { class: 'defect-chooser-card' });
+  card.appendChild(el('div', { class: 'dc-eyebrow' }, eyebrow));
+  card.appendChild(el('div', { class: 'dc-title' }, title));
+  if (subtitle) card.appendChild(el('div', { class: 'dc-subtitle' }, subtitle));
+
+  const grid = el('div', { class: 'dc-grid' });
+  CARDS.defectTypes.forEach(t => {
+    const btn = el('button', {
+      class: 'dc-btn',
+      onclick: () => { closeDefectChooser(); onPick && onPick(t.id); },
+    });
+    btn.appendChild(el('div', { class: 'dc-btn-label' }, t.label));
+    btn.appendChild(el('div', { class: 'dc-btn-sub' }, t.sub));
+    grid.appendChild(btn);
+  });
+  card.appendChild(grid);
+
+  const cancelBtn = el('button', {
+    class: 'dc-cancel',
+    onclick: () => { closeDefectChooser(); onCancel && onCancel(); },
+  }, 'Actually, never mind');
+  card.appendChild(cancelBtn);
+
+  veil.appendChild(card);
+  document.body.appendChild(veil);
+}
+function closeDefectChooser() {
+  const v = document.getElementById('defect-chooser');
+  if (v) v.remove();
+}
+
+// ─── BRIEF RESULT FEEDBACK after a classification choice ────
+// Stays on screen 1.6s then auto-dismisses + runs the callback.
+function showDefectResult(outcome, fieldHasFlaw, correctType, chosenType, fieldName, after) {
+  const veil = el('div', { class: 'defect-chooser-veil' });
+  const card = el('div', { class: 'defect-chooser-card', style: 'max-width: 460px;' });
+  let chip;
+  if (outcome === 'jackpot') {
+    chip = el('div', { class: 'dc-result jackpot' },
+      `🎯 Jackpot — ${fieldName} is a "${chosenType}" defect. +3 pts.`);
+  } else if (outcome === 'partial') {
+    chip = el('div', { class: 'dc-result partial' },
+      `◐ Field correct, type wrong. The actual class was "${correctType}". +1 pt.`);
+  } else if (fieldHasFlaw === false) {
+    chip = el('div', { class: 'dc-result wrong' },
+      `✘ ${fieldName} has no defect. -1 pt.`);
+  } else {
+    chip = el('div', { class: 'dc-result wrong' },
+      `✘ Mis-classified. The defect class was "${correctType}".`);
+  }
+  card.appendChild(chip);
+  veil.appendChild(card);
+  document.body.appendChild(veil);
+  setTimeout(() => { veil.remove(); after && after(); }, 1700);
 }
 
 // ======================================================================
@@ -3574,27 +3785,49 @@ function flagField(outfitCardId, fieldName) {
   const flaggerIdx = state.inspection.activeFlagger;
   if (flaggerIdx == null) return;
   if (state.inspection.flagsRemaining[flaggerIdx] <= 0) return;
-  // Already flagged this exact field?
   if (state.inspection.results.some(r => r.outfitId === outfitCardId && r.fieldName === fieldName)) return;
 
   const outfit = activePlayer().mat.outfits.find(o => o.cardId === outfitCardId);
-  const correct = outfit && outfit.flaws.includes(fieldName);
-
-  state.inspection.results.push({ outfitId: outfitCardId, fieldName, flaggerIdx, correct });
-  state.inspection.flagsRemaining[flaggerIdx]--;
-  state.inspection.activeFlagger = null;
-
-  // Award/penalise immediately
   const flagger = state.players[flaggerIdx];
-  if (correct) {
-    addScore(flagger, +2, `Inspection: caught flaw in ${outfit.cardId} (${fieldName})`);
-    logSay(`✔ ${flagger.name} caught a flaw in ${outfit.cardId} → ${fieldName}.`);
-  } else {
-    addScore(flagger, -1, `Inspection: false flag on ${outfit.cardId} (${fieldName})`);
-    logSay(`✘ ${flagger.name} flagged ${outfit.cardId}/${fieldName} — no flaw there.`);
-  }
-  renderInspectionModal();
-  renderScoreboard();
+  const fieldHasFlaw = !!(outfit && outfit.flaws.includes(fieldName));
+  const correctType = outfit && outfit.defectType;
+
+  // Step 2: present the defect-type chooser
+  showDefectChooser({
+    eyebrow: 'Inspection · classify the defect',
+    title: `What kind of defect on ${outfit.cardId}/${fieldName}?`,
+    subtitle: 'Pick the ISO/IEC 29119-3 defect classification you suspect. Your score depends on naming both the field and the type correctly.',
+    onPick: (chosenType) => {
+      // Spend the flag whether they were right or not
+      state.inspection.flagsRemaining[flaggerIdx]--;
+      state.inspection.activeFlagger = null;
+
+      let outcome, points, msg;
+      if (fieldHasFlaw && chosenType === correctType) {
+        outcome = 'jackpot'; points = +3;
+        msg = `Inspection JACKPOT: ${outfit.cardId}/${fieldName} is "${chosenType}"`;
+      } else if (fieldHasFlaw) {
+        outcome = 'partial'; points = +1;
+        msg = `Inspection partial: caught the field, mis-classified (was "${correctType}", you said "${chosenType}")`;
+      } else {
+        outcome = 'wrong'; points = -1;
+        msg = `Inspection false flag on ${outfit.cardId}/${fieldName}`;
+      }
+
+      state.inspection.results.push({
+        outfitId: outfitCardId, fieldName, flaggerIdx,
+        correct: fieldHasFlaw, chosenType, correctType, outcome,
+      });
+      addScore(flagger, points, msg);
+      logSay(`${outcome === 'jackpot' ? '🎯' : outcome === 'partial' ? '◐' : '✘'} ${flagger.name} → ${outfit.cardId}/${fieldName} as "${chosenType}" → ${points >= 0 ? '+' : ''}${points}`);
+
+      return showDefectResult(outcome, fieldHasFlaw, correctType, chosenType, fieldName, () => {
+        renderInspectionModal();
+        renderScoreboard();
+      });
+    },
+    onCancel: () => { /* nothing — keep the flag */ },
+  });
 }
 
 function endInspection() {
@@ -3705,33 +3938,48 @@ function clickResolutionField(fieldName) {
   if (state.phase !== 'resolution') return;
   const cur = state.resolution.current;
   const p = activePlayer();
-  const correct = fieldName === cur.originatingField;
-  if (correct) {
-    addScore(p, +2, `Named originating field for ${cur.outfit.cardId}`);
-    addScore(p, -2, `Lost outfit ${cur.outfit.cardId} (defect)`);
-    p.summary.push({
-      outfitId: cur.outfit.cardId, pass: false,
-      originatingField: cur.originatingField + ' ✓',
-      flawNote: cur.outfit.moderatorNote,
-    });
-    logSay(`✔ ${p.name} traced ${cur.outfit.cardId} → ${cur.originatingField}.`);
-    stopTimer();
-    setTimeout(showNextResolution, 1100);
-  } else {
-    state.resolution.attempts++;
-    if (state.resolution.attempts >= 1) {
-      addScore(p, -4, `Wrong field on ${cur.outfit.cardId}`);
+  const fieldIsCorrect = fieldName === cur.originatingField;
+  const correctType = cur.outfit.defectType;
+
+  // Render the visual feedback on the card
+  renderResolutionModal(fieldName, fieldIsCorrect);
+
+  // Step 2: present the defect-type chooser
+  showDefectChooser({
+    eyebrow: 'Resolution · root-cause analysis',
+    title: `What kind of defect was on ${cur.outfit.cardId}?`,
+    subtitle: 'Now name the ISO/IEC 29119-3 defect class. A fully resolved defect needs both the field AND its classification — that\'s how root-cause analysis works.',
+    onPick: (chosenType) => {
+      let outcome, gainPts, lossPts, summaryNote;
+      if (fieldIsCorrect && chosenType === correctType) {
+        outcome = 'jackpot'; gainPts = +3; lossPts = -2;
+        summaryNote = `${cur.originatingField} · ${chosenType} ✓`;
+      } else if (fieldIsCorrect) {
+        outcome = 'partial'; gainPts = +1; lossPts = -2;
+        summaryNote = `${cur.originatingField} ✓ · type was "${correctType}", said "${chosenType}"`;
+      } else {
+        outcome = 'wrong'; gainPts = 0; lossPts = -4;
+        summaryNote = `${cur.originatingField} (missed; said ${fieldName} / ${chosenType})`;
+      }
+      if (gainPts) addScore(p, gainPts, `Resolution ${outcome} on ${cur.outfit.cardId}`);
+      addScore(p, lossPts, `Lost outfit ${cur.outfit.cardId}`);
       p.summary.push({
         outfitId: cur.outfit.cardId, pass: false,
-        originatingField: `${cur.originatingField} (missed; said ${fieldName})`,
+        originatingField: summaryNote,
         flawNote: cur.outfit.moderatorNote,
+        defectType: correctType,
+        gotDefectType: chosenType === correctType,
       });
-      logSay(`✘ ${p.name} guessed ${fieldName} for ${cur.outfit.cardId}; correct was ${cur.originatingField}.`);
+      logSay(`${outcome === 'jackpot' ? '🎯' : outcome === 'partial' ? '◐' : '✘'} ${p.name} resolved ${cur.outfit.cardId} → field=${fieldName}/type=${chosenType} → ${gainPts + lossPts}`);
       stopTimer();
-      setTimeout(showNextResolution, 1500);
-    }
-  }
-  renderResolutionModal(fieldName, correct);
+      return showDefectResult(outcome, fieldIsCorrect, correctType, chosenType, fieldName, () => {
+        setTimeout(showNextResolution, 600);
+      });
+    },
+    onCancel: () => {
+      // Cancel without picking — treat as a non-attempt; let timer run
+    },
+  });
 }
 
 // ======================================================================
@@ -4984,16 +5232,24 @@ function renderEndScreen() {
     t.appendChild(tb);
     box.appendChild(t);
 
-    // Show planted-flaw debrief notes (post-game reveal — for learning)
-    const flawed = p.summary.filter(r => !r.pass && r.flawNote);
+    // ── ISO Defect Taxonomy: which classes the player encountered + nailed
+    const flawed = p.summary.filter(r => !r.pass && r.defectType);
     if (flawed.length) {
-      box.appendChild(el('div', { class: 'sb-title', style: 'margin-top:14px;' }, 'Debrief — what those flaws were'));
-      const flawList = el('div', {});
+      box.appendChild(el('div', { class: 'sb-title', style: 'margin-top:14px;' }, 'ISO defect classes you handled'));
+      const list = el('div', {});
       flawed.forEach(r => {
-        flawList.appendChild(el('div', { style: 'font-size:12px; opacity:0.85; margin:4px 0;' },
-          `${r.outfitId} → ${r.flawNote}`));
+        const ok = r.gotDefectType;
+        list.appendChild(el('div', { style: 'font-size:12px; opacity:0.9; margin:4px 0;' },
+          `${ok ? '🎯' : '◯'} ${r.outfitId} — ${r.defectType}${ok ? ' (correctly classified)' : ' (encountered, not fully classified)'}`));
       });
-      box.appendChild(flawList);
+      box.appendChild(list);
+
+      // Aggregate which defect types they MASTERED across the round
+      const mastered = [...new Set(flawed.filter(r => r.gotDefectType).map(r => r.defectType))];
+      if (mastered.length) {
+        box.appendChild(el('div', { style: 'font-size:11px; opacity:0.7; margin-top:6px; font-style:italic;' },
+          `Mastered ${mastered.length} ISO defect type${mastered.length === 1 ? '' : 's'}: ${mastered.join(', ')}`));
+      }
     }
 
     sums.appendChild(box);
