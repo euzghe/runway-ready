@@ -2926,6 +2926,34 @@ body {
   margin-bottom: 18px;
   line-height: 1.4;
 }
+/* Context panel showing the suspected field's value */
+.dc-context {
+  margin-bottom: 16px;
+  padding: 12px 14px;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--c-od);
+  border-radius: var(--r-sm);
+}
+.dc-context-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #6e5d96;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+.dc-context-field {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.4;
+}
+.dc-context-name {
+  font-style: italic;
+  color: #6e5d96;
+  font-weight: 600;
+}
+
 .dc-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -3539,17 +3567,44 @@ function flashPhaseLabel() {
   lbl.classList.add('flash');
 }
 
+// ─── Fashion-season helpers — translate "SS26-001" into something human ──
+const SEASON_NAMES = {
+  SS: 'Spring/Summer 2026',
+  AW: 'Autumn/Winter 2026',
+  PF: 'Pre-Fall 2026',
+  CR: 'Cruise 2026',
+};
+function seasonName(cardId) {
+  const key = (cardId || '').slice(0, 2);
+  return SEASON_NAMES[key] || cardId;
+}
+function lookNumber(cardId) {
+  const parts = (cardId || '').split('-');
+  return parts[parts.length - 1] || '—';
+}
+
 // ─── DEFECT-TYPE CHOOSER OVERLAY ─────────────────────────────
 // Shown after the player taps a suspect field. Pure mechanic
 // for in-play ISO learning — by repeating these classification
 // choices, the player internalises ISO 29119-3 defect taxonomy.
-function showDefectChooser({ eyebrow, title, subtitle, onPick, onCancel }) {
+function showDefectChooser({ eyebrow, title, subtitle, contextField, contextValue, onPick, onCancel }) {
   closeDefectChooser();
   const veil = el('div', { class: 'defect-chooser-veil', id: 'defect-chooser' });
   const card = el('div', { class: 'defect-chooser-card' });
   card.appendChild(el('div', { class: 'dc-eyebrow' }, eyebrow));
   card.appendChild(el('div', { class: 'dc-title' }, title));
   if (subtitle) card.appendChild(el('div', { class: 'dc-subtitle' }, subtitle));
+
+  // Context panel — shows the actual suspected field so the player
+  // can recall what they're classifying without seeing the outfit
+  if (contextField) {
+    const ctx = el('div', { class: 'dc-context' });
+    ctx.appendChild(el('div', { class: 'dc-context-label' }, 'The suspected field'));
+    ctx.appendChild(el('div', { class: 'dc-context-field' },
+      el('span', { class: 'dc-context-name' }, contextField + ': '),
+      document.createTextNode(contextValue && contextValue.trim() ? '"' + contextValue + '"' : '(empty)')));
+    card.appendChild(ctx);
+  }
 
   const grid = el('div', { class: 'dc-grid' });
   CARDS.defectTypes.forEach(t => {
@@ -3795,8 +3850,10 @@ function flagField(outfitCardId, fieldName) {
   // Step 2: present the defect-type chooser
   showDefectChooser({
     eyebrow: 'Inspection · classify the defect',
-    title: `What kind of defect on ${outfit.cardId}/${fieldName}?`,
+    title: `Defect on ${seasonName(outfit.cardId)} look ${lookNumber(outfit.cardId)} — ${fieldName}`,
     subtitle: 'Pick the ISO/IEC 29119-3 defect classification you suspect. Your score depends on naming both the field and the type correctly.',
+    contextField: fieldName,
+    contextValue: outfit.fields[fieldName],
     onPick: (chosenType) => {
       // Spend the flag whether they were right or not
       state.inspection.flagsRemaining[flaggerIdx]--;
@@ -3947,8 +4004,10 @@ function clickResolutionField(fieldName) {
   // Step 2: present the defect-type chooser
   showDefectChooser({
     eyebrow: 'Resolution · root-cause analysis',
-    title: `What kind of defect was on ${cur.outfit.cardId}?`,
+    title: `Root cause on ${seasonName(cur.outfit.cardId)} look ${lookNumber(cur.outfit.cardId)} — ${fieldName}`,
     subtitle: 'Now name the ISO/IEC 29119-3 defect class. A fully resolved defect needs both the field AND its classification — that\'s how root-cause analysis works.',
+    contextField: fieldName,
+    contextValue: cur.outfit.fields[fieldName],
     onPick: (chosenType) => {
       let outcome, gainPts, lossPts, summaryNote;
       if (fieldIsCorrect && chosenType === correctType) {
