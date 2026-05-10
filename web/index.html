@@ -977,13 +977,9 @@ em { font-style: italic; color: var(--ink-soft); }
   border-left-color: transparent;
 }
 
-/* ════════════════════════════════════════════════════════════
-   ⌘  RUNWAY WALK — actual models walking down the catwalk
-   Plays during the dice roll, in parallel with execution.
-   3 staggered models, each in their outfit's fabric colour,
-   walk back-to-front in perspective on a wooden catwalk.
-   ═══════════════════════════════════════════════════════════ */
-.runway-walk {
+/* (the wide top runway-walk strip was removed — each exec-cell now
+   has its OWN mini stage with curtains that open only on pass) */
+.runway-walk-removed {
   position: relative;
   height: 230px;
   margin: 0 -40px 18px -40px;
@@ -1162,10 +1158,148 @@ em { font-style: italic; color: var(--ink-soft); }
 .exec-cell {
   background: var(--surface);
   border-radius: var(--r-md);
-  padding: 24px 20px;
+  padding: 16px 16px 20px 16px;
   text-align: center;
   border-top: 3px solid var(--c-od);
   box-shadow: var(--shadow-2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ════════════════════════════════════════════════════════════
+   ⌘  PER-CELL MINI STAGE — curtains open only when outfit walks
+   ═══════════════════════════════════════════════════════════ */
+.exec-stage {
+  position: relative;
+  height: 140px;
+  margin: 10px -16px 14px -16px;
+  background:
+    radial-gradient(ellipse 60% 70% at 50% 5%, rgba(255,221,140,0.40) 0%, transparent 70%),
+    linear-gradient(180deg, var(--velvet-deep) 0%, var(--stage-dark) 100%);
+  border-top: 2px solid var(--gold);
+  border-bottom: 2px solid var(--gold);
+  overflow: hidden;
+}
+/* Spotlight rig dot at the top */
+.exec-stage::before {
+  content: '';
+  position: absolute;
+  top: 4px; left: 50%;
+  transform: translateX(-50%);
+  width: 6px; height: 6px;
+  background: var(--bulb);
+  border-radius: 50%;
+  box-shadow: 0 0 8px 2px rgba(255,209,102,0.7);
+  z-index: 4;
+}
+/* Wooden catwalk perspective */
+.exec-stage-catwalk {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: 70%;
+  background:
+    radial-gradient(ellipse at center top, rgba(255,221,140,0.30) 0%, transparent 65%),
+    repeating-linear-gradient(90deg, transparent 0 18px, rgba(40,25,10,0.18) 18px 19px),
+    linear-gradient(180deg, #d4a872 0%, #a07a45 100%);
+  clip-path: polygon(35% 0%, 65% 0%, 100% 100%, 0% 100%);
+  z-index: 1;
+}
+.exec-stage-catwalk::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  width: 1px; height: 100%;
+  background: repeating-linear-gradient(180deg,
+    rgba(255,209,102,0.6) 0 4px, transparent 4px 8px);
+  transform: translateX(-50%);
+}
+
+/* Curtains — closed by default; open only when cell gets .pass */
+.exec-stage-curtain {
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 52%;
+  z-index: 5;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--velvet-deep) 0 6px,
+      var(--velvet) 6px 12px,
+      var(--velvet-light) 12px 18px,
+      var(--velvet) 18px 24px);
+  box-shadow: inset -8px 0 14px rgba(0,0,0,0.5);
+  transition: transform 1.1s cubic-bezier(.5, .0, .25, 1);
+}
+.exec-stage-curtain.left  { left: 0;  border-right: 1.5px solid var(--gold); }
+.exec-stage-curtain.right { right: 0; transform: scaleX(-1); border-left: 1.5px solid var(--gold); }
+.exec-cell.pass .exec-stage-curtain.left  { transform: translateX(-100%); }
+.exec-cell.pass .exec-stage-curtain.right { transform: scaleX(-1) translateX(-100%); }
+
+/* Fail state — curtains shake briefly but stay closed */
+.exec-cell.fail .exec-stage-curtain.left  { animation: curtain-fail-l 0.4s ease-out 2; }
+.exec-cell.fail .exec-stage-curtain.right { animation: curtain-fail-r 0.4s ease-out 2; }
+@keyframes curtain-fail-l {
+  0%, 100% { transform: translateX(0); }
+  50%      { transform: translateX(4px); }
+}
+@keyframes curtain-fail-r {
+  0%, 100% { transform: scaleX(-1) translateX(0); }
+  50%      { transform: scaleX(-1) translateX(4px); }
+}
+
+/* Model figure — hidden by default; walks on .pass */
+.exec-stage-model {
+  position: absolute;
+  left: 50%;
+  bottom: 5%;
+  width: 60px;
+  height: 110px;
+  transform: translateX(-50%);
+  z-index: 3;
+  opacity: 0;
+  pointer-events: none;
+}
+.exec-stage-model svg { width: 100%; height: 100%; }
+.exec-cell.pass .exec-stage-model {
+  animation: cell-model-walk 2.6s ease-in-out 1.0s forwards;
+  filter: drop-shadow(0 4px 6px rgba(0,0,0,0.4));
+}
+@keyframes cell-model-walk {
+  0% {
+    bottom: 65%;
+    transform: translateX(-50%) scale(0.20);
+    opacity: 0;
+    filter: blur(2px);
+  }
+  15% { opacity: 1; filter: blur(0); }
+  85% { opacity: 1; }
+  100% {
+    bottom: -8%;
+    transform: translateX(-50%) scale(1.35);
+    opacity: 0;
+  }
+}
+
+/* Fail mark visible behind the (closed) curtains — well, we'll show it OVER
+   the closed curtains for dramatic effect */
+.exec-stage-fail-mark {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%) scale(0.3);
+  font-size: 44px;
+  color: var(--c-fail);
+  text-shadow: 0 0 16px rgba(0,0,0,0.6), 0 0 24px rgba(192,57,43,0.6);
+  opacity: 0;
+  z-index: 6;
+  font-weight: 700;
+  pointer-events: none;
+}
+.exec-cell.fail .exec-stage-fail-mark {
+  animation: fail-mark-pop 0.6s ease-out 1.0s forwards;
+}
+@keyframes fail-mark-pop {
+  0%   { opacity: 0; transform: translate(-50%, -50%) scale(0.3); }
+  100% { opacity: 0.95; transform: translate(-50%, -50%) scale(1); }
 }
 .exec-cell .exec-id {
   font-family: var(--mono);
@@ -5817,44 +5951,31 @@ function renderExecutionModal() {
   root.appendChild(el('div', { class: 'modal-sub' },
     'Each Outfit rolls a d6. 1–2 = fail. A planted flaw that escaped Inspection always fails — bad documentation cannot be saved by lucky dice.'));
 
-  // ─── ACTUAL RUNWAY WALK — 3 staggered models in their fabrics ──
-  const walk = el('div', { class: 'runway-walk' });
-  // marquee bulb rig at the top
-  const rig = el('div', { class: 'rw-rig' });
-  rig.appendChild(el('div', { class: 'rw-bulb rw-bulb-1' }));
-  rig.appendChild(el('div', { class: 'rw-bulb rw-bulb-2' }));
-  rig.appendChild(el('div', { class: 'rw-bulb rw-bulb-3' }));
-  walk.appendChild(rig);
-  // beams pouring down
-  walk.appendChild(el('div', { class: 'rw-beams' }));
-  // wooden catwalk
-  walk.appendChild(el('div', { class: 'rw-catwalk' }));
-  // small audience hint at corners
-  const aud = el('div', { class: 'rw-audience' });
-  const audL = el('div', { class: 'rw-aud-row' });
-  for (let i = 0; i < 3; i++) audL.appendChild(el('div', { class: 'rw-head' }));
-  const audR = el('div', { class: 'rw-aud-row' });
-  for (let i = 0; i < 3; i++) audR.appendChild(el('div', { class: 'rw-head' }));
-  aud.appendChild(audL);
-  aud.appendChild(audR);
-  walk.appendChild(aud);
-  // 3 models walking, staggered, each in their outfit's fabric colour
-  state.execution.results.forEach((r, i) => {
-    const fabric = fabricFor(r.outfit.cardId);
-    const type = detectOutfitType(r.outfit);
-    const model = el('div', { class: 'rw-model rw-model-' + i });
-    model.innerHTML = makeOutfitIllustration(fabric, type);
-    walk.appendChild(model);
-  });
-  root.appendChild(walk);
-
-  // (the older small "spotlights" strip is replaced by the full runway walk above)
+  // (the wide top runway strip was removed — each cell gets its own
+  //  mini stage that opens curtains only for outfits that actually walk)
 
   const grid = el('div', { class: 'exec-grid' });
   const cubes = []; // store for animation
   state.execution.results.forEach(r => {
     const cell = el('div', { class: 'exec-cell' });
     cell.appendChild(el('div', { class: 'exec-id' }, r.outfit.cardId));
+
+    // Mini stage with curtains, catwalk, model, and a fail mark
+    const stage = el('div', { class: 'exec-stage' });
+    stage.appendChild(el('div', { class: 'exec-stage-catwalk' }));
+    // Model — coloured to this outfit's fabric, only visible when curtains open
+    const fabric = fabricFor(r.outfit.cardId);
+    const type = detectOutfitType(r.outfit);
+    const stageModel = el('div', { class: 'exec-stage-model' });
+    stageModel.innerHTML = makeOutfitIllustration(fabric, type);
+    stage.appendChild(stageModel);
+    // Fail mark over the closed curtains
+    stage.appendChild(el('div', { class: 'exec-stage-fail-mark' }, '✗'));
+    // Curtains — closed by default
+    stage.appendChild(el('div', { class: 'exec-stage-curtain left' }));
+    stage.appendChild(el('div', { class: 'exec-stage-curtain right' }));
+    cell.appendChild(stage);
+
     cell.appendChild(el('div', { class: 'exec-die-label' }, 'rolling…'));
     const dice = makeDiceCube();
     cell.appendChild(dice.stage);
@@ -5863,7 +5984,7 @@ function renderExecutionModal() {
     const noteEl = el('div', { class: 'exec-note', style: 'visibility:hidden;' }, '');
     cell.appendChild(noteEl);
     grid.appendChild(cell);
-    cubes.push({ cube: dice.cube, label: cell.querySelector('.exec-die-label'), resultEl, noteEl, r });
+    cubes.push({ cube: dice.cube, label: cell.querySelector('.exec-die-label'), resultEl, noteEl, r, cell });
   });
   root.appendChild(grid);
 
@@ -5878,14 +5999,14 @@ function renderExecutionModal() {
 
   openModal(root, 'execution-modal');
 
-  // Sequential dice animation — each die rolls and lands in turn
+  // Sequential dice animation — each die rolls and lands in turn,
+  // then the cell's mini-stage curtains react: open + walk on pass,
+  // shake + ✗ on fail.
   cubes.forEach((c, i) => {
     setTimeout(() => {
       c.cube.classList.remove('rolling');
-      // Force reflow so the transform transition kicks in
       void c.cube.offsetWidth;
       c.cube.classList.add('land-' + c.r.dieRoll);
-      // Reveal the result label after the cube settles
       setTimeout(() => {
         c.label.textContent = 'd6';
         c.resultEl.textContent = c.r.pass ? '✓ walks' : '✗ fails';
@@ -5893,14 +6014,17 @@ function renderExecutionModal() {
         c.resultEl.style.visibility = 'visible';
         c.noteEl.textContent = c.r.note;
         c.noteEl.style.visibility = 'visible';
+        // ⮕ Trigger the per-cell stage reaction
+        c.cell.classList.add(c.r.pass ? 'pass' : 'fail');
       }, 1600);
     }, 700 + i * 700);
   });
 
-  // Reveal Continue button after all dice settle
+  // Reveal Continue button after all dice settle + the slowest walk finishes
+  // (curtain 1.1s + walk delay 1.0s + walk 2.6s ≈ 4.7s after dice settles)
   setTimeout(() => {
     continueBtn.style.visibility = 'visible';
-  }, 700 + cubes.length * 700 + 1700);
+  }, 700 + cubes.length * 700 + 1700 + 4700);
 }
 
 // ======================================================================
