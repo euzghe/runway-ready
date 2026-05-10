@@ -3017,6 +3017,186 @@ body {
 .sb-fig-content { min-width: 0; }
 
 /* ════════════════════════════════════════════════════════════
+   ⌘  ISO FIELD INFO ICON + TOOLTIP — opt-in ISO definitions
+   Player taps a small ⓘ next to a field name to see what that
+   ISO/IEC 29119-3 field actually is. Auto-dismisses on click out.
+   ═══════════════════════════════════════════════════════════ */
+.iso-info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  height: 14px;
+  margin-left: 5px;
+  border-radius: 50%;
+  background: rgba(110,93,150,0.18);
+  color: #6e5d96;
+  font-size: 9px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: var(--sans);
+  transition: all 0.12s;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid rgba(110,93,150,0.25);
+  line-height: 1;
+}
+.iso-info-icon:hover {
+  background: var(--gold);
+  color: #fff;
+  border-color: var(--gold);
+  transform: scale(1.15);
+}
+
+.iso-field-tooltip {
+  position: fixed;
+  z-index: 350;
+  background: var(--ink);
+  color: var(--bg);
+  border: 1.5px solid var(--gold);
+  border-radius: var(--r-md);
+  padding: 14px 18px;
+  max-width: 320px;
+  box-shadow: 0 12px 32px rgba(0,0,0,0.45), 0 0 16px rgba(255,209,102,0.20);
+  font-size: 13px;
+  line-height: 1.5;
+  animation: fade-in 0.15s ease;
+}
+.iso-field-tooltip .iso-tip-eyebrow {
+  font-size: 9px;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--bulb);
+  font-weight: 700;
+  margin-bottom: 4px;
+  font-family: var(--mono);
+}
+.iso-field-tooltip .iso-tip-name {
+  font-family: var(--serif);
+  font-size: 16px;
+  color: var(--gold);
+  margin-bottom: 6px;
+}
+.iso-field-tooltip .iso-tip-desc {
+  font-size: 12.5px;
+  color: rgba(245,240,232,0.92);
+  font-style: italic;
+}
+
+/* ════════════════════════════════════════════════════════════
+   ⌘  FINAL POP QUIZ — end-of-game ISO learning checkpoint
+   ═══════════════════════════════════════════════════════════ */
+.final-quiz-veil {
+  position: fixed;
+  inset: 0;
+  background: rgba(20,18,28,0.92);
+  backdrop-filter: blur(8px);
+  z-index: 290;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  animation: fade-in 0.25s ease;
+}
+.final-quiz-card {
+  background: var(--bg);
+  border: 2px solid var(--gold);
+  border-radius: var(--r-lg);
+  padding: 36px 40px;
+  max-width: 620px;
+  width: 100%;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  position: relative;
+}
+.final-quiz-card::before {
+  content: '';
+  position: absolute;
+  top: 16px; left: 40px; right: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.5;
+}
+.fq-eyebrow {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 14px;
+}
+.fq-question {
+  font-family: var(--serif);
+  font-size: 22px;
+  font-weight: 400;
+  color: var(--ink);
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.3;
+}
+.fq-options { display: grid; gap: 10px; }
+.fq-option {
+  padding: 14px 18px;
+  background: var(--surface);
+  border: 1.5px solid var(--rule);
+  border-left: 3px solid var(--c-od);
+  border-radius: var(--r-sm);
+  font-family: var(--serif);
+  font-size: 15px;
+  color: var(--ink);
+  text-align: left;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.fq-option:hover {
+  border-color: var(--gold);
+  border-left-color: var(--gold);
+  background: var(--gold-soft);
+  transform: translateX(4px);
+  box-shadow: var(--shadow-2);
+}
+.fq-result-mark {
+  font-size: 96px;
+  text-align: center;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+.fq-result-mark.correct { color: var(--c-pass); }
+.fq-result-mark.wrong   { color: var(--c-fail); }
+.fq-result-text {
+  font-family: var(--serif);
+  font-size: 26px;
+  text-align: center;
+  margin-bottom: 14px;
+  color: var(--ink);
+}
+.fq-correct-answer {
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  color: var(--gold);
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.fq-explanation {
+  background: var(--gold-soft);
+  border-left: 3px solid var(--gold);
+  padding: 12px 16px;
+  border-radius: 0 var(--r-sm) var(--r-sm) 0;
+  font-size: 13px;
+  color: var(--ink-soft);
+  line-height: 1.5;
+}
+.fq-final-msg {
+  text-align: center;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 16px;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+
+/* ════════════════════════════════════════════════════════════
    ⌘  DEFECT TYPE CHOOSER — the in-play ISO learning mechanic
    The player must pick which class of ISO defect they spotted.
    By repeating these choices the player learns ISO defect
@@ -3608,6 +3788,65 @@ const CARDS = {
 // ISO field display order (for outfit cards)
 const OD_FIELDS = ['Identifier','Objective','Pre-conditions','Inputs','Expected Result','Post-conditions','Traceability ID'];
 
+// ─── ISO/IEC 29119-3 field definitions — surfaced via the ⓘ tooltip ──
+// Optional deep-dive only; the player taps an info icon if they want it.
+const ISO_FIELD_DEFS = {
+  'Objective': {
+    iso: 'ISO/IEC 29119-3 §7.3',
+    short: 'What this test case is meant to verify — the intent in one short statement.',
+  },
+  'Pre-conditions': {
+    iso: 'ISO/IEC 29119-3 §7.3.2',
+    short: 'The state of the environment that must hold BEFORE the test runs. A wrong precondition makes a setup error look like a real bug.',
+  },
+  'Inputs': {
+    iso: 'ISO/IEC 29119-3 §7.3.3',
+    short: 'The values or stimuli applied to the system during the test. Must be precise enough to be repeatable.',
+  },
+  'Expected Result': {
+    iso: 'ISO/IEC 29119-3 §7.3.4',
+    short: 'What the system should produce. Without a measurable expected result, you cannot decide pass or fail.',
+  },
+  'Post-conditions': {
+    iso: 'ISO/IEC 29119-3 §7.3.5',
+    short: 'The state of the system after the test runs. Catches contradictions and ensures cleanup.',
+  },
+  'Traceability ID': {
+    iso: 'ISO/IEC 29119-3 §7.3.6',
+    short: 'A reference linking this test case back to the requirement(s) it validates.',
+  },
+};
+
+// ─── FINAL POP QUIZ — fires after the last player's turn ─────
+// 4 questions checking that the table actually picked up the ISO mapping
+// during play. Pure mechanic — pick the right ISO concept from 3 options.
+const FINAL_QUIZ = [
+  {
+    question: 'Brand Identity card represents which ISO concept?',
+    options: ['Project Test Plan', 'Organizational Test Strategy', 'Defect Report'],
+    correct: 1,
+    explanation: 'Brand Identity sets house-wide rules every project under it inherits — that is the Organizational Test Strategy (ISO §6.2).',
+  },
+  {
+    question: 'Runway Roadmap card maps to which ISO document?',
+    options: ['Test Case Specification', 'Project Test Plan', 'Test Status Report'],
+    correct: 1,
+    explanation: 'Per-round scope, schedule, resources, risks = Project Test Plan (ISO §6.3).',
+  },
+  {
+    question: 'When a Wardrobe Malfunction names the originating field, what is this called in ISO terms?',
+    options: ['Hierarchy gating', 'Traceability / root-cause analysis', 'Coverage criteria'],
+    correct: 1,
+    explanation: 'Linking a defect back to the documentation field that caused it is the traceability principle that powers root-cause analysis.',
+  },
+  {
+    question: 'An Outfit whose Expected Result is blank belongs to which defect class?',
+    options: ['Ambiguous', 'Missing', 'Self-referential'],
+    correct: 1,
+    explanation: 'A required field with no value at all is the "Missing" defect class. "Ambiguous" is when the value exists but is too vague to verify.',
+  },
+];
+
 // ======================================================================
 // ISO/IEC 29119-3 CONTEXT — what the player is *actually* producing
 // at each phase. Shown in the persistent panel above the mat so the
@@ -3762,6 +4001,108 @@ function flashPhaseLabel() {
   lbl.classList.remove('flash');
   void lbl.offsetWidth;
   lbl.classList.add('flash');
+}
+
+// ─── ISO FIELD TOOLTIP — opt-in deep-dive on a field name ────
+function showFieldDefinition(fname, def, anchor) {
+  closeFieldTooltip();
+  const tip = el('div', {
+    class: 'iso-field-tooltip',
+    id: 'iso-field-tip',
+  });
+  tip.appendChild(el('div', { class: 'iso-tip-eyebrow' }, def.iso));
+  tip.appendChild(el('div', { class: 'iso-tip-name' }, fname));
+  tip.appendChild(el('div', { class: 'iso-tip-desc' }, def.short));
+  // Stop click-on-self from bubbling to the document close listener
+  tip.addEventListener('click', (e) => e.stopPropagation());
+  document.body.appendChild(tip);
+  // Position near the anchor
+  const rect = anchor.getBoundingClientRect();
+  let top = rect.bottom + 8;
+  // If too close to the bottom, flip above
+  if (top + 140 > window.innerHeight) top = rect.top - 140;
+  const left = Math.max(8, Math.min(rect.left, window.innerWidth - 340));
+  tip.style.top = top + 'px';
+  tip.style.left = left + 'px';
+  // Close on next outside click
+  setTimeout(() => {
+    const handler = () => { closeFieldTooltip(); document.removeEventListener('click', handler); };
+    document.addEventListener('click', handler);
+  }, 50);
+}
+function closeFieldTooltip() {
+  const t = document.getElementById('iso-field-tip');
+  if (t) t.remove();
+}
+
+// ─── FINAL POP QUIZ — runs after the last player's turn ─────
+function showFinalQuiz(onComplete) {
+  let idx = 0;
+  let score = 0;
+
+  function close() {
+    const v = document.getElementById('final-quiz');
+    if (v) v.remove();
+  }
+
+  function ask() {
+    close();
+    if (idx >= FINAL_QUIZ.length) return finish();
+    const q = FINAL_QUIZ[idx];
+    const veil = el('div', { class: 'final-quiz-veil', id: 'final-quiz' });
+    const card = el('div', { class: 'final-quiz-card' });
+    card.appendChild(el('div', { class: 'fq-eyebrow' }, `Final Pop Quiz · ${idx + 1} of ${FINAL_QUIZ.length}`));
+    card.appendChild(el('div', { class: 'fq-question' }, q.question));
+    const opts = el('div', { class: 'fq-options' });
+    q.options.forEach((opt, i) => {
+      opts.appendChild(el('button', {
+        class: 'fq-option',
+        onclick: () => answered(i === q.correct, q),
+      }, opt));
+    });
+    card.appendChild(opts);
+    veil.appendChild(card);
+    document.body.appendChild(veil);
+  }
+
+  function answered(correct, q) {
+    if (correct) score++;
+    close();
+    const veil = el('div', { class: 'final-quiz-veil', id: 'final-quiz' });
+    const card = el('div', { class: 'final-quiz-card' });
+    card.appendChild(el('div', { class: 'fq-result-mark ' + (correct ? 'correct' : 'wrong') }, correct ? '✓' : '✗'));
+    card.appendChild(el('div', { class: 'fq-result-text' }, correct ? 'Correct!' : 'Not quite.'));
+    card.appendChild(el('div', { class: 'fq-correct-answer' }, q.options[q.correct]));
+    card.appendChild(el('div', { class: 'fq-explanation' }, q.explanation));
+    veil.appendChild(card);
+    document.body.appendChild(veil);
+    setTimeout(() => { idx++; ask(); }, 2400);
+  }
+
+  function finish() {
+    close();
+    const veil = el('div', { class: 'final-quiz-veil', id: 'final-quiz' });
+    const card = el('div', { class: 'final-quiz-card' });
+    card.appendChild(el('div', { class: 'fq-eyebrow' }, "The Room's ISO Score"));
+    card.appendChild(el('div', { style: 'font-family: var(--serif); font-size: 84px; text-align: center; margin: 18px 0; color: var(--gold);' },
+      `${score} / ${FINAL_QUIZ.length}`));
+    let msg;
+    if (score === FINAL_QUIZ.length) msg = 'You actually learned ISO/IEC 29119-3. Bravo.';
+    else if (score >= 3) msg = 'Solid grasp on the standard. Keep going.';
+    else if (score >= 2) msg = 'Half-way there. The terminology is sticking.';
+    else msg = "Re-watch the rehearsal — those ISO classes need another pass.";
+    card.appendChild(el('div', { class: 'fq-final-msg' }, msg));
+    const btn = el('button', {
+      class: 'action-btn',
+      onclick: () => { close(); onComplete && onComplete(); },
+      style: 'margin: 18px auto 0; display: block; padding: 14px 28px;',
+    }, 'Show Leaderboard');
+    card.appendChild(btn);
+    veil.appendChild(card);
+    document.body.appendChild(veil);
+  }
+
+  ask();
 }
 
 // ─── Fashion-season helpers — translate "SS26-001" into something human ──
@@ -4255,7 +4596,8 @@ function nextPlayerOrEnd() {
   state.activePlayerIdx++;
   if (state.activePlayerIdx >= state.players.length) {
     state.phase = 'game-end';
-    renderEndScreen();
+    // Final ISO pop-quiz before the curtain falls — collective learning checkpoint
+    showFinalQuiz(() => renderEndScreen());
   } else {
     startTurn();
   }
@@ -4937,9 +5279,7 @@ function renderODCard(card, played, onclick) {
     for (const fname of OD_FIELDS) {
       if (fname === 'Identifier') continue;
       const v = card.fields[fname];
-      brief.appendChild(el('div', { class: 'field' },
-        el('span', { class: 'name' }, fname + ':'),
-        document.createTextNode(' ' + (v || ' '))));
+      brief.appendChild(makeFieldRow(fname, v));
     }
     brief.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification · §7.3'));
     node.appendChild(brief);
@@ -4957,14 +5297,32 @@ function renderODCard(card, played, onclick) {
   for (const fname of OD_FIELDS) {
     if (fname === 'Identifier') continue;
     const v = card.fields[fname];
-    brief.appendChild(el('div', { class: 'field' },
-      el('span', { class: 'name' }, fname + ':'),
-      document.createTextNode(' ' + (v || ' '))));
+    brief.appendChild(makeFieldRow(fname, v));
   }
   brief.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification · §7.3'));
   node.appendChild(brief);
 
   return node;
+}
+
+// Helper: build a "Pre-conditions: …" row that includes a small ⓘ tooltip
+// for opt-in ISO definition. Used by every Outfit Detail render path.
+function makeFieldRow(fname, value) {
+  const row = el('div', { class: 'field' });
+  const nameSpan = el('span', { class: 'name' }, fname + ':');
+  row.appendChild(nameSpan);
+  // ⓘ icon next to the name
+  const def = ISO_FIELD_DEFS[fname];
+  if (def) {
+    const icon = el('button', {
+      class: 'iso-info-icon',
+      title: 'What is ' + fname + ' in ISO?',
+      onclick: (e) => { e.stopPropagation(); showFieldDefinition(fname, def, icon); },
+    }, 'ⓘ');
+    row.appendChild(icon);
+  }
+  row.appendChild(document.createTextNode(' ' + (value || ' ')));
+  return row;
 }
 
 function renderHand() {
@@ -5202,9 +5560,19 @@ function renderInspectionModal() {
       else if (!hasFlagger) cls += ' disabled';
       const node = el('div', { class: cls,
         onclick: () => { if (!flag && hasFlagger) flagField(outfit.cardId, fname); }
-      },
-        el('span', { class: 'name' }, fname + ':'),
-        document.createTextNode(' ' + (v || '(empty)')));
+      });
+      const nameSpan = el('span', { class: 'name' }, fname + ':');
+      node.appendChild(nameSpan);
+      const def = ISO_FIELD_DEFS[fname];
+      if (def) {
+        const icon = el('button', {
+          class: 'iso-info-icon',
+          title: 'What is ' + fname + ' in ISO?',
+          onclick: (e) => { e.stopPropagation(); showFieldDefinition(fname, def, icon); },
+        }, 'ⓘ');
+        node.appendChild(icon);
+      }
+      node.appendChild(document.createTextNode(' ' + (v || '(empty)')));
       brief.appendChild(node);
     });
     brief.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification · §7.3'));
@@ -5373,9 +5741,19 @@ function renderResolutionModal(clickedField, wasCorrect) {
     const node = el('div', {
       class: cls,
       onclick: () => clickResolutionField(fname),
-    },
-      el('span', { class: 'name' }, fname + ':'),
-      document.createTextNode(' ' + (v || '(empty)')));
+    });
+    const nameSpan = el('span', { class: 'name' }, fname + ':');
+    node.appendChild(nameSpan);
+    const def = ISO_FIELD_DEFS[fname];
+    if (def) {
+      const icon = el('button', {
+        class: 'iso-info-icon',
+        title: 'What is ' + fname + ' in ISO?',
+        onclick: (e) => { e.stopPropagation(); showFieldDefinition(fname, def, icon); },
+      }, 'ⓘ');
+      node.appendChild(icon);
+    }
+    node.appendChild(document.createTextNode(' ' + (v || '(empty)')));
     brief.appendChild(node);
   });
   brief.appendChild(el('div', { class: 'iso-tag' }, 'Test Case Specification · §7.3'));
