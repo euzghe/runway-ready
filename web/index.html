@@ -750,27 +750,29 @@ em { font-style: italic; color: var(--ink-soft); }
   line-height: 1.4;
 }
 
-/* Floor hint floats at the BOTTOM OF THE VIEWPORT (not the modal),
-   so the player always sees their next instruction even when the
-   modal is taller than the screen. */
+/* Floor hint pinned to the viewport bottom — full-width, single-line,
+   compact so it doesn't dominate the screen. */
 .insp-floor-hint {
   position: fixed;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
+  bottom: 12px;
+  left: 16px;
+  right: 16px;
   width: auto;
-  max-width: min(960px, 92vw);
-  padding: 14px 22px;
+  max-width: none;
+  padding: 8px 18px;
   background: var(--ink);
   color: white;
-  border-radius: var(--r-md);
-  font-size: 13px;
+  border-radius: 22px;
+  font-size: 12px;
   text-align: center;
   letter-spacing: 0.3px;
   border: 1.5px solid var(--gold);
-  box-shadow: 0 6px 24px rgba(0,0,0,0.5), 0 0 16px rgba(255,209,102,0.20);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.5), 0 0 12px rgba(255,209,102,0.22);
   z-index: 240;
-  margin-top: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
 }
 .insp-floor-hint.ready {
   background: var(--gold-soft);
