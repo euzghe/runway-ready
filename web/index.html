@@ -4036,6 +4036,7 @@ function flagField(outfitCardId, fieldName) {
 function endInspection() {
   stopTimer();
   closeModal();
+  closeInspFloorHint();
   state.phase = 'execution';
   startExecution();
 }
@@ -5077,6 +5078,8 @@ function openModal(content, extraClass) {
 function closeModal() {
   const v = $('#modal-veil');
   if (v) v.remove();
+  // The inspection floor hint lives at body level — kill it whenever a modal closes
+  closeInspFloorHint();
 }
 
 // ======================================================================
@@ -5160,18 +5163,27 @@ function renderInspectionModal() {
   });
   root.appendChild(grid);
 
-  // Bottom hint
-  if (!hasFlagger) {
-    root.appendChild(el('div', { class: 'insp-floor-hint' },
-      '↑ Pick an inspector above to start. ',
-      el('span', { style: 'opacity:0.7;' }, 'No flaws can be tapped until then.')));
-  } else {
-    root.appendChild(el('div', { class: 'insp-floor-hint ready' },
-      `${flaggerName} — tap a suspect field on any of the three Outfits above. `,
-      el('span', { style: 'opacity:0.7;' }, 'Then "Done inspecting" or pick another inspector.')));
-  }
-
   openModal(root, 'inspection-modal');
+
+  // Floor hint pinned to the viewport bottom — appended directly to body
+  // so the modal-veil's backdrop-filter can't trap it inside its scroll area.
+  closeInspFloorHint();
+  const hint = el('div', {
+    class: 'insp-floor-hint' + (hasFlagger ? ' ready' : ''),
+    id: 'insp-floor-hint',
+  });
+  if (!hasFlagger) {
+    hint.appendChild(document.createTextNode('↑ Pick an inspector above to start. '));
+    hint.appendChild(el('span', { style: 'opacity:0.7;' }, 'No flaws can be tapped until then.'));
+  } else {
+    hint.appendChild(document.createTextNode(`${flaggerName} — tap a suspect field on any of the three Outfits above. `));
+    hint.appendChild(el('span', { style: 'opacity:0.7;' }, 'Then "Done inspecting" or pick another inspector.'));
+  }
+  document.body.appendChild(hint);
+}
+function closeInspFloorHint() {
+  const h = document.getElementById('insp-floor-hint');
+  if (h) h.remove();
 }
 
 // ======================================================================
