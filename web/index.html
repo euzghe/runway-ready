@@ -244,10 +244,17 @@ em { font-style: italic; color: var(--ink-soft); }
 }
 .gh-phase {
   font-family: var(--sans);
-  font-size: 10px;
-  letter-spacing: 3px;
+  font-size: 12px;
+  letter-spacing: 2.5px;
   text-transform: uppercase;
-  opacity: 0.55;
+  font-weight: 700;
+  color: var(--bulb);
+  background: rgba(184,146,74,0.18);
+  padding: 7px 16px;
+  border-radius: 18px;
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 0 12px rgba(255,209,102,0.20);
+  white-space: nowrap;
 }
 .gh-active {
   font-family: var(--serif);
@@ -826,46 +833,86 @@ em { font-style: italic; color: var(--ink-soft); }
 /* Field overrides scoped to inspection cards — higher specificity than .outfit-brief .field */
 .insp-card .outfit-brief .field {
   cursor: pointer;
-  transition: background 0.12s, border-left-color 0.12s;
+  background: rgba(255,255,255,0.85);
+  padding: 10px 32px 10px 12px;
+  border: 1px solid rgba(110,93,150,0.25);
+  border-left: 3px solid rgba(110,93,150,0.45);
+  border-radius: 5px;
+  margin-bottom: 6px;
+  position: relative;
+  transition: all 0.15s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+/* Affordance arrow — hints "I'm tappable" */
+.insp-card .outfit-brief .field::after {
+  content: 'tap →';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--c-od);
+  font-weight: 700;
+  opacity: 0.55;
+  transition: all 0.15s;
 }
 .insp-card .outfit-brief .field:hover {
   background: var(--gold-soft);
+  border-color: var(--gold);
   border-left-color: var(--gold);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(184,146,74,0.30);
+}
+.insp-card .outfit-brief .field:hover::after {
+  opacity: 1;
+  color: var(--gold);
+  transform: translateY(-50%) translateX(2px);
 }
 .insp-card .outfit-brief .field.flagged-correct {
   background: #e8f1ea;
+  border: 1px solid var(--c-pass);
   border-left: 3px solid var(--c-pass);
   cursor: default;
+  transform: none;
 }
-.insp-card .outfit-brief .field.flagged-correct::after {
-  content: ' ✓ caught';
-  font-size: 10px;
-  color: var(--c-pass);
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+.insp-card .outfit-brief .field.flagged-correct::after,
+.insp-card .outfit-brief .field.flagged-wrong::after,
+.insp-card .outfit-brief .field.disabled::after { display: none; }
+/* Use a pseudo-CHILD instead of ::after (which we already used for the arrow) for the caught/wrong tag */
+.insp-card .outfit-brief .field.flagged-correct .name::after {
+  content: '  ✓ caught';
+  color: var(--c-pass); font-weight: 700;
+  font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  margin-left: 4px;
 }
 .insp-card .outfit-brief .field.flagged-wrong {
   background: #f3e2e2;
+  border: 1px solid var(--c-fail);
   border-left: 3px solid var(--c-fail);
   cursor: default;
+  transform: none;
 }
-.insp-card .outfit-brief .field.flagged-wrong::after {
-  content: ' ✗ no flaw';
-  font-size: 10px;
-  color: var(--c-fail);
-  font-weight: 600;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+.insp-card .outfit-brief .field.flagged-wrong .name::after {
+  content: '  ✗ no flaw';
+  color: var(--c-fail); font-weight: 700;
+  font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+  margin-left: 4px;
 }
 .insp-card .outfit-brief .field.disabled {
   cursor: not-allowed;
-  opacity: 0.55;
+  opacity: 0.45;
+  filter: grayscale(0.6);
 }
 .insp-card .outfit-brief .field.disabled:hover {
-  background: rgba(255,255,255,0.6);
-  border-left-color: rgba(110,93,150,0.25);
+  background: rgba(255,255,255,0.85);
+  border-color: rgba(110,93,150,0.25);
+  border-left-color: rgba(110,93,150,0.45);
+  transform: none;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
+.insp-card .outfit-brief .field.disabled:hover::after { transform: translateY(-50%); }
 .insp-card .field {
   padding: 8px 10px;
   border-radius: var(--r-sm);
@@ -1027,22 +1074,58 @@ em { font-style: italic; color: var(--ink-soft); }
 /* Field overrides scoped to resolution card — higher specificity */
 .res-card .outfit-brief .field {
   cursor: pointer;
-  transition: background 0.12s, border-left-color 0.12s;
+  background: rgba(255,255,255,0.85);
+  padding: 12px 36px 12px 14px;
+  border: 1px solid rgba(110,93,150,0.25);
+  border-left: 3px solid rgba(110,93,150,0.45);
+  border-radius: 5px;
+  margin-bottom: 6px;
+  position: relative;
+  transition: all 0.15s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+.res-card .outfit-brief .field::after {
+  content: 'tap →';
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--c-od);
+  font-weight: 700;
+  opacity: 0.55;
+  transition: all 0.15s;
 }
 .res-card .outfit-brief .field:hover {
   background: var(--gold-soft);
+  border-color: var(--gold);
   border-left-color: var(--gold);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(184,146,74,0.30);
+}
+.res-card .outfit-brief .field:hover::after {
+  opacity: 1;
+  color: var(--gold);
+  transform: translateY(-50%) translateX(2px);
 }
 .res-card .outfit-brief .field.correct {
   background: #e8f1ea;
+  border: 1px solid var(--c-pass);
   border-left: 3px solid var(--c-pass);
   cursor: default;
+  transform: none;
 }
 .res-card .outfit-brief .field.wrong {
   background: #f3e2e2;
+  border: 1px solid var(--c-fail);
   border-left: 3px solid var(--c-fail);
   cursor: default;
+  transform: none;
 }
+.res-card .outfit-brief .field.correct::after,
+.res-card .outfit-brief .field.wrong::after { display: none; }
 .insp-feedback {
   margin-top: 14px;
   padding: 12px 16px;
@@ -2666,6 +2749,48 @@ body {
   50%      { opacity: 1; transform: scale(1.15); }
 }
 
+/* ── SCROLL HINT — appears when there's content below the fold ── */
+.scroll-hint {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20,18,32,0.94);
+  color: var(--bulb);
+  padding: 10px 18px 10px 22px;
+  border-radius: 24px;
+  font-size: 11.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 700;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4), 0 0 20px rgba(255,209,102,0.25);
+  cursor: pointer;
+  transition: opacity 0.4s, transform 0.4s;
+  pointer-events: auto;
+}
+.scroll-hint .scroll-chev {
+  font-size: 18px;
+  display: inline-block;
+  animation: scroll-chev-bounce 1.1s ease-in-out infinite;
+  line-height: 1;
+  color: var(--gold);
+}
+@keyframes scroll-chev-bounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(5px); }
+}
+.scroll-hint.hidden {
+  opacity: 0;
+  transform: translateX(-50%) translateY(20px);
+  pointer-events: none;
+}
+.scroll-hint:hover { background: var(--ink); border-color: var(--bulb); }
+
 /* ── HELP BUTTON (always visible) ──────────────────────────── */
 .help-btn {
   position: fixed;
@@ -3291,6 +3416,10 @@ body {
 </div>
 
 <button class="help-btn" id="help-btn" title="How to play">?</button>
+<div class="scroll-hint hidden" id="scroll-hint" onclick="window.scrollBy({top: window.innerHeight * 0.6, behavior: 'smooth'})">
+  <span>Scroll for more</span>
+  <span class="scroll-chev">↓</span>
+</div>
 
 
 <div id="screen-end" class="screen"></div>
@@ -5413,6 +5542,26 @@ setupWelcome();
 
 // Help button — always available
 document.getElementById('help-btn').addEventListener('click', () => openTutorial(0));
+
+// Scroll-hint pill — visible at the bottom when there's content below the fold
+function updateScrollHint() {
+  const hint = document.getElementById('scroll-hint');
+  if (!hint) return;
+  // Only relevant on the game screen
+  const onGame = document.getElementById('screen-game').classList.contains('active');
+  const docHeight = document.documentElement.scrollHeight;
+  const viewHeight = window.innerHeight;
+  const scrolled = window.scrollY;
+  const hasMore = docHeight > viewHeight + 80;
+  const nearBottom = scrolled + viewHeight >= docHeight - 60;
+  if (onGame && hasMore && !nearBottom) hint.classList.remove('hidden');
+  else hint.classList.add('hidden');
+}
+window.addEventListener('scroll', updateScrollHint, { passive: true });
+window.addEventListener('resize', updateScrollHint);
+// Also re-check after every render (content changes can change docHeight)
+const _origRender = render;
+render = function() { _origRender(); requestAnimationFrame(updateScrollHint); };
 
 // Auto-show tutorial on first visit (uses localStorage; no-op if blocked)
 try {
