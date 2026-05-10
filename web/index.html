@@ -977,6 +977,181 @@ em { font-style: italic; color: var(--ink-soft); }
   border-left-color: transparent;
 }
 
+/* ════════════════════════════════════════════════════════════
+   ⌘  RUNWAY WALK — actual models walking down the catwalk
+   Plays during the dice roll, in parallel with execution.
+   3 staggered models, each in their outfit's fabric colour,
+   walk back-to-front in perspective on a wooden catwalk.
+   ═══════════════════════════════════════════════════════════ */
+.runway-walk {
+  position: relative;
+  height: 230px;
+  margin: 0 -40px 18px -40px;
+  background:
+    radial-gradient(ellipse 50% 60% at 50% 0%, rgba(255,221,140,0.45) 0%, transparent 65%),
+    linear-gradient(180deg, var(--velvet-deep) 0%, #14121a 70%, #08060c 100%);
+  border-top: 3px solid var(--gold);
+  border-bottom: 3px solid var(--gold);
+  overflow: hidden;
+  perspective: 600px;
+}
+/* Velvet curtains framing the catwalk on each side */
+.runway-walk::before, .runway-walk::after {
+  content: '';
+  position: absolute;
+  top: 0; bottom: 0;
+  width: 60px;
+  background:
+    repeating-linear-gradient(90deg,
+      var(--velvet-deep) 0 8px,
+      var(--velvet) 8px 18px,
+      var(--velvet-light) 18px 26px,
+      var(--velvet) 26px 36px);
+  pointer-events: none;
+  z-index: 4;
+  box-shadow: inset -10px 0 20px rgba(0,0,0,0.45);
+}
+.runway-walk::before { left: 0; }
+.runway-walk::after  { right: 0; transform: scaleX(-1); }
+
+/* Spotlight rig at the top */
+.rw-rig {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 8px;
+  background: var(--ink);
+  z-index: 5;
+}
+.rw-rig .rw-bulb {
+  position: absolute;
+  top: 1px;
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--bulb);
+  box-shadow: 0 0 8px 2px rgba(255,209,102,0.6);
+  animation: marquee-blink 1.6s ease-in-out infinite;
+}
+.rw-rig .rw-bulb-1 { left: 28%; }
+.rw-rig .rw-bulb-2 { left: 50%; transform: translateX(-50%); width: 8px; height: 8px; top: 0; }
+.rw-rig .rw-bulb-3 { right: 28%; }
+
+/* Spotlight beams pouring down */
+.rw-beams {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(180deg, rgba(255,221,140,0.20) 0%, transparent 60%);
+}
+.rw-beams::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  width: 0; height: 0;
+  border-left: 100px solid transparent;
+  border-right: 100px solid transparent;
+  border-top: 230px solid rgba(255,221,140,0.10);
+  transform: translateX(-50%);
+  filter: blur(8px);
+}
+
+/* Perspective wooden catwalk */
+.rw-catwalk {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 70%;
+  background:
+    /* warm spotlight on catwalk */
+    radial-gradient(ellipse at center top, rgba(255,221,140,0.30) 0%, transparent 70%),
+    /* wooden plank stripes */
+    repeating-linear-gradient(90deg,
+      transparent 0 24px,
+      rgba(40,25,10,0.20) 24px 25px),
+    /* catwalk surface */
+    linear-gradient(180deg, #d4a872 0%, #b48a52 50%, #8a6a32 100%);
+  clip-path: polygon(40% 0%, 60% 0%, 100% 100%, 0% 100%);
+  z-index: 2;
+}
+.rw-catwalk::after {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  width: 1px;
+  height: 100%;
+  background: repeating-linear-gradient(180deg,
+    rgba(255,209,102,0.6) 0 6px,
+    transparent 6px 10px);
+  transform: translateX(-50%);
+}
+
+/* Audience hint at the bottom corners */
+.rw-audience {
+  position: absolute;
+  bottom: 8px;
+  left: 0; right: 0;
+  height: 30px;
+  z-index: 3;
+  pointer-events: none;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 70px;
+}
+.rw-audience .rw-aud-row {
+  display: flex;
+  gap: 6px;
+  align-self: flex-end;
+}
+.rw-audience .rw-head {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(20,18,28,0.75);
+}
+
+/* Model walking down the catwalk */
+.rw-model {
+  position: absolute;
+  left: 50%;
+  bottom: 8%;
+  width: 70px;
+  height: 110px;
+  transform-origin: bottom center;
+  z-index: 3;
+  animation: rw-walk 4s ease-in-out forwards;
+  pointer-events: none;
+  filter: drop-shadow(0 6px 8px rgba(0,0,0,0.45));
+}
+.rw-model svg {
+  width: 100%;
+  height: 100%;
+  animation: rw-bob 0.4s ease-in-out infinite;
+}
+.rw-model-0 { animation-delay: 0.2s; }
+.rw-model-1 { animation-delay: 1.2s; }
+.rw-model-2 { animation-delay: 2.2s; }
+@keyframes rw-walk {
+  0% {
+    bottom: 78%;
+    transform: translateX(-50%) scale(0.16);
+    opacity: 0;
+    filter: blur(2px);
+  }
+  10% { opacity: 1; filter: blur(0); }
+  85% { opacity: 1; }
+  100% {
+    bottom: -10%;
+    transform: translateX(-50%) scale(1.4);
+    opacity: 0;
+  }
+}
+@keyframes rw-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-2px); }
+}
+
 /* ── Execution modal ─────────────────────────────────────────── */
 .exec-grid {
   display: grid;
@@ -5642,14 +5817,38 @@ function renderExecutionModal() {
   root.appendChild(el('div', { class: 'modal-sub' },
     'Each Outfit rolls a d6. 1–2 = fail. A planted flaw that escaped Inspection always fails — bad documentation cannot be saved by lucky dice.'));
 
-  // Runway "spotlights" strip
-  const strip = el('div', { class: 'runway-strip' });
-  const lights = el('div', { class: 'runway-spotlights' });
+  // ─── ACTUAL RUNWAY WALK — 3 staggered models in their fabrics ──
+  const walk = el('div', { class: 'runway-walk' });
+  // marquee bulb rig at the top
+  const rig = el('div', { class: 'rw-rig' });
+  rig.appendChild(el('div', { class: 'rw-bulb rw-bulb-1' }));
+  rig.appendChild(el('div', { class: 'rw-bulb rw-bulb-2' }));
+  rig.appendChild(el('div', { class: 'rw-bulb rw-bulb-3' }));
+  walk.appendChild(rig);
+  // beams pouring down
+  walk.appendChild(el('div', { class: 'rw-beams' }));
+  // wooden catwalk
+  walk.appendChild(el('div', { class: 'rw-catwalk' }));
+  // small audience hint at corners
+  const aud = el('div', { class: 'rw-audience' });
+  const audL = el('div', { class: 'rw-aud-row' });
+  for (let i = 0; i < 3; i++) audL.appendChild(el('div', { class: 'rw-head' }));
+  const audR = el('div', { class: 'rw-aud-row' });
+  for (let i = 0; i < 3; i++) audR.appendChild(el('div', { class: 'rw-head' }));
+  aud.appendChild(audL);
+  aud.appendChild(audR);
+  walk.appendChild(aud);
+  // 3 models walking, staggered, each in their outfit's fabric colour
   state.execution.results.forEach((r, i) => {
-    lights.appendChild(el('div', { class: 'spotlight' }, `Look ${i + 1}`));
+    const fabric = fabricFor(r.outfit.cardId);
+    const type = detectOutfitType(r.outfit);
+    const model = el('div', { class: 'rw-model rw-model-' + i });
+    model.innerHTML = makeOutfitIllustration(fabric, type);
+    walk.appendChild(model);
   });
-  strip.appendChild(lights);
-  root.appendChild(strip);
+  root.appendChild(walk);
+
+  // (the older small "spotlights" strip is replaced by the full runway walk above)
 
   const grid = el('div', { class: 'exec-grid' });
   const cubes = []; // store for animation
