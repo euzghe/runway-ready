@@ -3596,6 +3596,28 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 8px;
 }
+/* Rewrite chooser — single column, longer text per button */
+.dc-grid.dc-grid-rewrite {
+  grid-template-columns: 1fr;
+  gap: 8px;
+}
+.dc-btn.dc-btn-rewrite {
+  text-align: left;
+  padding: 14px 16px;
+  border-left: 3px solid var(--gold);
+}
+.dc-btn.dc-btn-rewrite .dc-btn-label {
+  font-family: var(--serif);
+  font-size: 13.5px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.45;
+  font-weight: 400;
+}
+.dc-context.dc-context-broken {
+  border-left-color: var(--c-fail);
+}
+.dc-context.dc-context-broken .dc-context-label { color: var(--c-fail); }
 .dc-btn {
   text-align: left;
   padding: 12px 14px;
@@ -4046,27 +4068,67 @@ const CARDS = {
     // Flawed (8) — moderatorNote is shown post-game only
     { internalId: 'OD-F-01', season: 'SS26', flaws: ['Expected Result'], defectType: 'missing',
       moderatorNote: 'Expected Result is blank — the test case is not falsifiable.',
+      corrections: { field: 'Expected Result', original: '(blank)', options: [
+        { text: 'Model walks 12 steps without tripping; gown drapes evenly at hip.', correct: true,  why: 'Concrete, observable, falsifiable — a test can pass or fail against this.' },
+        { text: 'The gown looks great on the runway.',                                  correct: false, why: 'Still missing a measurable outcome — "great" cannot be verified.' },
+        { text: 'Whatever happens during the show.',                                    correct: false, why: 'Self-referential — defines outcome by the outcome itself.' },
+      ]},
       fields: { 'Identifier': 'SS26-101', 'Objective': 'Open Mediterranean Breeze evening segment.', 'Pre-conditions': 'Model size 38; gold sandals; loose waves.', 'Inputs': 'Coral linen gown; gold cuff bracelet.', 'Expected Result': '', 'Post-conditions': 'Gown returned to wardrobe.', 'Traceability ID': 'REQ-FASHION-MB-04' } },
     { internalId: 'OD-F-02', season: 'AW26', flaws: ['Pre-conditions'], defectType: 'contradictory',
       moderatorNote: 'Pre-condition declares size 36 but Inputs list size-40 garments.',
+      corrections: { field: 'Pre-conditions', original: 'Model size 36; ankle boots; sleek hair.', options: [
+        { text: 'Model size 40; ankle boots; sleek hair.',         correct: true,  why: 'Now consistent with the size-40 garments declared in Inputs.' },
+        { text: 'Model size 36; size-40 garments allowed.',        correct: false, why: 'Still contradictory — the size mismatch is unresolved.' },
+        { text: 'Model wears something fitting and nice.',         correct: false, why: 'Vague — "fitting" and "nice" are not testable conditions.' },
+      ]},
       fields: { 'Identifier': 'AW26-101', 'Objective': 'Anchor Concrete Geometry evening look.', 'Pre-conditions': 'Model size 36; ankle boots; sleek hair.', 'Inputs': 'Charcoal wool blazer in size 40; matching trousers in size 40.', 'Expected Result': 'Shoulders maintain structured line.', 'Post-conditions': 'Blazer returned undamaged.', 'Traceability ID': 'REQ-FASHION-CG-04' } },
     { internalId: 'OD-F-05', season: 'PF26', flaws: ['Expected Result'], defectType: 'ambiguous',
       moderatorNote: 'Expected Result is non-measurable ("Looks good"). Ambiguous, non-falsifiable.',
+      corrections: { field: 'Expected Result', original: 'Looks good.', options: [
+        { text: 'Jacket and dress remain visible together; chain belt does not snag the dress.', correct: true,  why: 'Two specific, observable outcomes that map to the Inputs.' },
+        { text: 'Looks fashionable on the runway.',                                                 correct: false, why: 'Synonym for "good" — same ambiguity, no measurable criterion.' },
+        { text: 'Beautiful and on-brand.',                                                          correct: false, why: 'Subjective judgement — no falsifiable test exists.' },
+      ]},
       fields: { 'Identifier': 'PF26-101', 'Objective': 'Open Soft Rebellion evening segment.', 'Pre-conditions': 'Model size 36; lace-up boots.', 'Inputs': 'Pink slip dress; vegan-leather jacket; chain belt.', 'Expected Result': 'Looks good.', 'Post-conditions': 'Returned undamaged.', 'Traceability ID': 'REQ-FASHION-SR-02' } },
     { internalId: 'OD-F-08', season: 'AW26', flaws: ['Post-conditions'], defectType: 'contradictory',
       moderatorNote: 'Post-conditions directly contradict Expected Result (six accessible pockets vs three sealed shut).',
+      corrections: { field: 'Post-conditions', original: 'Jumpsuit returned with three pockets sealed shut.', options: [
+        { text: 'Jumpsuit returned with all six pockets unobstructed.', correct: true,  why: 'Now consistent with the Expected Result of six accessible pockets.' },
+        { text: 'Jumpsuit returned cleaned.',                            correct: false, why: 'Vague — does not address the state of the pockets at all.' },
+        { text: 'Pockets show variable accessibility on return.',        correct: false, why: 'Ambiguous — "variable" is not a testable post-condition.' },
+      ]},
       fields: { 'Identifier': 'AW26-103', 'Objective': 'Demonstrate the Off-Grid jumpsuit.', 'Pre-conditions': 'Model size 42; hiking boots.', 'Inputs': 'Canvas jumpsuit (six pockets); vegan-leather belt.', 'Expected Result': 'All six pockets are visibly accessible.', 'Post-conditions': 'Jumpsuit returned with three pockets sealed shut.', 'Traceability ID': 'REQ-FASHION-OG-03' } },
     { internalId: 'OD-F-09', season: 'PF26', flaws: ['Inputs'], defectType: 'insufficient',
       moderatorNote: 'Inputs declare only one garment but the Expected Result references three layers — insufficient inputs.',
+      corrections: { field: 'Inputs', original: 'Olive parka.', options: [
+        { text: 'Olive parka; brown wool cardigan; cream knit base layer.', correct: true,  why: 'Three layers — sufficient to satisfy the Expected Result of all-layers visible.' },
+        { text: 'Olive parka and accessories.',                              correct: false, why: 'Still insufficient — accessories are not the missing inner layers.' },
+        { text: 'Three garments of the layered type.',                       correct: false, why: 'Vague — "of the layered type" cannot be tested without naming the garments.' },
+      ]},
       fields: { 'Identifier': 'PF26-102', 'Objective': 'Layered Atmospheric Layers look.', 'Pre-conditions': 'Model size 40; chunky boots.', 'Inputs': 'Olive parka.', 'Expected Result': 'All three layers visible from front and side.', 'Post-conditions': 'Layers separable without snags.', 'Traceability ID': 'REQ-FASHION-AL-02' } },
     { internalId: 'OD-F-11', season: 'AW26', flaws: ['Expected Result'], defectType: 'self-referential',
       moderatorNote: 'Self-referential / tautological Expected Result — cannot fail by definition.',
+      corrections: { field: 'Expected Result', original: 'The expected result is whatever happens during the rehearsal.', options: [
+        { text: 'Coat hem swings cleanly without dragging; turtleneck does not bunch under the collar.', correct: true,  why: 'Two concrete observable outcomes that can pass or fail.' },
+        { text: 'Whatever the rehearsal produces is the expected result.', correct: false, why: 'Still circular — defines the outcome by the outcome itself.' },
+        { text: 'Looks coherent overall.',                                  correct: false, why: 'Different defect — now ambiguous, still not testable.' },
+      ]},
       fields: { 'Identifier': 'AW26-104', 'Objective': 'Concrete Geometry silhouette study.', 'Pre-conditions': 'Model size 38; closed-toe shoes.', 'Inputs': 'Asymmetric coat; turtleneck; tapered trousers.', 'Expected Result': 'The expected result is whatever happens during the rehearsal.', 'Post-conditions': 'Coat hangs without creases.', 'Traceability ID': 'REQ-FASHION-CG-05' } },
     { internalId: 'OD-F-06', season: 'CR26', flaws: ['Traceability ID'], defectType: 'missing',
       moderatorNote: 'Traceability ID is blank — the case cannot be tied back to the Theme\'s coverage criteria.',
+      corrections: { field: 'Traceability ID', original: '(blank)', options: [
+        { text: 'REQ-FASHION-HR-02', correct: true,  why: 'A real requirement reference linking back to the Heritage Reframed coverage set.' },
+        { text: '(unspecified)',     correct: false, why: 'A placeholder is not a reference — Traceability ID is still missing.' },
+        { text: 'REQ-WHATEVER-99',   correct: false, why: 'Made-up reference — does not point to any real requirement, traceability is broken.' },
+      ]},
       fields: { 'Identifier': 'CR26-101', 'Objective': 'Bridal heritage reframed look.', 'Pre-conditions': 'Model size 38; satin pumps.', 'Inputs': 'Ivory silk gown with lace overlay; pearl earrings.', 'Expected Result': 'Train follows model without dragging.', 'Post-conditions': 'Lace returned undamaged.', 'Traceability ID': '' } },
     { internalId: 'OD-F-07', season: 'SS26', flaws: ['Pre-conditions'], defectType: 'untestable',
       moderatorNote: 'Pre-condition is subjective and unverifiable ("Model is in a good mood").',
+      corrections: { field: 'Pre-conditions', original: 'Model is in a good mood.', options: [
+        { text: 'Model size 38; metallic block heels (5 cm); side-parted hair.', correct: true,  why: 'Objectively verifiable physical conditions — size, footwear, hair.' },
+        { text: 'Model is happy and ready for the show.',                       correct: false, why: 'Still subjective — happiness is not a testable pre-condition.' },
+        { text: 'Model is excited about the runway.',                            correct: false, why: 'Still untestable — emotion cannot be objectively measured.' },
+      ]},
       fields: { 'Identifier': 'SS26-103', 'Objective': 'Open the Liquid Light segment.', 'Pre-conditions': 'Model is in a good mood.', 'Inputs': 'Silver foil dress; bracelet.', 'Expected Result': 'Dress reflects spotlight at three points.', 'Post-conditions': 'Returned undamaged.', 'Traceability ID': 'REQ-FASHION-LL-03' } },
   ],
 
@@ -4479,6 +4541,77 @@ function closeDefectChooser() {
   if (v) v.remove();
 }
 
+// ─── REWRITE CHOOSER — pick the proper ISO-compliant value ───
+// Fires only after the player has correctly identified field + defect type
+// in resolution. Player picks 1 of 3 alternative rewrites. The right one
+// is concrete, measurable, falsifiable; the wrong two repeat the original
+// defect class. Score: +2 bonus for correct.
+function showCorrectionChooser({ field, original, options, onPick, onCancel }) {
+  closeDefectChooser();
+  closeCorrectionChooser();
+  const veil = el('div', { class: 'defect-chooser-veil', id: 'correction-chooser' });
+  const card = el('div', { class: 'defect-chooser-card' });
+  card.appendChild(el('div', { class: 'dc-eyebrow' }, 'Resolution · rewrite the field'));
+  card.appendChild(el('div', { class: 'dc-title' }, `Pick the proper ${field} value`));
+  card.appendChild(el('div', { class: 'dc-subtitle' },
+    'A correctly resolved defect names what the field SHOULD have been. ' +
+    'Pick the rewrite that satisfies ISO/IEC 29119-3 — concrete, measurable, falsifiable.'));
+
+  // Show the broken value
+  const ctx = el('div', { class: 'dc-context dc-context-broken' });
+  ctx.appendChild(el('div', { class: 'dc-context-label' }, 'The broken value'));
+  ctx.appendChild(el('div', { class: 'dc-context-field' },
+    el('span', { class: 'dc-context-name' }, field + ': '),
+    document.createTextNode((original && original !== '(blank)') ? '"' + original + '"' : '(empty)')));
+  card.appendChild(ctx);
+
+  // Shuffle the options so players can't memorize position across runs
+  const shuffled = options.slice().sort(() => Math.random() - 0.5);
+  const grid = el('div', { class: 'dc-grid dc-grid-rewrite' });
+  shuffled.forEach(opt => {
+    const btn = el('button', {
+      class: 'dc-btn dc-btn-rewrite',
+      onclick: () => { closeCorrectionChooser(); onPick && onPick(opt); },
+    });
+    btn.appendChild(el('div', { class: 'dc-btn-label' }, opt.text));
+    grid.appendChild(btn);
+  });
+  card.appendChild(grid);
+
+  const cancelBtn = el('button', {
+    class: 'dc-cancel',
+    onclick: () => { closeCorrectionChooser(); onCancel && onCancel(); },
+  }, 'Skip the rewrite');
+  card.appendChild(cancelBtn);
+
+  veil.appendChild(card);
+  document.body.appendChild(veil);
+}
+
+function closeCorrectionChooser() {
+  const v = document.getElementById('correction-chooser');
+  if (v) v.remove();
+}
+
+function showCorrectionResult(opt, after) {
+  const veil = el('div', { class: 'defect-chooser-veil' });
+  const card = el('div', { class: 'defect-chooser-card', style: 'max-width: 500px;' });
+  let chip;
+  if (opt.correct) {
+    chip = el('div', { class: 'dc-result jackpot' },
+      el('div', { style: 'font-weight:700; font-size:14px; margin-bottom:4px;' }, '🎯 Excellent rewrite — +2 bonus'),
+      el('div', { style: 'font-style:italic; opacity:0.85;' }, opt.why));
+  } else {
+    chip = el('div', { class: 'dc-result wrong' },
+      el('div', { style: 'font-weight:700; font-size:14px; margin-bottom:4px;' }, '✘ That rewrite still fails ISO'),
+      el('div', { style: 'font-style:italic; opacity:0.85;' }, opt.why));
+  }
+  card.appendChild(chip);
+  veil.appendChild(card);
+  document.body.appendChild(veil);
+  setTimeout(() => { veil.remove(); after && after(); }, 2400);
+}
+
 // ─── BRIEF RESULT FEEDBACK after a classification choice ────
 // Stays on screen 1.6s then auto-dismisses + runs the callback.
 function showDefectResult(outcome, fieldHasFlaw, correctType, chosenType, fieldName, after) {
@@ -4872,17 +5005,40 @@ function clickResolutionField(fieldName) {
       }
       if (gainPts) addScore(p, gainPts, `Resolution ${outcome} on ${cur.outfit.cardId}`);
       addScore(p, lossPts, `Lost outfit ${cur.outfit.cardId}`);
-      p.summary.push({
+      const summaryEntry = {
         outfitId: cur.outfit.cardId, pass: false,
         originatingField: summaryNote,
         flawNote: cur.outfit.moderatorNote,
         defectType: correctType,
         gotDefectType: chosenType === correctType,
-      });
+      };
+      p.summary.push(summaryEntry);
       logSay(`${outcome === 'jackpot' ? '🎯' : outcome === 'partial' ? '◐' : '✘'} ${p.name} resolved ${cur.outfit.cardId} → field=${fieldName}/type=${chosenType} → ${gainPts + lossPts}`);
       stopTimer();
       return showDefectResult(outcome, fieldIsCorrect, correctType, chosenType, fieldName, () => {
-        setTimeout(showNextResolution, 600);
+        // ⮕ JACKPOT bonus round: name what the field SHOULD have been
+        if (outcome === 'jackpot' && cur.outfit.corrections) {
+          const c = cur.outfit.corrections;
+          showCorrectionChooser({
+            field: c.field,
+            original: c.original,
+            options: c.options,
+            onPick: (opt) => {
+              if (opt.correct) {
+                addScore(p, +2, `Rewrite bonus on ${cur.outfit.cardId}`);
+                summaryEntry.gotRewrite = true;
+                logSay(`✦ ${p.name} rewrote ${cur.outfit.cardId}/${c.field} correctly → +2`);
+              } else {
+                summaryEntry.gotRewrite = false;
+                logSay(`◯ ${p.name} mis-rewrote ${cur.outfit.cardId}/${c.field}`);
+              }
+              showCorrectionResult(opt, () => setTimeout(showNextResolution, 400));
+            },
+            onCancel: () => setTimeout(showNextResolution, 200),
+          });
+        } else {
+          setTimeout(showNextResolution, 600);
+        }
       });
     },
     onCancel: () => {
@@ -6207,8 +6363,11 @@ function renderEndScreen() {
       const list = el('div', {});
       flawed.forEach(r => {
         const ok = r.gotDefectType;
+        let suffix = ok ? ' (correctly classified)' : ' (encountered, not fully classified)';
+        if (ok && r.gotRewrite === true)  suffix += ' + rewrote properly ✦';
+        if (ok && r.gotRewrite === false) suffix += ' + rewrite missed';
         list.appendChild(el('div', { style: 'font-size:12px; opacity:0.9; margin:4px 0;' },
-          `${ok ? '🎯' : '◯'} ${r.outfitId} — ${r.defectType}${ok ? ' (correctly classified)' : ' (encountered, not fully classified)'}`));
+          `${ok ? '🎯' : '◯'} ${r.outfitId} — ${r.defectType}${suffix}`));
       });
       box.appendChild(list);
 
