@@ -285,13 +285,17 @@ em { font-style: italic; color: var(--ink-soft); }
   grid-area: sidebar;
   background: #1a1820;
   color: #f5f0e8;
-  padding: 24px 20px;
+  border-left: 1px solid rgba(245,240,232,0.06);
+  align-self: stretch;       /* fill the entire grid cell vertically */
+  position: relative;
+}
+/* Inner wrapper is the actual sticky scoreboard panel */
+.sb-sticky {
   position: sticky;
   top: 60px;
-  align-self: start;
+  padding: 24px 20px;
   max-height: calc(100vh - 60px);
   overflow-y: auto;
-  border-left: 1px solid rgba(245,240,232,0.06);
 }
 
 /* ── Active player mat ──────────────────────────────────────────── */
@@ -1641,7 +1645,7 @@ body {
     linear-gradient(180deg, #1a1820 0%, #2a2532 100%);
   border-left: 2px solid var(--gold);
 }
-.side-col::before {
+.sb-sticky::before {
   content: 'THE JURY';
   display: block;
   text-align: center;
@@ -3472,8 +3476,10 @@ body {
     <div class="log" id="log"></div>
   </div>
   <div class="side-col">
-    <div class="sb-title">Scoreboard</div>
-    <div id="scoreboard"></div>
+    <div class="sb-sticky">
+      <div class="sb-title">Scoreboard</div>
+      <div id="scoreboard"></div>
+    </div>
   </div>
 </div>
 
@@ -3953,6 +3959,8 @@ function startGame() {
 function activePlayer() { return state.players[state.activePlayerIdx]; }
 
 function startTurn() {
+  // Reset scroll to top so the new player sees the start of their game state.
+  window.scrollTo({ top: 0, behavior: 'instant' });
   const p = activePlayer();
   state.phase = 'plan';
   logSay(`▶ Turn of ${p.name} begins. Brand Identity: ${p.brandIdentity.name}.`);
