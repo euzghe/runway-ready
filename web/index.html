@@ -750,21 +750,32 @@ em { font-style: italic; color: var(--ink-soft); }
   line-height: 1.4;
 }
 
+/* Floor hint floats at the BOTTOM OF THE VIEWPORT (not the modal),
+   so the player always sees their next instruction even when the
+   modal is taller than the screen. */
 .insp-floor-hint {
-  margin-top: 16px;
-  padding: 12px 16px;
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  max-width: min(960px, 92vw);
+  padding: 14px 22px;
   background: var(--ink);
   color: white;
   border-radius: var(--r-md);
-  font-size: 12px;
+  font-size: 13px;
   text-align: center;
   letter-spacing: 0.3px;
-  border-left: 3px solid var(--gold);
+  border: 1.5px solid var(--gold);
+  box-shadow: 0 6px 24px rgba(0,0,0,0.5), 0 0 16px rgba(255,209,102,0.20);
+  z-index: 240;
+  margin-top: 0;
 }
 .insp-floor-hint.ready {
   background: var(--gold-soft);
   color: var(--ink);
-  border-left-color: var(--gold);
+  border-color: var(--gold);
 }
 
 .insp-grid.tap-blocked .insp-card { filter: saturate(0.5); }
@@ -834,7 +845,7 @@ em { font-style: italic; color: var(--ink-soft); }
 .insp-card .outfit-brief .field {
   cursor: pointer;
   background: rgba(255,255,255,0.85);
-  padding: 10px 32px 10px 12px;
+  padding: 22px 12px 10px 12px;     /* extra TOP padding so the corner badge doesn't overlap text */
   border: 1px solid rgba(110,93,150,0.25);
   border-left: 3px solid rgba(110,93,150,0.45);
   border-radius: 5px;
@@ -843,20 +854,23 @@ em { font-style: italic; color: var(--ink-soft); }
   transition: all 0.15s;
   box-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
-/* Affordance arrow — hints "I'm tappable" */
+/* Affordance arrow — small badge in the TOP-RIGHT corner so it never overlaps text */
 .insp-card .outfit-brief .field::after {
   content: 'tap →';
   position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 9px;
-  letter-spacing: 1.5px;
+  top: 4px;
+  right: 6px;
+  font-size: 8px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   color: var(--c-od);
   font-weight: 700;
-  opacity: 0.55;
+  opacity: 0.65;
   transition: all 0.15s;
+  background: rgba(110,93,150,0.12);
+  padding: 2px 6px;
+  border-radius: 8px;
+  line-height: 1;
 }
 .insp-card .outfit-brief .field:hover {
   background: var(--gold-soft);
@@ -867,8 +881,8 @@ em { font-style: italic; color: var(--ink-soft); }
 }
 .insp-card .outfit-brief .field:hover::after {
   opacity: 1;
-  color: var(--gold);
-  transform: translateY(-50%) translateX(2px);
+  color: white;
+  background: var(--gold);
 }
 .insp-card .outfit-brief .field.flagged-correct {
   background: #e8f1ea;
@@ -1075,7 +1089,7 @@ em { font-style: italic; color: var(--ink-soft); }
 .res-card .outfit-brief .field {
   cursor: pointer;
   background: rgba(255,255,255,0.85);
-  padding: 12px 36px 12px 14px;
+  padding: 22px 14px 12px 14px;     /* extra TOP padding for corner badge */
   border: 1px solid rgba(110,93,150,0.25);
   border-left: 3px solid rgba(110,93,150,0.45);
   border-radius: 5px;
@@ -1087,16 +1101,19 @@ em { font-style: italic; color: var(--ink-soft); }
 .res-card .outfit-brief .field::after {
   content: 'tap →';
   position: absolute;
-  right: 10px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 9px;
-  letter-spacing: 1.5px;
+  top: 4px;
+  right: 6px;
+  font-size: 8px;
+  letter-spacing: 1.2px;
   text-transform: uppercase;
   color: var(--c-od);
   font-weight: 700;
-  opacity: 0.55;
+  opacity: 0.65;
   transition: all 0.15s;
+  background: rgba(110,93,150,0.12);
+  padding: 2px 6px;
+  border-radius: 8px;
+  line-height: 1;
 }
 .res-card .outfit-brief .field:hover {
   background: var(--gold-soft);
@@ -1107,8 +1124,8 @@ em { font-style: italic; color: var(--ink-soft); }
 }
 .res-card .outfit-brief .field:hover::after {
   opacity: 1;
-  color: var(--gold);
-  transform: translateY(-50%) translateX(2px);
+  color: white;
+  background: var(--gold);
 }
 .res-card .outfit-brief .field.correct {
   background: #e8f1ea;
